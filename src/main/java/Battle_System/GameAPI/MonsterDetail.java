@@ -1,5 +1,7 @@
 package Battle_System.GameAPI;
 
+import netscape.javascript.JSObject;
+
 public interface MonsterDetail {
-    //writing the interface for the monster detail
+    JSObject getAllResources();
 }
