@@ -4,6 +4,9 @@ import Battle_System.Entity.Monster;
 import Battle_System.Entity.Spells;
 import Battle_System.Entity.User;
 
+// TODO: this is just a sample battle class for our project, since we are going to use the clean architecture
+//  we should change the code based on this class.
+
 public class Battle {
     //1. As a user I want to against enemies during battles, I can choose from various options such as "Attack", or "Learn" or “Heal”, so that I can determine the fate of the enemy based on my moral judgment.
     //2. As a user I want to advance the plot by solving the quiz, and discover hidden rooms, secret items and side stories during the exploration process.
