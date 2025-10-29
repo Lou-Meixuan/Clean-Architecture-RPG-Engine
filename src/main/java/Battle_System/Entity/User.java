@@ -11,6 +11,7 @@ public class User {
     public String NAME;
     private int HP;
     private int DMG = 8;
+    private int DEF = 0;
 
     public User() {
         Random random = new Random();
@@ -41,6 +42,18 @@ public class User {
 
     public void decreaseDMG(int dmg){
         DMG -= dmg;
+    }
+
+    public int getDEF() {
+        return DEF;
+    }
+
+    public void addDEF(int def){
+        DEF += def;
+    }
+
+    public void decreaseDEF(int def){
+        DEF -= def;
     }
 
     public Boolean SuccessAttack(){

@@ -33,7 +33,7 @@ public class Battle {
         monster.HPDecrease(DMG);
     }
 
-    public void startBattle() {
+    public void execute() {
         while (user.isAlive() && monster.isAlive()) {
                 UserTurn();
                 if (monster.isAlive()) {
