@@ -6,19 +6,21 @@ public class Spells {
     private final int DMG;
 
     /**
-     * This DamageType class contains the type of the damage, the description of the damage type, the 2-3 skills that
-     * this monster has, and the map contains those skills and corresponding dmg
+     * This constructor of the Spells class contains the type of the damage(spellName), and the value of the corresponding damage.
      */
     public Spells(String spellName, int DMG) {
         this.spellName = spellName;
         this.DMG = DMG;
     }
 
-    public String getSpellName() {
-        return spellName;
-    }
-    public int getDMG() {
-        return DMG;
-    }
+    /**
+     * The getter for spellName.
+     */
+    public String getSpellName() {return spellName;}
+
+    /**
+     * The getter for spell's DMG.
+     */
+    public int getDMG() {return DMG;}
 
 }
