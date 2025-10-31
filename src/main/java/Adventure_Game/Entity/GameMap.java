@@ -5,21 +5,20 @@ import java.util.List;
 
 public class GameMap {
 
-    // TODO: use constuctor to init those final variables
-    private final List<List<Location>> grid = null;
-    private final int width = 1;
-    private final int height = 1;
+    private final List<List<Location>> grid;
+    private final int width;
+    private final int height;
 
     // 玩家在地图上的当前位置
-    private int currentX = 1;
-    private int currentY = 1;
-
-    public GameMap(List<Location> allLocations, int maxGridSize) {
-        // TODO: use generate function to generate valid GameMap
-    }
+    private int currentX;
+    private int currentY;
 
     public GameMap(List<List<Location>> gridLocations, int playerX, int playerY) {
-        // TODO: use load map from existing map
+        this.grid = gridLocations;
+        this.width = gridLocations.get(0).size();
+        this.height = gridLocations.size();
+        currentX = playerX;
+        currentY = playerY;
     }
 
     public void movePlayer(Direction direction) {
@@ -41,14 +40,7 @@ public class GameMap {
         return grid.get(y).get(x);
     }
 
-
     private boolean isValidPosition(int x, int y) {
         return y >= 0 && y < this.height && x >= 0 && x < this.width;
-    }
-
-
-    private void runGridGeneration(List<Location> allLocations, int gridSize) {
-        // TODO: generate matrix
-
     }
 }

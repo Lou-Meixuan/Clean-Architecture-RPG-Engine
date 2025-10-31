@@ -21,30 +21,6 @@ public class AdventureGame {
         this.locationSequence = new LinkedList<>();
     }
 
-    public static AdventureGame newGame(String userName) {
-        // TODO: generate new game data
-        // AdventureGame game = new AdventureGame(user, monsters, gameMap);
-        // return game;
-
-        return null;
-    }
-
-    public static AdventureGame loadGame(String saveFilePath) {
-        // TODO: load game data
-        // AdventureGame game = new AdventureGame(user, monsters, gameMap);
-        // return game;
-
-        return null;
-    }
-
-    public void writeSaveFile(String saveFilePath) {
-        // TODO: write save data
-    }
-
-    private void readSaveFile(String saveFilePath) {
-        // TODO: read save data
-    }
-
     public List<Location> getLocationSequence() {
         return locationSequence;
     }
