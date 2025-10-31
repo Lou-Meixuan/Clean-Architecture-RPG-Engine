@@ -17,7 +17,7 @@ public class Location {
         this.event = event;
     }
 
-    public Event getEvent(User user) {
+    public Event getEvent() {
         return event;
     }
 
