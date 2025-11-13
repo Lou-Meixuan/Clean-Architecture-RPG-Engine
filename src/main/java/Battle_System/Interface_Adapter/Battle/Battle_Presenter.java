@@ -7,7 +7,7 @@ import Battle_System.UseCase.Battle.Battle_OutputData;
 
 public class Battle_Presenter implements Battle_OutputBoundary {
     private final ViewModel viewModel;
-    // private final Moving_ViewModel moving_ViewModel;
+    //private final Moving_ViewModel moving_ViewModel;
     private final ViewManagerModel viewManagerModel ;
 
     public Battle_Presenter(ViewModel viewModel, ViewManagerModel viewManagerModel) {
@@ -22,7 +22,6 @@ public class Battle_Presenter implements Battle_OutputBoundary {
      */
     @Override
     public void prepareWinView(Battle_OutputData outputData) {
-
     }
 
     /**

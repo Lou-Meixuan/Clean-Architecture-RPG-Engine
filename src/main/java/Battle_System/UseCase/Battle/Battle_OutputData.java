@@ -19,4 +19,8 @@ public class Battle_OutputData {
     Monster getMonster() {
         return monster;
     }
+
+    Boolean isWin(){
+        return user.isAlive();
+    }
 }
