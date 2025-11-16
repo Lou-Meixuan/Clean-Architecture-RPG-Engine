@@ -2,9 +2,12 @@ package Adventure_Game.interface_adapter.move;
 
 import Battle_System.User.Monster;
 
+import javax.swing.*;
+
 public class MoveState {
     private String linearMap = "";
     private String currentLocationName = "";
+    private ImageIcon staticMapImage = null;
     private boolean leftButtonEnabled = true;
     private boolean rightButtonEnabled = true;
 
@@ -13,6 +16,7 @@ public class MoveState {
 
     public MoveState(MoveState copy) {
         this.linearMap = copy.linearMap;
+        this.staticMapImage = copy.staticMapImage;
         this.currentLocationName = copy.currentLocationName;
         this.leftButtonEnabled = copy.leftButtonEnabled;
         this.rightButtonEnabled = copy.rightButtonEnabled;
@@ -28,6 +32,14 @@ public class MoveState {
 
     public void setLinearMap(String linearMap) {
         this.linearMap = linearMap;
+    }
+
+    public ImageIcon getStaticMapImage() {
+        return staticMapImage;
+    }
+
+    public void setStaticMapImage(ImageIcon staticMapImage) {
+        this.staticMapImage = staticMapImage;
     }
 
     public String getCurrentLocationName() {

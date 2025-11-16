@@ -12,6 +12,10 @@ public class ViewModel<T> {
         this.viewName = viewName;
     }
 
+    public String getViewName() {
+        return viewName;
+    }
+
     public T getState() {
         return state;
     }
