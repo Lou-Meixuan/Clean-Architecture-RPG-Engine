@@ -106,7 +106,7 @@ public class User {
      * Ask the user to answer a quiz if they answered correctly then the user successfully attack.
      */
     public Boolean successAttack(){
-        return null;
+        return true;
         // TODO : answer the quiz correctly then return true in this method
     }
 

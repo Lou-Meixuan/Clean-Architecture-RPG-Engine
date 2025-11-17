@@ -1,6 +1,5 @@
 package Battle_System.UseCase.Battle;
 
-import Battle_System.Entity.Battle;
 import Battle_System.Entity.Monster;
 import Battle_System.Entity.Spells;
 import Battle_System.Entity.User;
@@ -20,6 +19,10 @@ public class Battle_Interactor implements Battle_InputBoundary {
         Spells spell = monster.chooseSpell();
         double DMG = monster.attack(spell);
         user.HPDecrease(DMG);
+
+        // notify presenter to update the view (After the Monster attack)
+        Battle_OutputData turnOutput = new Battle_OutputData(user, monster);
+        battlePresenter.updateMonsterTurnState(turnOutput);
     }
 
     /**
@@ -28,6 +31,9 @@ public class Battle_Interactor implements Battle_InputBoundary {
     private void UserTurn(User user, Monster monster) {
         double DMG = user.attack();
         monster.HPDecrease(DMG);
+        // notify presenter to update the view (After the User attack)
+        Battle_OutputData turnOutput = new Battle_OutputData(user, monster);
+        battlePresenter.updateUserTurnState(turnOutput);
     }
 
     /**
@@ -35,15 +41,20 @@ public class Battle_Interactor implements Battle_InputBoundary {
      * and the monsters' HP is less than 0. The fight is turn-based, started fron the user turn.
      */
     public void fight(User user, Monster monster) {
+        // Save the status before the fight
+        userDataAccessObject.save(user, monster);
         while (user.isAlive() && monster.isAlive()) {
+            // User's turn
             UserTurn(user, monster);
-            if (monster.isAlive()) {
+            // Check if monster is defeated
+            if (!monster.isAlive()) {
                 break;
             }
+            // Monster's turn
             MonsterTurn(user, monster);
+            // save the status after the fight
+            userDataAccessObject.save(user, monster);
         }
-        // TODO: if the monster is dead then we need to delete it from map and move it to the defeated monster list.
-        //  If the user is dead, then we go to the recent saved data.
     }
 
     /**
@@ -54,9 +65,12 @@ public class Battle_Interactor implements Battle_InputBoundary {
     public void execute(Battle_InputData inputData) {
         final User user = inputData.getUser();
         final Monster monster = inputData.getMonster();
-        // TODO: finish the execute
+
+        // Execute battle
         fight(user, monster);
+        // Prepare final output
         Battle_OutputData output = new Battle_OutputData(user, monster);
+        // Present final result
         if (output.isWin()){
             battlePresenter.prepareWinView(output);
         }
