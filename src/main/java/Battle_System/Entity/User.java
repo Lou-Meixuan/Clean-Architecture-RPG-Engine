@@ -101,25 +101,4 @@ public class User {
      * Return true if the HP of the user is greater than 0, which indicate the user is still alive.
      */
     public boolean isAlive() {return HP > 0;}
-
-    /**
-     * Ask the user to answer a quiz if they answered correctly then the user successfully attack.
-     */
-    public Boolean successAttack(){
-        return true;
-        // TODO : answer the quiz correctly then return true in this method
-    }
-
-    /**
-     * If the user successfully attacked, then it returns the current DMG of the user. If the user didn't answer the
-     * quiz correctly then the returned DMG will be 0.
-     */
-    public double attack(){
-        if(successAttack()){
-            return getDMG();
-        }
-        else{
-            return 0;
-        }
-    }
 }

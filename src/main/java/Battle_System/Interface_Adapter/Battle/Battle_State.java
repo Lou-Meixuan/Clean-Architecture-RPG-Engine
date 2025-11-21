@@ -5,7 +5,7 @@ import Battle_System.Entity.User;
 
 /**
  * State object for the Battle View.
- * Contains all the information needed to display the battle.
+ *
  */
 public class Battle_State {
     private User user = null;

@@ -3,6 +3,7 @@ package Battle_System.View;
 import Battle_System.Interface_Adapter.Battle.Battle_Controller;
 import Battle_System.Interface_Adapter.Battle.Battle_State;
 import Battle_System.Interface_Adapter.Battle.Battle_ViewModel;
+import Battle_System.Interface_Adapter.ViewManagerModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,10 @@ import java.beans.PropertyChangeListener;
 public class Battle_View extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "Battle";
     private final Battle_ViewModel viewModel;
+    private final ViewManagerModel viewManagerModel;
     private Battle_Controller battleController;
+
+    private final Quiz_ViewModel quizViewModel;
 
     // UI Components
     private final JLabel titleLabel;
@@ -29,8 +33,10 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
     private final JButton attackButton;
 
 
-    public Battle_View(Battle_ViewModel battleViewModel) {
+    public Battle_View(Battle_ViewModel battleViewModel, ViewManagerModel viewManagerModel, Quiz_ViewModel quizViewModel) {
         this.viewModel = battleViewModel;
+        this.viewManagerModel = viewManagerModel;
+        this.quizViewModel = quizViewModel;
         this.viewModel.addPropertyChangeListener(this);
 
         // Initialize UI components
@@ -141,11 +147,25 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
         }
 
         if (battleController != null && state.getUser() != null && state.getMonster() != null) {
-            // Disable buttons during battle execution
+            // Disable attack button
             attackButton.setEnabled(false);
-            // Execute the battle
-            battleController.execute(state.getUser(), state.getMonster());
 
+            // Debug: Check what we're passing
+            System.out.println("Battle_View - Switching to Quiz");
+            System.out.println("User: " + state.getUser());
+            System.out.println("Monster: " + state.getMonster());
+
+            // Pass user and monster to Quiz state
+            quizViewModel.getState().setUser(state.getUser());
+            quizViewModel.getState().setMonster(state.getMonster());
+
+            // Debug: Verify quiz state
+            System.out.println("Quiz State User: " + quizViewModel.getState().getUser());
+            System.out.println("Quiz State Monster: " + quizViewModel.getState().getMonster());
+
+            // Switch to Quiz view
+            viewManagerModel.setState("Quiz");
+            viewManagerModel.firePropertyChange();
             // Buttons will be re-enabled in propertyChange if battle continues
         } else {
             JOptionPane.showMessageDialog(this,

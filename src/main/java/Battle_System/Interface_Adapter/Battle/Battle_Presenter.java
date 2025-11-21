@@ -85,9 +85,9 @@ public class Battle_Presenter implements Battle_OutputBoundary {
         // Notify the view that state has changed
         battleViewModel.firePropertyChange();
 
-        // Optional: switch to a different view after a delay
-        // viewManagerModel.setState("Victory");
-        // viewManagerModel.firePropertyChange();
+        // switch to a different view after a delay
+        viewManagerModel.setState("Moving");
+        viewManagerModel.firePropertyChange();
     }
 
     /**
@@ -112,8 +112,20 @@ public class Battle_Presenter implements Battle_OutputBoundary {
         // Notify the view that state has changed
         battleViewModel.firePropertyChange();
 
-        // Optional: switch to a different view after a delay
-        // viewManagerModel.setState("GameOver");
-        // viewManagerModel.firePropertyChange();
+        // switch to a different view after a delay
+        viewManagerModel.setState("Moving");
+        viewManagerModel.firePropertyChange();
+    }
+
+    /**
+     * Prepares the Quiz view for the Battle Use Case.
+     *
+     * @param outputData the output data
+     */
+    @Override
+    public void prepareQuizView(Battle_OutputData outputData) {
+        // Switch to quiz view
+        viewManagerModel.setState("Quiz");
+        viewManagerModel.firePropertyChange();
     }
 }

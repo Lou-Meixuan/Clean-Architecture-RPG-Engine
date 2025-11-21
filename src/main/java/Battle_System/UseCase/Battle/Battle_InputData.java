@@ -9,10 +9,12 @@ import Battle_System.Entity.User;
 public class Battle_InputData {
     private final User user;
     private final Monster monster;
+    private final boolean resultOfQuiz;
 
-    public Battle_InputData(User user, Monster monster) {
+    public Battle_InputData(User user, Monster monster,  boolean resultOfQuiz) {
         this.user = user;
         this.monster = monster;
+        this.resultOfQuiz = resultOfQuiz;
     }
 
     User getUser() {
@@ -21,5 +23,9 @@ public class Battle_InputData {
 
     Monster getMonster() {
         return monster;
+    }
+
+    boolean getResultOfQuiz() {
+        return resultOfQuiz;
     }
 }
