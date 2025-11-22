@@ -1,6 +1,6 @@
 package adventure_game.use_case.move;
 
-import Battle_System.User.Monster;
+import Battle_System.Entity.Monster;
 
 public class MoveOutputData {
     private final String currentLocationName;

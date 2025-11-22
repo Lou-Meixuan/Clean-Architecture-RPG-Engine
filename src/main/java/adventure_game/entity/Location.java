@@ -1,6 +1,6 @@
 package adventure_game.entity;
 
-import Battle_System.User.Monster;
+import Battle_System.Entity.Monster;
 import org.json.JSONObject;
 
 public class Location {
