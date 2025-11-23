@@ -1,4 +1,4 @@
-import Battle_System.User.User;
+import Battle_System.Entity.User;
 import data_access.FileUserDAO;
 import data_access.UserDAO;
 
@@ -22,7 +22,7 @@ class DataAccessTest {
 
         if (loadedUser != null) {
             System.out.println("✓ User loaded successfully");
-            System.out.println("  - Inventory list: " + (loadedUser.getInventory() != null));
+            // System.out.println("  - Inventory list: " + (loadedUser.getInventory() != null));
         } else {
             System.out.println("✗ Failed to load user");
         }

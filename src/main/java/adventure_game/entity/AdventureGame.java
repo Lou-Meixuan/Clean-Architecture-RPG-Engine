@@ -1,6 +1,6 @@
 package adventure_game.entity;
 
-import Battle_System.User.User;
+import Battle_System.Entity.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

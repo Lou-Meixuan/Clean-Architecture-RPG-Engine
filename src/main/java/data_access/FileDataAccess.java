@@ -3,8 +3,9 @@ package data_access;
 import adventure_game.entity.AdventureGame;
 import adventure_game.entity.GameMap;
 import adventure_game.entity.Location;
-import Battle_System.User.User;
+import Battle_System.Entity.User;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -46,10 +47,10 @@ public class FileDataAccess {
             if (clazz.equals(AdventureGame.class)) {
                 return (T) deserializeAdventureGame(json);
             }
-            
+
             return null;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | JSONException e) {
+            // File doesn't exist, is empty, or contains invalid JSON
             return null;
         }
     }
@@ -62,11 +63,22 @@ public class FileDataAccess {
         json.put("user", new JSONObject(game.getUser()));
         json.put("gameMap", serializeGameMap(game.getGameMap()));
 
-        JSONArray pathArray = new JSONArray();
-        for (Location loc : game.getPathHistory()) {
-            pathArray.put(serializeLocation(loc));
+        // Store pathHistory as indices instead of full Location objects
+        // This ensures we maintain object identity when deserializing
+        JSONArray pathIndicesArray = new JSONArray();
+        List<Location> mapLocations = getGameMapLocations(game.getGameMap());
+
+        for (Location pathLoc : game.getPathHistory()) {
+            int index = mapLocations.indexOf(pathLoc);
+            if (index != -1) {
+                pathIndicesArray.put(index);
+            } else {
+                // Fallback: if location not found in map, store -1
+                // This shouldn't happen in normal gameplay
+                pathIndicesArray.put(-1);
+            }
         }
-        json.put("pathHistory", pathArray);
+        json.put("pathHistory", pathIndicesArray);
 
         return json;
     }
@@ -120,8 +132,8 @@ public class FileDataAccess {
         // Deserialize User using reflection since we can't modify the User class easily in this context
         // or reliance on standard setters
         JSONObject userJson = json.getJSONObject("user");
-        User user = new User(); 
-        
+        User user = new User();
+
         for (String key : userJson.keySet()) {
             try {
                 Field field = User.class.getDeclaredField(key);
@@ -139,14 +151,30 @@ public class FileDataAccess {
         }
 
         GameMap map = deserializeGameMap(json.getJSONObject("gameMap"));
+        List<Location> mapLocations = getGameMapLocations(map);
 
         List<Location> path = new LinkedList<>();
         if (json.has("pathHistory")) {
             JSONArray pathArray = json.getJSONArray("pathHistory");
-            for (int i = 0; i < pathArray.length(); i++) {
-                path.add(deserializeLocation(pathArray.getJSONObject(i)));
+
+            // Check if pathHistory contains indices (new format) or objects (old format)
+            if (pathArray.length() > 0) {
+                Object firstElement = pathArray.get(0);
+
+                if (firstElement instanceof Integer) {
+                    // format: array of indices
+                    for (int i = 0; i < pathArray.length(); i++) {
+                        int index = pathArray.getInt(i);
+                        if (index >= 0 && index < mapLocations.size()) {
+                            // Add reference to the SAME Location object from GameMap
+                            path.add(mapLocations.get(index));
+                        }
+                    }
+                }
             }
-        } else {
+        }
+
+        if (path.isEmpty()) {
             path.add(map.getCurrentLocation());
         }
 
@@ -171,5 +199,17 @@ public class FileDataAccess {
         double longitude = json.getDouble("longitude");
         // Monster is currently initialized to null as it's not persisted
         return new Location(name, latitude, longitude, null);
+    }
+
+    // Helper method to get locations list from GameMap using reflection
+    private List<Location> getGameMapLocations(GameMap gameMap) {
+        try {
+            Field locationsField = GameMap.class.getDeclaredField("locations");
+            locationsField.setAccessible(true);
+            return (List<Location>) locationsField.get(gameMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 }
