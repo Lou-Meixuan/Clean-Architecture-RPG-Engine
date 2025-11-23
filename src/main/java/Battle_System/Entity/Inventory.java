@@ -1,15 +1,20 @@
 package Battle_System.Entity;
 
 import java.util.List;
+/**
+ * Inventory Class
+ * Will be used by the user to store items and also be the access point if the user wants to use items
+ *
+ */
+
 
 public class Inventory {
     private List<Item> INVENTORY;
 
-
     public Inventory(List<Item> INVENTORY) {
         this.INVENTORY = INVENTORY; }
 
-    //Edits to inventory
+    // Add or remove item from inventory
     public void addItem(Item item) {
         INVENTORY.add(item); }
     public void removeItem(Item item) {
