@@ -1,6 +1,7 @@
 package data_access;
 
-import Battle_System.User.User;
+import Battle_System.Entity.User;
+
 import java.io.File;
 
 /**

@@ -13,6 +13,10 @@ public class Battle_Interactor implements Battle_InputBoundary {
         this.battlePresenter = battleOutputBoundary;
     }
 
+    public void switchToQuizView(){
+        battlePresenter.prepareQuizView();
+    }
+
     /**
      * This is the final method that would be called in ca, if the user choose "FIGHT" then this method will lead to the
      * fight method.

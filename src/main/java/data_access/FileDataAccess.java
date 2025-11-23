@@ -1,9 +1,9 @@
 package data_access;
 
+import Battle_System.Entity.User;
 import adventure_game.entity.AdventureGame;
 import adventure_game.entity.GameMap;
 import adventure_game.entity.Location;
-import Battle_System.User.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -120,7 +120,7 @@ public class FileDataAccess {
         // Deserialize User using reflection since we can't modify the User class easily in this context
         // or reliance on standard setters
         JSONObject userJson = json.getJSONObject("user");
-        User user = new User(); 
+        User user = new User();
         
         for (String key : userJson.keySet()) {
             try {

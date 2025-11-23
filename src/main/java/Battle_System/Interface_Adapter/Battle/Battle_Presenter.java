@@ -119,10 +119,9 @@ public class Battle_Presenter implements Battle_OutputBoundary {
     /**
      * Prepares the Quiz view for the Battle Use Case.
      *
-     * @param outputData the output data
      */
     @Override
-    public void prepareQuizView(Battle_OutputData outputData) {
+    public void prepareQuizView() {
         // Switch to quiz view
         viewManagerModel.setState("Quiz");
         viewManagerModel.firePropertyChange();

@@ -1,5 +1,7 @@
 package Battle_System.View;
 
+import Battle_System.Entity.Monster;
+import Battle_System.Entity.User;
 import Battle_System.Interface_Adapter.Battle.Battle_Controller;
 import Battle_System.Interface_Adapter.Battle.Battle_State;
 import Battle_System.Interface_Adapter.Battle.Battle_ViewModel;
@@ -149,23 +151,9 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
         if (battleController != null && state.getUser() != null && state.getMonster() != null) {
             // Disable attack button
             attackButton.setEnabled(false);
-
-            // Debug: Check what we're passing
-            System.out.println("Battle_View - Switching to Quiz");
-            System.out.println("User: " + state.getUser());
-            System.out.println("Monster: " + state.getMonster());
-
-            // Pass user and monster to Quiz state
-            quizViewModel.getState().setUser(state.getUser());
-            quizViewModel.getState().setMonster(state.getMonster());
-
-            // Debug: Verify quiz state
-            System.out.println("Quiz State User: " + quizViewModel.getState().getUser());
-            System.out.println("Quiz State Monster: " + quizViewModel.getState().getMonster());
-
-            // Switch to Quiz view
-            viewManagerModel.setState("Quiz");
-            viewManagerModel.firePropertyChange();
+            User user = state.getUser();
+            Monster monster = state.getMonster();
+            battleController.switchToQuizView(user, monster);
             // Buttons will be re-enabled in propertyChange if battle continues
         } else {
             JOptionPane.showMessageDialog(this,

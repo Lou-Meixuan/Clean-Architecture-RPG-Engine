@@ -58,7 +58,7 @@ public class BattleSystemTestApp {
         Battle_Interactor battleInteractor = new Battle_Interactor(battleDataAccess, battlePresenter);
 
         // Initialize Controller
-        Battle_Controller battleController = new Battle_Controller(battleInteractor);
+        Battle_Controller battleController = new Battle_Controller(battleInteractor, quizViewModel);
 
         // Create Views
         Battle_View battleView = new Battle_View(battleViewModel, viewManagerModel, quizViewModel);

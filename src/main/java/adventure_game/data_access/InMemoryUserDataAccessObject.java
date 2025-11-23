@@ -1,11 +1,11 @@
 
 package adventure_game.data_access;
 
+import Battle_System.Entity.User;
 import adventure_game.entity.AdventureGame;
 import adventure_game.entity.GameMap;
 import adventure_game.entity.Location;
 import adventure_game.use_case.move.MoveGameDataAccessInterface;
-import Battle_System.User.User;
 import data_access.FileDataAccess;
 import java.io.File;
 import java.util.Arrays;

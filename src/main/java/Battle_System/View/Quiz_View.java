@@ -117,11 +117,6 @@ public class Quiz_View extends JPanel implements ActionListener, PropertyChangeL
         // Update state with quiz result
         state.setQuizResult(answer);
 
-        // Debug: Check what we have
-        System.out.println("Quiz_View - handleAnswer called");
-        System.out.println("battleController: " + battleController);
-        System.out.println("user: " + state.getUser());
-        System.out.println("monster: " + state.getMonster());
 
         // Call battle controller to execute battle with quiz result
         if (battleController == null) {

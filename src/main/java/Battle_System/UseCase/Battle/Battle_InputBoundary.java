@@ -10,5 +10,7 @@ public interface Battle_InputBoundary {
      * @param inputData the input battle data
      */
     void execute(Battle_InputData inputData);
+
+    void switchToQuizView();
 }
 

@@ -25,7 +25,6 @@ public interface Battle_OutputBoundary {
 
     /**
      * Prepares the Quiz view for the Battle Use Case.
-     * @param outputData the output data
      */
-    void prepareQuizView(Battle_OutputData outputData);
+    void prepareQuizView();
 }

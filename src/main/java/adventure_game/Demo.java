@@ -1,5 +1,6 @@
 package adventure_game;
 
+import Battle_System.Entity.Monster;
 import adventure_game.data_access.InMemoryUserDataAccessObject;
 import adventure_game.game_api.GeoapifyStaticMap;
 import adventure_game.entity.AdventureGame;
@@ -14,7 +15,6 @@ import adventure_game.use_case.move.MoveInputBoundary;
 import adventure_game.use_case.move.MoveInteractor;
 import adventure_game.use_case.move.MoveOutputData;
 import adventure_game.view.MoveView;
-import Battle_System.User.Monster;
 
 import javax.swing.*;
 
