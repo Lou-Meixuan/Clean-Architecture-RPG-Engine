@@ -106,16 +106,16 @@ public class User {
     public void decreaseDEF(double def){DEF -= def;}
 
     /**
-     * add item to user's inventory
-     * @param item
+     * add item to user's inventory, method called when item is picked up by user
+     *
      */
     public void addItem(Item item){
         inventory.addItem(item);
     }
 
     /**
-     * remove item from inventory
-     * @param item
+     * remove item from inventory, method will be called when item is used by user
+     *
      */
     public void removeItem(Item item){
         inventory.removeItem(item);
@@ -123,8 +123,7 @@ public class User {
 
     /**
      *
-     * @param name of item being searched for
-     * @return item as an item
+     * Find an item by its name
      */
     public Item getItemByName(String name) {
         return inventory.getItemByName(name);
@@ -151,24 +150,4 @@ public class User {
      */
     public boolean isAlive() {return HP > 0;}
 
-    /**
-     * Ask the user to answer a quiz if they answered correctly then the user successfully attack.
-     */
-    public Boolean successAttack(){
-        return true;
-        // TODO : answer the quiz correctly then return true in this method
-    }
-
-    /**
-     * If the user successfully attacked, then it returns the current DMG of the user. If the user didn't answer the
-     * quiz correctly then the returned DMG will be 0.
-     */
-    public double attack(){
-        if(successAttack()){
-            return getDMG();
-        }
-        else{
-            return 0;
-        }
-    }
 }
