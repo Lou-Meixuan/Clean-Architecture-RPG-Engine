@@ -6,6 +6,7 @@ import Battle_System.Interface_Adapter.Battle.Battle_Controller;
 import Battle_System.Interface_Adapter.Battle.Battle_State;
 import Battle_System.Interface_Adapter.Battle.Battle_ViewModel;
 import Battle_System.Interface_Adapter.ViewManagerModel;
+import Battle_System.Interface_Adapter.Inventory.Inventory_Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,7 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
     private final Battle_ViewModel viewModel;
     private final ViewManagerModel viewManagerModel;
     private Battle_Controller battleController;
+    private Inventory_Controller inventoryController;
 
     private final Quiz_ViewModel quizViewModel;
 
@@ -33,6 +35,9 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
     private final JLabel monsterHpLabel;
     private final JTextArea battleMessageArea;
     private final JButton attackButton;
+    private final JComboBox<String> inventoryDropdown;
+    private final JButton useItemButton;
+    private final JTextArea inventoryDetailsArea;
 
 
     public Battle_View(Battle_ViewModel battleViewModel, ViewManagerModel viewManagerModel, Quiz_ViewModel quizViewModel) {
@@ -55,10 +60,32 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
         battleMessageArea.setWrapStyleWord(true);
         battleMessageArea.setText("Battle is ready to begin...");
 
+        inventoryDropdown = new JComboBox<>();
+        inventoryDetailsArea = new JTextArea(5,20);
+        inventoryDetailsArea.setLineWrap(true);
+        inventoryDetailsArea.setEditable(false);
+        inventoryDetailsArea.setWrapStyleWord(true);
+        JScrollPane inventoryDisplayScrollPane = new JScrollPane(inventoryDetailsArea);
+
+        useItemButton = new JButton("Use Item");
+        useItemButton.setEnabled(false);
+
         attackButton = new JButton("Attack");
 
         // Add action listeners
         attackButton.addActionListener(this);
+        inventoryDropdown.addActionListener(e-> {
+            String selectedItemName = (String) inventoryDropdown.getSelectedItem();
+            if (selectedItemName != null) {  //display details of item
+                inventoryDetailsArea.setText(selectedItemName); } else {
+                inventoryDetailsArea.setText("");
+                useItemButton.setEnabled(false); } } );
+        useItemButton.addActionListener(e-> {
+            String selectedItemName = (String) inventoryDropdown.getSelectedItem();
+            if (selectedItemName != null) {
+                inventoryDetailsArea.setText(selectedItemName);
+                useItemButton.setEnabled(false);
+            } } );
 
         // Layout setup
         setupLayout();
@@ -83,6 +110,16 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
         JPanel userPanel = new JPanel(new GridLayout(2, 1));
         userPanel.setBorder(BorderFactory.createTitledBorder("Player"));
         userPanel.add(userHpLabel);
+
+        //inventory subpanel
+        JPanel inventorySubPanel=  new JPanel(new GridLayout(5, 5));
+        JLabel inventoryLabel = new JLabel("Inventory");
+        JComboBox<String> inventoryDropdown = new JComboBox<>();
+        JButton useItemButton = new JButton("Use Item");
+        inventorySubPanel.add(inventoryLabel, BorderLayout.NORTH);
+        inventorySubPanel.add(inventoryDropdown, BorderLayout.CENTER);
+        inventorySubPanel.add(useItemButton, BorderLayout.SOUTH);
+        userPanel.add(inventorySubPanel);
 
         // Monster info panel
         JPanel monsterPanel = new JPanel(new GridLayout(2, 1));
