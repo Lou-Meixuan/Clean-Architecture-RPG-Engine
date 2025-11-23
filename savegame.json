@@ -1,1 +1,6 @@
-{"currentLocation":"","finalDestination":"","inventory":[],"isCompleted":false}
+{
+    "finalDestination": "",
+    "inventory": [],
+    "currentLocation": "",
+    "isCompleted": false
+}
