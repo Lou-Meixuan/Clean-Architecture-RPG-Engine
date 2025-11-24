@@ -1,6 +1,6 @@
 package data_access;
 
-import Battle_System.Entity.User;
+import entity.User;
 
 /**
  * Data Access Object interface for User persistence

@@ -1,4 +1,4 @@
-import Battle_System.Entity.User;
+import entity.User;
 import data_access.FileUserDAO;
 import data_access.UserDAO;
 

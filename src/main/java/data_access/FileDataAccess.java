@@ -1,9 +1,9 @@
 package data_access;
 
-import adventure_game.entity.AdventureGame;
-import adventure_game.entity.GameMap;
-import adventure_game.entity.Location;
-import Battle_System.Entity.User;
+import entity.User;
+import entity.AdventureGame;
+import entity.GameMap;
+import entity.Location;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
