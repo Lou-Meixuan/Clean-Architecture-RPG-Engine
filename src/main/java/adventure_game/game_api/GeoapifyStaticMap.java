@@ -15,7 +15,7 @@ public class GeoapifyStaticMap implements MoveStaticMapInterface {
     private static final int ZOOM_LEVEL = 17;
     private static final int MAP_WIDTH = 600;
     private static final int MAP_HEIGHT = 400;
-    private static final String API_KEY = "56cbecbec7ef4abc89b419650ca68cba";
+    private static final String API_KEY = "56cbecbec7ef4abc89b419650ca68cba"; // since this is public, we need to disable after the demo
 
     private final OkHttpClient httpClient;
 

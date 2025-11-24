@@ -1,0 +1,38 @@
+{
+    "pathHistory": [
+        0,
+        1,
+        2
+    ],
+    "user": {
+        "DEF": 0,
+        "alive": true,
+        "bonusHP": 0,
+        "HP": 22,
+        "inventory": {
+            "items": [],
+            "empty": true
+        },
+        "DMG": 8
+    },
+    "gameMap": {
+        "currentLocationIndex": 2,
+        "locations": [
+            {
+                "latitude": 43.6532,
+                "name": "Forest",
+                "longitude": -79.3832
+            },
+            {
+                "latitude": 43.654,
+                "name": "Cave",
+                "longitude": -79.384
+            },
+            {
+                "latitude": 43.655,
+                "name": "Mountain",
+                "longitude": -79.385
+            }
+        ]
+    }
+}
