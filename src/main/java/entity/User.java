@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class User {
-    //1. As a user I want to have an initial ATK and HP value when the game starts.
-    //2. As a user I want to be able to initiate a battle so that I can attack my opponent/monster or choose flee to aviod the fight.
-    //3. As a user I want to be able to access my inventory so that I can equip or use items.
-    public String NAME;
     private double HP;
     private double bonusHP = 0;
     private double DMG = 8;
@@ -23,10 +19,9 @@ public class User {
         inventory = new Inventory(new ArrayList<>());
     }
 
-    // TODO: finish the override
     @Override
     public String toString() {
-        return null;
+        return String.format("User has HP: %f, DMG: %f, DEF: %f, Inventory: %s", HP, DMG, DEF, inventory);
     }
 
     /**
@@ -60,7 +55,7 @@ public class User {
         if(bonusHP > dmg){
             bonusHP -= dmg;
             return 0;
-        }else {
+        } else {
             double returnVal = dmg - bonusHP;
             bonusHP = 0;
             return returnVal;
