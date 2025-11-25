@@ -14,7 +14,7 @@ public class ResultScreenView extends JPanel {
     private final JLabel messageLabel = new JLabel("", SwingConstants.CENTER);
     private final JButton newGameButton = new JButton("Start New Game");
     private final JButton exitButton = new JButton("Exit Game");
-
+    // TODO: Change the signature, only the view model is the input
     public ResultScreenView(ResultController controller,
                             ResultViewModel viewModel,
                             OpenGameController openGameController) {

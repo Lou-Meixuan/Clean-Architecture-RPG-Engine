@@ -24,7 +24,7 @@ public class QuizView extends JFrame {
     private final JLabel feedbackLabel = new JLabel("", SwingConstants.CENTER);
 
     private int currentQuizId;
-
+    // TODO: Change the signature, only the view model is the input
     public QuizView(QuizDataAccessInterface repo, QuizController controller, QuizViewModel vm) {
         this.repo = repo;
         this.controller = controller;

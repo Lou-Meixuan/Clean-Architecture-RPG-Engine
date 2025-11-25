@@ -22,7 +22,7 @@ public class MoveView extends JPanel implements PropertyChangeListener {
     private final JButton goLeftButton;
     private final JButton goRightButton;
     private final JButton endGameButton;
-
+    // TODO: Change the signature, only the view model is the input
     public MoveView(MoveViewModel moveViewModel, MoveController moveController) {
         this.moveViewModel = moveViewModel;
         this.moveController = moveController;
