@@ -1,11 +1,8 @@
 package data_access;
 
-import entity.AdventureGame;
-import entity.GameMap;
-import entity.Location;
+import entity.*;
 import use_case.move.MoveGameDataAccessInterface;
 import use_case.show_results.ShowResultsGameDataAccessInterface;
-import entity.User;
 
 import java.io.File;
 import java.util.Arrays;
@@ -36,7 +33,7 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface, Sh
     private void startNewGame() {
         User user = new User();
         Location loc0 = new Location("Forest", 43.6532, -79.3832, null);
-        Location loc1 = new Location("Cave", 43.6540, -79.3840, null);
+        Location loc1 = new Location("Cave", 43.6540, -79.3840, new Monster());
         Location loc2 = new Location("Mountain", 43.6550, -79.3850, null);
 
         List<Location> locations = Arrays.asList(loc0, loc1, loc2);

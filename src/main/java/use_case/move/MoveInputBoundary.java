@@ -1,5 +1,9 @@
 package use_case.move;
 
+import entity.Monster;
+
 public interface MoveInputBoundary {
-    public void execute(MoveInputData moveInputData);
+    void execute(MoveInputData moveInputData);
+
+    void switchToBattleView(Monster monster);
 }

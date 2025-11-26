@@ -85,7 +85,7 @@ public class Battle_Presenter implements Battle_OutputBoundary {
         battleViewModel.firePropertyChange();
 
         // switch to a different view after a delay
-        viewManagerModel.setState("Moving");
+        viewManagerModel.setState("move");
         viewManagerModel.firePropertyChange();
     }
 
@@ -112,7 +112,7 @@ public class Battle_Presenter implements Battle_OutputBoundary {
         battleViewModel.firePropertyChange();
 
         // switch to a different view after a delay
-        viewManagerModel.setState("Moving");
+        viewManagerModel.setState("move");
         viewManagerModel.firePropertyChange();
     }
 

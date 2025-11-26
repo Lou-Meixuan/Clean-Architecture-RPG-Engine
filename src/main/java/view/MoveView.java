@@ -88,9 +88,12 @@ public class MoveView extends JPanel implements PropertyChangeListener {
             endGameButton.setVisible(!state.isRightButtonEnabled());
 
             // TODO
-//            if (state.getMonster() != null) {
-//
-//            } else if (state.getItem() != null) {
+            if (state.getMonster() != null && state.getMonster().isAlive()) {
+                moveController.switchToBattleView(state.getMonster());
+
+//                state.setMonster(null);
+            }
+//            else if (state.getItem() != null) {
 //
 //            }
         }

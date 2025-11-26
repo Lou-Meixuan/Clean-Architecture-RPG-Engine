@@ -52,4 +52,9 @@ public class MoveInteractor implements MoveInputBoundary {
 
         this.movePresenter.present(outputData);
     }
+
+    @Override
+    public void switchToBattleView(Monster monster) {
+        movePresenter.switchToBattleView(moveGameDataAccess.getGame().getUser(), monster);
+    }
 }

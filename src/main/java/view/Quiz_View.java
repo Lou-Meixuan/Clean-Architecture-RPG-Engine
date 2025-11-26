@@ -141,12 +141,12 @@ public class Quiz_View extends JPanel implements ActionListener, PropertyChangeL
             return;
         }
 
-        // Execute battle with quiz result
-        battleController.execute(state.getUser(), state.getMonster(), answer);
-
         // Switch back to Battle view
         viewManagerModel.setState("Battle");
         viewManagerModel.firePropertyChange();
+
+        // Execute battle with quiz result
+        battleController.execute(state.getUser(), state.getMonster(), answer);
 
         // Re-enable buttons for next quiz
         trueButton.setEnabled(true);
