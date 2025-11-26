@@ -79,7 +79,8 @@ public class MoveTestApp {
         MoveInputBoundary moveInteractor = new MoveInteractor(gameDataAccess, movePresenter);
         MoveController moveController = new MoveController(moveInteractor);
 
-        MoveView moveView = new MoveView(moveViewModel, moveController);
+        MoveView moveView = new MoveView(moveViewModel);
+        moveView.setMoveController(moveController);
 
         ShowResultsPresenter resultsPresenter = new ShowResultsPresenter(resultsViewModel);
         ShowResultsInputBoundary resultsInteractor = new ShowResultsInteractor(gameDataAccess, resultsPresenter);

@@ -15,7 +15,7 @@ public class MoveView extends JPanel implements PropertyChangeListener {
 
     private final String viewName;
     private final MoveViewModel moveViewModel;
-    private final MoveController moveController;
+    private MoveController moveController;
 
     private final JLabel linearMapLabel;
     private final JLabel staticMapImageLabel;
@@ -24,9 +24,9 @@ public class MoveView extends JPanel implements PropertyChangeListener {
     private final JButton goRightButton;
     private final JButton endGameButton;
 
-    public MoveView(MoveViewModel moveViewModel, MoveController moveController) {
+    public MoveView(MoveViewModel moveViewModel) {
         this.moveViewModel = moveViewModel;
-        this.moveController = moveController;
+        this.moveController = null;
         this.viewName = moveViewModel.getViewName();
 
         this.moveViewModel.addPropertyChangeListener(this);
@@ -105,5 +105,9 @@ public class MoveView extends JPanel implements PropertyChangeListener {
 
     public JButton getEndGameButton() {
         return endGameButton;
+    }
+
+    public void setMoveController(MoveController moveController) {
+        this.moveController = moveController;
     }
 }
