@@ -12,8 +12,7 @@ import java.beans.PropertyChangeListener;
 public class MoveView extends JPanel implements PropertyChangeListener {
     public static final String LEFT_BUTTON_LABEL = "Go Left";
     public static final String RIGHT_BUTTON_LABEL = "Go Right";
-
-    private final String viewName;
+    private final String viewName = "move";
     private final MoveViewModel moveViewModel;
     private MoveController moveController;
 

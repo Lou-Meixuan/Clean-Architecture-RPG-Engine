@@ -1,5 +1,6 @@
 package entity;
 
+import API.MonsterDetail;
 import API.SrdMonsterDetail;
 
 import java.util.ArrayList;
@@ -8,9 +9,6 @@ import java.util.Random;
  * This Monster class
  */
 public class Monster {
-    //1. As a user I wa nt those monsters I’ve defeated to be recorded, and to be able to view their status information.
-    //2. As a user I want that when I pass through the same area again, the monsters I’ve already defeated will not reappear.
-    //3. As a user I want those monsters have name, atk, hp, and damage type
     public String NAME;
     private double HP;
     private Spells[] SPELL;
@@ -23,12 +21,11 @@ public class Monster {
         Random random = new Random();
         HP = random.nextInt(11) + 20;
 
-        SrdMonsterDetail api = new SrdMonsterDetail();
+        MonsterDetail api = new SrdMonsterDetail();
         setSpells(api);
         setNAME(api);
     }
 
-    // TODO: finish the override
     @Override
     public String toString() {
         return NAME;
@@ -60,7 +57,7 @@ public class Monster {
     /**
      * Randomly select a name from the api.
      */
-    public void setNAME(SrdMonsterDetail api) {
+    public void setNAME(MonsterDetail api) {
         Random random = new Random();
         String[] nameList = api.generateRaces();
         int size = nameList.length;
@@ -71,7 +68,7 @@ public class Monster {
     /**
      * Randomly select size of the spell list for the monster and randomly select the type of spells.
      */
-    public void setSpells(SrdMonsterDetail api) {
+    public void setSpells(MonsterDetail api) {
         Random random = new Random();
         int size = random.nextInt(3) + 1;
         ArrayList<Spells> spell = api.generateSpells();

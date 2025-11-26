@@ -1,6 +1,7 @@
 package interface_adapter.Battle;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.move.MoveViewModel;
 import use_case.Battle.Battle_OutputBoundary;
 import use_case.Battle.Battle_OutputData;
 
@@ -10,10 +11,8 @@ import use_case.Battle.Battle_OutputData;
  */
 public class Battle_Presenter implements Battle_OutputBoundary {
     private final Battle_ViewModel battleViewModel;
-    // TODO: Haven't handle the view manager, this should be used for switching from Battle View into the Moving on
-    //  the map. I think we also need to use the view model from the map system once we are finished.
     private final ViewManagerModel viewManagerModel;
-    // private final Moving_ViewModel moving_ViewModel;
+    // private final MoveViewModel moveViewModel;
 
     public Battle_Presenter(Battle_ViewModel battleViewModel, ViewManagerModel viewManagerModel) {
         this.battleViewModel = battleViewModel;

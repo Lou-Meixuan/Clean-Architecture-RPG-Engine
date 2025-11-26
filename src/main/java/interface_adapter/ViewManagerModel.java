@@ -1,8 +1,8 @@
 package interface_adapter;
 
 public class ViewManagerModel extends ViewModel<String> {
-    public  ViewManagerModel(String viewName) {
+    public  ViewManagerModel() {
         super("View Manager");
-        this.setState(viewName);
+        this.setState("");
     }
 }

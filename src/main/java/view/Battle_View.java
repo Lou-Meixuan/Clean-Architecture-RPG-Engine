@@ -23,11 +23,8 @@ import java.beans.PropertyChangeListener;
 public class Battle_View extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "Battle";
     private final Battle_ViewModel viewModel;
-    private final ViewManagerModel viewManagerModel;
     private Battle_Controller battleController;
     private Inventory_Controller inventoryController;
-
-    private final Quiz_ViewModel quizViewModel;
 
     // UI Components
     private final JLabel titleLabel;
@@ -41,10 +38,8 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
     private final JTextArea inventoryDetailsArea;
 
 
-    public Battle_View(Battle_ViewModel battleViewModel, ViewManagerModel viewManagerModel, Quiz_ViewModel quizViewModel) {
+    public Battle_View(Battle_ViewModel battleViewModel) {
         this.viewModel = battleViewModel;
-        this.viewManagerModel = viewManagerModel;
-        this.quizViewModel = quizViewModel;
         this.viewModel.addPropertyChangeListener(this);
 
         // Initialize UI components

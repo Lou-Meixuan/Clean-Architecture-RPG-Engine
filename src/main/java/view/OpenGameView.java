@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class OpenGameView extends JPanel {
-
+    // TODO: Add a view name
     private final OpenGameController controller;
     private final OpenGameViewModel viewModel;
 
@@ -17,7 +17,7 @@ public class OpenGameView extends JPanel {
     private final JButton newGameButton = new JButton("Start New Game");
     private final JButton continueGameButton = new JButton("Continue Game");
     private final JLabel messageLabel = new JLabel("Welcome!");
-
+    // TODO: Change the signature, only the view model is the input
     public OpenGameView(OpenGameController controller,
                         OpenGameViewModel viewModel) {
 
