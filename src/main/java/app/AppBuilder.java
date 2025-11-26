@@ -94,7 +94,7 @@ public class AppBuilder {
     public AppBuilder addBattleUseCase() {
         final Battle_OutputBoundary signupOutputBoundary = new Battle_Presenter(battleViewModel, viewManagerModel);
         //final Battle_InputBoundary battleInteractor = new Battle_Interactor(
-        //        userDataAccessObject, signupOutputBoundary, userFactory);
+        //        userDataAccessObject, signupOutputBoundary);
 
         //Battle_Controller controller = new Battle_Controller(battleInteractor);
         // battleView.setBattleController(controller);

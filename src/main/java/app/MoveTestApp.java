@@ -48,7 +48,7 @@ public class MoveTestApp {
         CardLayout cardLayout = new CardLayout();
         JPanel views = new JPanel(cardLayout);
 
-        ViewManagerModel viewManagerModel = new ViewManagerModel("Battle");
+        ViewManagerModel viewManagerModel = new ViewManagerModel();
 
         Battle_ViewModel battleViewModel = new Battle_ViewModel();
         Quiz_ViewModel quizViewModel = new Quiz_ViewModel();
@@ -61,7 +61,7 @@ public class MoveTestApp {
 
         Battle_Controller battleController = new Battle_Controller(battleInteractor, quizViewModel);
 
-        Battle_View battleView = new Battle_View(battleViewModel, viewManagerModel, quizViewModel);
+        Battle_View battleView = new Battle_View(battleViewModel);
         battleView.setBattleController(battleController);
 
         Quiz_View quizView = new Quiz_View(quizViewModel, viewManagerModel);
@@ -156,10 +156,6 @@ public class MoveTestApp {
 
 
         application.add(views);
-//        cardLayout.show(views, "Battle");
-//        viewManagerModel.setState("Battle");
-//        viewManagerModel.firePropertyChange();
-
         application.setLocationRelativeTo(null);
         application.setVisible(true);
     }

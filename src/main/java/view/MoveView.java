@@ -26,7 +26,6 @@ public class MoveView extends JPanel implements PropertyChangeListener {
     public MoveView(MoveViewModel moveViewModel) {
         this.moveViewModel = moveViewModel;
         this.moveController = null;
-        this.viewName = moveViewModel.getViewName();
 
         this.moveViewModel.addPropertyChangeListener(this);
 
