@@ -10,8 +10,8 @@ import interface_adapter.Battle.Battle_ViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.Battle.Battle_Interactor;
 import view.Battle_View;
-import view.Quiz_View;
 import interface_adapter.quiz.Quiz_ViewModel;
+import view.QuizView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +64,7 @@ public class BattleSystemTestApp {
         Battle_View battleView = new Battle_View(battleViewModel, viewManagerModel, quizViewModel);
         battleView.setBattleController(battleController);
 
-        Quiz_View quizView = new Quiz_View(quizViewModel, viewManagerModel);
+        QuizView quizView = new QuizView(quizViewModel, viewManagerModel);
         quizView.setBattleController(battleController);
 
         // Add views to CardLayout
