@@ -88,7 +88,7 @@ public class BattleSystemTestApp {
         Battle_Controller battleController = new Battle_Controller(battleInteractor, quizViewModel);
 
         // Create Views
-        Battle_View battleView = new Battle_View(battleViewModel);
+        Battle_View battleView = new Battle_View(battleViewModel, viewManagerModel, quizViewModel);
         battleView.setBattleController(battleController);
 
         Quiz_View quizView = new Quiz_View(quizViewModel, viewManagerModel);

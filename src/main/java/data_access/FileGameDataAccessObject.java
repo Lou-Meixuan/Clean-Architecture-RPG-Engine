@@ -1,6 +1,7 @@
 package data_access;
 
 import entity.*;
+import use_case.Battle.BattleUserDataAccessInterface;
 import use_case.move.MoveGameDataAccessInterface;
 import use_case.show_results.ShowResultsGameDataAccessInterface;
 
@@ -8,7 +9,13 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-public class FileGameDataAccessObject implements MoveGameDataAccessInterface, ShowResultsGameDataAccessInterface {
+public class FileGameDataAccessObject implements MoveGameDataAccessInterface, ShowResultsGameDataAccessInterface, BattleUserDataAccessInterface {
+
+    // Battle state tracking
+    private User userBeforeBattle;
+    private User userAfterBattle;
+    private Monster monsterBeforeBattle;
+    private Monster monsterAfterBattle;
 
     private AdventureGame game;
     private final FileDataAccess fileDataAccess;
@@ -32,9 +39,9 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface, Sh
 
     private void startNewGame() {
         User user = new User();
-        Location loc0 = new Location("Forest", 43.6532, -79.3832, null);
-        Location loc1 = new Location("Cave", 43.6540, -79.3840, new Monster());
-        Location loc2 = new Location("Mountain", 43.6550, -79.3850, null);
+        Location loc0 = new Location("Bahen Centre for Information Technology", 43.6594, -79.3981, null);
+        Location loc1 = new Location("Myhal Centre For Engineering Innovation & Entrepreneurship", 43.6606, -79.3966, new Monster());
+        Location loc2 = new Location("Gerstein Science Information Centre", 43.6624, -79.3940, null);
 
         List<Location> locations = Arrays.asList(loc0, loc1, loc2);
 
@@ -73,5 +80,39 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface, Sh
         }
         // Reset to a new game in memory
         startNewGame();
+    }
+
+    // BattleUserDataAccessInterface implementation
+
+    @Override
+    public void save(User user, Monster monster) {
+        // If this is the first save (before battle starts)
+        if (userBeforeBattle == null) {
+            userBeforeBattle = user;
+            monsterBeforeBattle = monster;
+        }
+        // Always update the "after" state
+        userAfterBattle = user;
+        monsterAfterBattle = monster;
+    }
+
+    @Override
+    public User getUserBeforeBattle() {
+        return userBeforeBattle;
+    }
+
+    @Override
+    public User getUserAfterBattle() {
+        return userAfterBattle;
+    }
+
+    @Override
+    public Monster getMonsterBeforeBattle() {
+        return monsterBeforeBattle;
+    }
+
+    @Override
+    public Monster getMonsterAfterBattle() {
+        return monsterAfterBattle;
     }
 }

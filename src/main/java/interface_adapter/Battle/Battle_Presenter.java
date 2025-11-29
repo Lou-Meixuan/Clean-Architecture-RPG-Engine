@@ -1,6 +1,7 @@
 package interface_adapter.Battle;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.move.MoveState;
 import interface_adapter.move.MoveViewModel;
 import use_case.Battle.Battle_OutputBoundary;
 import use_case.Battle.Battle_OutputData;
@@ -12,11 +13,19 @@ import use_case.Battle.Battle_OutputData;
 public class Battle_Presenter implements Battle_OutputBoundary {
     private final Battle_ViewModel battleViewModel;
     private final ViewManagerModel viewManagerModel;
-    // private final MoveViewModel moveViewModel;
+    private final MoveViewModel moveViewModel;
 
+    public Battle_Presenter(Battle_ViewModel battleViewModel, ViewManagerModel viewManagerModel, MoveViewModel moveViewModel) {
+        this.battleViewModel = battleViewModel;
+        this.viewManagerModel = viewManagerModel;
+        this.moveViewModel = moveViewModel;
+    }
+
+    // Backward compatibility constructor for existing code
     public Battle_Presenter(Battle_ViewModel battleViewModel, ViewManagerModel viewManagerModel) {
         this.battleViewModel = battleViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.moveViewModel = null;
     }
 
     /**
@@ -82,6 +91,13 @@ public class Battle_Presenter implements Battle_OutputBoundary {
 
         // Notify the view that state has changed
         battleViewModel.firePropertyChange();
+
+        // Update move view to show the monster is gone
+        if (moveViewModel != null) {
+            MoveState moveState = moveViewModel.getState();
+            moveState.setMonster(null);
+            moveViewModel.firePropertyChange();
+        }
 
         // switch to a different view after a delay
         viewManagerModel.setState("move");
