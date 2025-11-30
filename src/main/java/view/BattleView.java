@@ -238,11 +238,12 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
         }
 
         // Update battle message
-        if (!state.getBattleMessage().isEmpty()) {
-            battleMessageArea.append("\n" + state.getBattleMessage());
-
-            // Auto-scroll to bottom
+        String message = state.getBattleMessage();
+        if (message != null && !message.isEmpty()) {
+            battleMessageArea.append("\n" + message);
             battleMessageArea.setCaretPosition(battleMessageArea.getDocument().getLength());
+
+            state.setBattleMessage("");  // ← 加这一行，清空消息
         }
 
         // Handle battle end
