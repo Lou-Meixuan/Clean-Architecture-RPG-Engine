@@ -4,6 +4,7 @@ import API.GeoapifyStaticMap;
 import API.MoveStaticMapInterface;
 import data_access.FileGameDataAccessObject;
 import data_access.InMemoryBattleDataAccess;
+import data_access.OpenGameFileDataAccess;
 import entity.*;
 import interface_adapter.Battle.Battle_Controller;
 import interface_adapter.Battle.Battle_Presenter;
@@ -13,6 +14,10 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.move.MoveController;
 import interface_adapter.move.MovePresenter;
 import interface_adapter.move.MoveViewModel;
+import interface_adapter.opengame.OpenGameController;
+import interface_adapter.opengame.OpenGamePresenter;
+import interface_adapter.opengame.OpenGameScreenSwitcher;
+import interface_adapter.opengame.OpenGameViewModel;
 import interface_adapter.quiz.Quiz_ViewModel;
 import interface_adapter.results.ResultsViewModel;
 import interface_adapter.results.ShowResultsController;
@@ -21,12 +26,10 @@ import use_case.Battle.Battle_Interactor;
 import use_case.move.MoveInputBoundary;
 import use_case.move.MoveInteractor;
 import use_case.move.MoveOutputData;
+import use_case.openGame.*;
 import use_case.show_results.ShowResultsInputBoundary;
 import use_case.show_results.ShowResultsInteractor;
-import view.Battle_View;
-import view.MoveView;
-import view.Quiz_View;
-import view.ResultsView;
+import view.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,11 +50,26 @@ public class MoveTestApp {
 
         CardLayout cardLayout = new CardLayout();
         JPanel views = new JPanel(cardLayout);
+        //TODO: Add the view over here
 
         ViewManagerModel viewManagerModel = new ViewManagerModel();
 
         Battle_ViewModel battleViewModel = new Battle_ViewModel();
         Quiz_ViewModel quizViewModel = new Quiz_ViewModel();
+        ScreenSwitchBoundary openGameScreenSwitcher =
+                new OpenGameScreenSwitcher(viewManagerModel);
+
+        OpenGameViewModel openGameViewModel = new OpenGameViewModel();
+        OpenGameOutputBoundary openGamePresenter = new OpenGamePresenter(openGameViewModel, viewManagerModel);
+
+        OpenGameDataAccessInterface openGameDAO = new OpenGameFileDataAccess("game_save.json");
+
+        OpenGameInputBoundary openGameInteractor =
+                new OpenGameInteractor(openGamePresenter, openGameDAO, openGameScreenSwitcher);
+
+        OpenGameController openGameController = new OpenGameController(openGameInteractor);
+
+        OpenGameView openGameView = new OpenGameView(openGameController, openGameViewModel);
 
         InMemoryBattleDataAccess battleDataAccess = new InMemoryBattleDataAccess();
 
@@ -92,6 +110,8 @@ public class MoveTestApp {
         views.add(resultsView, resultsView.getViewName());
         views.add(battleView, "Battle");
         views.add(quizView, "Quiz");
+        views.add(openGameView, "OpenGame");
+
 
 
         viewManagerModel.addPropertyChangeListener(new PropertyChangeListener() {
@@ -156,7 +176,11 @@ public class MoveTestApp {
 
 
         application.add(views);
+        viewManagerModel.setState("OpenGame");
+        viewManagerModel.firePropertyChange();
+
         application.setLocationRelativeTo(null);
+
         application.setVisible(true);
     }
 }

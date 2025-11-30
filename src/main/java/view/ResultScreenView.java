@@ -42,7 +42,7 @@ public class ResultScreenView extends JPanel {
         // Listeners
         viewModel.addListener(() -> messageLabel.setText(viewModel.getMessage()));
 
-        newGameButton.addActionListener(e -> openGameController.startNewGame("A", "Z"));
+        //newGameButton.addActionListener(e -> openGameController.startNewGame("A", "Z"));
         exitButton.addActionListener(e -> System.exit(0));
     }
 }
