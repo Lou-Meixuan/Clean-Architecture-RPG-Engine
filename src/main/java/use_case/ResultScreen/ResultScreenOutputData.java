@@ -1,13 +1,40 @@
 package use_case.ResultScreen;
 
-public class ResultScreenOutputData {
-    private final String message;
+import java.util.List;
 
-    public ResultScreenOutputData(String message) {
-        this.message = message;
+public class ResultScreenOutputData {
+    private String userName;
+    private int totalMoves;
+    private List<String> pathHistory;
+    private String finalLocation;
+
+    public void ShowResultsOutputData(String userName, int totalMoves, List<String> pathHistory, String finalLocation) {
+        this.userName = userName;
+        this.totalMoves = totalMoves;
+        this.pathHistory = pathHistory;
+        this.finalLocation = finalLocation;
     }
 
-    public String getMessage() {
-        return message;
+    public ResultScreenOutputData(String userName, int totalMoves, List<String> pathHistory, String finalLocation) {
+        this.userName = userName;
+        this.totalMoves = totalMoves;
+        this.pathHistory = pathHistory;
+        this.finalLocation = finalLocation;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public int getTotalMoves() {
+        return totalMoves;
+    }
+
+    public List<String> getPathHistory() {
+        return pathHistory;
+    }
+
+    public String getFinalLocation() {
+        return finalLocation;
     }
 }

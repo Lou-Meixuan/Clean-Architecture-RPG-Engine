@@ -20,14 +20,13 @@ public class OpenGameInteractor implements OpenGameInputBoundary {
         GameState state;
 
         if (inputData.isNewGame()) {
-            // --- NEW GAME LOGIC ---
             state = new GameState(
                     inputData.getStartingLocation(),
                     inputData.getDestination()
             );
 
-            // Save the newly created game
             dataAccess.saveGame(state);
+
             presenter.prepareSuccessView(
                     new OpenGameOutputData(
                             "New game started!",
@@ -36,24 +35,33 @@ public class OpenGameInteractor implements OpenGameInputBoundary {
                     )
             );
 
-//            // Prepare output
-//            OpenGameOutputData output = new OpenGameOutputData(
-//                    "New game started!",
-//                    state,
-//                    true
-//            );
+            // After preparing success view, switch to Move screen:
+            screenSwitcher.switchToMoveScreen();
+            return;
+        }
 
-//            presenter.prepareSuccessView(output);
+        // CONTINUE GAME LOGIC
+        state = dataAccess.loadGame();
 
-        } else {
-            state = dataAccess.loadGame();
-            // --- CONTINUE GAME LOGIC ---
-            GameState saved = dataAccess.loadGame();
+        if (state == null) {
+            presenter.prepareFailView("No saved game found!");
+            return;
+        }
+        else {
+            // CONTINUE GAME LOGIC
 
-            if (state == null) {
-                presenter.prepareFailView("No saved game found!");
+            if (!dataAccess.saveFileExists()) {
+                presenter.prepareFailView("No saved game to continue.");
                 return;
             }
+
+            state = dataAccess.loadGame();
+
+            if (state == null) {
+                presenter.prepareFailView("Save file corrupted.");
+                return;
+            }
+
             presenter.prepareSuccessView(
                     new OpenGameOutputData(
                             "Game loaded!",
@@ -61,17 +69,27 @@ public class OpenGameInteractor implements OpenGameInputBoundary {
                             false
                     )
             );
-
-//            OpenGameOutputData output = new OpenGameOutputData(
-//                    "Game loaded!",
-//                    saved,
-//                    false
-//            );
-//
-//            presenter.prepareSuccessView(output);
         }
+
+        presenter.prepareSuccessView(
+                new OpenGameOutputData(
+                        "Game loaded!",
+                        state,
+                        false
+                )
+        );
+
+        // Switch to Move screen
+        screenSwitcher.switchToMoveScreen();
+
+        // If game is already completed → go to results instead
         if (state.isCompleted()) {
             screenSwitcher.switchToResultScreen();
         }
     }
+    @Override
+    public void switchToMoveScreen() {
+        screenSwitcher.switchToMoveScreen();
+    }
+
 }
