@@ -1,25 +1,20 @@
 package use_case.Inventory_AddItem;
 
 import entity.Item;
-import entity.Inventory;
 import entity.User;
-import use_case.Item.Item_Interactor;
 
 
-public class Inventory_AddItem_Interactor {
-private final Inventory_AddItemUserDataAccessInterface dataAccess;
+public class Inventory_AddItem_Interactor implements Inventory_InputBoundary_AddItem{
 private final Inventory_AddItem_OutputBoundary outputBoundary;
-private final Item_Interactor itemInteractor;
 private  User user;
 
-public Inventory_AddItem_Interactor(Inventory_AddItemUserDataAccessInterface dataAccess, Inventory_AddItem_OutputBoundary outputBoundary, Item_Interactor itemInteractor) {
-    this.dataAccess = dataAccess;
-    this.outputBoundary = outputBoundary;
-    this.itemInteractor =  itemInteractor;}
+public Inventory_AddItem_Interactor(Inventory_AddItem_OutputBoundary outputBoundary) {
+    this.outputBoundary = outputBoundary; }
 
 /**
  * set user
  */
+@Override
 public void setUser(User user){
     this.user = user;
 }
@@ -27,12 +22,15 @@ public void setUser(User user){
  * Adds item to user's inventory and updates output
  * @param inputData input data is the information of the item to be added
  */
+
+@Override
 public void addItem(Inventory_InputData_AddItem inputData){
-    if (user == null){return;}
-    Item item = itemInteractor.getItemByName(inputData.getItemName());
-    dataAccess.addItem(user, item);
-    Inventory inventory = dataAccess.getInventory(user);
-    Inventory_AddItem_OutputData output = new Inventory_AddItem_OutputData(inventory, item);
+    if (user == null||inputData == null|| inputData.getItem() == null){return;}
+
+    Item item = inputData.getItem();
+    user.addItem(item);
+
+    Inventory_AddItem_OutputData output = new Inventory_AddItem_OutputData(user.getInventory(), item);
     outputBoundary.present(output);}
 
 }
