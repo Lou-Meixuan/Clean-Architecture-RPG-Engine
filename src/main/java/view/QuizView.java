@@ -158,6 +158,27 @@ public class QuizView extends JPanel implements PropertyChangeListener {
         feedbackFrame.setVisible(true);
     }
 
+    private void showNoSelectionWarning() {
+        JFrame warningFrame = new JFrame("Warning");
+        warningFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        warningFrame.setSize(350, 150);
+        warningFrame.setLocationRelativeTo(this);
+
+        JLabel messageLabel = new JLabel("Question Not Answered", SwingConstants.CENTER);
+        messageLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.add(messageLabel, BorderLayout.CENTER);
+
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> warningFrame.dispose());
+        panel.add(okButton, BorderLayout.SOUTH);
+
+        warningFrame.add(panel);
+        warningFrame.setVisible(true);
+    }
+
     private void handleSubmit(ActionEvent e) {
         ButtonModel selectedModel = optionGroup.getSelection();
         Integer selectedId = null;
@@ -173,6 +194,11 @@ public class QuizView extends JPanel implements PropertyChangeListener {
                 }
                 index++;
             }
+        }
+
+        if (selectedId == null) {
+            showNoSelectionWarning();
+            return;
         }
 
         controller.onSubmit(currentQuizId, selectedId);

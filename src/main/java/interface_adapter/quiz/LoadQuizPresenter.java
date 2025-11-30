@@ -14,7 +14,7 @@ public class LoadQuizPresenter implements LoadQuizOutputBoundary {
     @Override
     public void present(LoadQuizOutputData data) {
         QuizState state = viewModel.getState();
-        state.setQuizId(data.getQuizId());
+        state.setQuizId();
         state.setQuestionText(data.getQuestionText());
         state.setOptionTexts(data.getOptionTexts());
 
