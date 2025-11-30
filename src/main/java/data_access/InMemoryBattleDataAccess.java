@@ -1,5 +1,6 @@
 package data_access;
 
+import entity.AdventureGame;
 import entity.Monster;
 import entity.User;
 import use_case.Battle.BattleUserDataAccessInterface;
@@ -15,6 +16,20 @@ public class InMemoryBattleDataAccess implements BattleUserDataAccessInterface {
     private User userAfterBattle;
     private Monster monsterBeforeBattle;
     private Monster monsterAfterBattle;
+
+    // Reference to game data access for saving game state
+    private FileGameDataAccessObject gameDataAccess;
+
+    public InMemoryBattleDataAccess() {
+    }
+
+    public InMemoryBattleDataAccess(FileGameDataAccessObject gameDataAccess) {
+        this.gameDataAccess = gameDataAccess;
+    }
+
+    public void setGameDataAccess(FileGameDataAccessObject gameDataAccess) {
+        this.gameDataAccess = gameDataAccess;
+    }
 
     /**
      * Saves the current state of user and monster.
@@ -97,5 +112,21 @@ public class InMemoryBattleDataAccess implements BattleUserDataAccessInterface {
         // For now, just return the reference
         // TODO: Implement proper cloning if we need to preserve history
         return monster;
+    }
+
+    @Override
+    public AdventureGame getGame() {
+        if (gameDataAccess == null) {
+            throw new IllegalStateException("Game data access not set. Call setGameDataAccess() first.");
+        }
+        return gameDataAccess.getGame();
+    }
+
+    @Override
+    public void saveGame(AdventureGame game) {
+        if (gameDataAccess == null) {
+            throw new IllegalStateException("Game data access not set. Call setGameDataAccess() first.");
+        }
+        gameDataAccess.saveGame(game);
     }
 }

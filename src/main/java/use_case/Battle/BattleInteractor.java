@@ -1,5 +1,7 @@
 package use_case.Battle;
 
+import entity.AdventureGame;
+import entity.Location;
 import entity.Monster;
 import entity.Spells;
 import entity.User;
@@ -35,6 +37,14 @@ public class BattleInteractor implements BattleInputBoundary {
         BattleOutputData output = new BattleOutputData(user, monster);
         // Check if monster is defeated
         if (!monster.isAlive()) {
+            // Remove the defeated monster from the current location
+            AdventureGame game = userDataAccessObject.getGame();
+            Location currentLocation = game.getGameMap().getCurrentLocation();
+            currentLocation.setMonster(null);
+
+            // Save the game state so defeated monsters don't respawn
+            userDataAccessObject.saveGame(game);
+
             battlePresenter.prepareWinView(output);
             return;
         }

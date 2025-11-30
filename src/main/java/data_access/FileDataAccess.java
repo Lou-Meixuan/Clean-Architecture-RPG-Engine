@@ -1,9 +1,6 @@
 package data_access;
 
-import entity.User;
-import entity.AdventureGame;
-import entity.GameMap;
-import entity.Location;
+import entity.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -123,6 +120,18 @@ public class FileDataAccess {
         json.put("name", location.getName());
         json.put("latitude", location.getLatitude());
         json.put("longitude", location.getLongitude());
+
+        // Save monster status if a monster exists at this location
+        if (location.getMonster() != null) {
+            JSONObject monsterJson = new JSONObject();
+            monsterJson.put("name", location.getMonster().NAME);
+            monsterJson.put("hp", location.getMonster().getHP());
+            monsterJson.put("active", location.getMonster().isAlive());
+            json.put("monster", monsterJson);
+        } else {
+            json.put("monster", JSONObject.NULL);
+        }
+
         return json;
     }
 
@@ -197,8 +206,32 @@ public class FileDataAccess {
         String name = json.getString("name");
         double latitude = json.getDouble("latitude");
         double longitude = json.getDouble("longitude");
-        // Monster is currently initialized to null as it's not persisted
-        return new Location(name, latitude, longitude, null);
+
+        // Restore monster status from saved data
+        Monster monster = null;
+        if (json.has("monster") && !json.isNull("monster")) {
+            JSONObject monsterJson = json.getJSONObject("monster");
+            boolean wasActive = monsterJson.optBoolean("active", true);
+
+            // Only restore monster if it was still active (alive) when saved
+            // Defeated monsters remain defeated (null) and won't respawn
+            if (wasActive) {
+                monster = new Monster();
+                // Restore saved HP and name using reflection
+                try {
+                    Field hpField = Monster.class.getDeclaredField("HP");
+                    hpField.setAccessible(true);
+                    hpField.set(monster, monsterJson.getDouble("hp"));
+
+                    monster.NAME = monsterJson.getString("name");
+                } catch (Exception e) {
+                    // If restoration fails, use the randomly generated values
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return new Location(name, latitude, longitude, monster);
     }
 
     // Helper method to get locations list from GameMap using reflection
