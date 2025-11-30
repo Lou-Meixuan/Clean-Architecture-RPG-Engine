@@ -30,7 +30,7 @@ public class QuizMain {
             // Create ViewModels
             Quiz_ViewModel quizViewModel = new Quiz_ViewModel();
             Battle_ViewModel battleViewModel = new Battle_ViewModel();
-            ViewManagerModel viewManagerModel = new ViewManagerModel(quizViewModel.getViewName());
+            ViewManagerModel viewManagerModel = new ViewManagerModel();
 
             // Create Presenters
             LoadQuizOutputBoundary loadQuizPresenter = new LoadQuizPresenter(quizViewModel);

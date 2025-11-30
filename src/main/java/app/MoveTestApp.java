@@ -4,6 +4,8 @@ import API.GeoapifyStaticMap;
 import API.MoveStaticMapInterface;
 import data_access.FileGameDataAccessObject;
 import data_access.InMemoryBattleDataAccess;
+import data_access.InMemoryQuizDataAccessObject;
+import data_access.QuizzesReader;
 import entity.*;
 import interface_adapter.Battle.Battle_Controller;
 import interface_adapter.Battle.Battle_Presenter;
@@ -13,19 +15,28 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.move.MoveController;
 import interface_adapter.move.MovePresenter;
 import interface_adapter.move.MoveViewModel;
+import interface_adapter.quiz.LoadQuizPresenter;
+import interface_adapter.quiz.QuizController;
+import interface_adapter.quiz.QuizPresenter;
 import interface_adapter.quiz.Quiz_ViewModel;
 import interface_adapter.results.ResultsViewModel;
 import interface_adapter.results.ShowResultsController;
 import interface_adapter.results.ShowResultsPresenter;
 import use_case.Battle.Battle_Interactor;
+import use_case.loadQuiz.LoadQuizInputBoundary;
+import use_case.loadQuiz.LoadQuizInteractor;
+import use_case.loadQuiz.LoadQuizOutputBoundary;
 import use_case.move.MoveInputBoundary;
 import use_case.move.MoveInteractor;
 import use_case.move.MoveOutputData;
+import use_case.quiz.SubmitQuizInputBoundary;
+import use_case.quiz.SubmitQuizInteractor;
+import use_case.quiz.SubmitQuizOutputBoundary;
 import use_case.show_results.ShowResultsInputBoundary;
 import use_case.show_results.ShowResultsInteractor;
 import view.Battle_View;
 import view.MoveView;
-import view.Quiz_View;
+import view.QuizView;
 import view.ResultsView;
 
 import javax.swing.*;
@@ -59,6 +70,15 @@ public class MoveTestApp {
 
         InMemoryBattleDataAccess battleDataAccess = new InMemoryBattleDataAccess(gameDataAccess);
 
+        // Quiz setup
+        InMemoryQuizDataAccessObject quizDataAccess = new InMemoryQuizDataAccessObject();
+        new QuizzesReader().loadQuizzes(quizDataAccess);
+        LoadQuizOutputBoundary loadQuizPresenter = new LoadQuizPresenter(quizViewModel);
+        SubmitQuizOutputBoundary submitQuizPresenter = new QuizPresenter(quizViewModel, battleViewModel, viewManagerModel);
+        LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(quizDataAccess, loadQuizPresenter);
+        SubmitQuizInputBoundary submitQuizInteractor = new SubmitQuizInteractor(quizDataAccess, submitQuizPresenter);
+        QuizController quizController = new QuizController(submitQuizInteractor, loadQuizInteractor);
+
         Battle_Presenter battlePresenter = new Battle_Presenter(battleViewModel, viewManagerModel, moveViewModel);
 
         Battle_Interactor battleInteractor = new Battle_Interactor(battleDataAccess, battlePresenter);
@@ -68,8 +88,7 @@ public class MoveTestApp {
         Battle_View battleView = new Battle_View(battleViewModel, viewManagerModel, quizViewModel);
         battleView.setBattleController(battleController);
 
-        Quiz_View quizView = new Quiz_View(quizViewModel, viewManagerModel);
-        quizView.setBattleController(battleController);
+        QuizView quizView = new QuizView(quizController, quizViewModel);
         System.out.println(gameDataAccess.getGame().getUser().getHP());
         MoveStaticMapInterface mapService = new GeoapifyStaticMap();
 
