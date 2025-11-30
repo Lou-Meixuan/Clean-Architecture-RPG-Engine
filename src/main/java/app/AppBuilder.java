@@ -1,6 +1,8 @@
 package app;
 
 import data_access.FileGameDataAccessObject;
+import data_access.InMemoryBattleDataAccess;
+import data_access.InMemoryQuizDataAccessObject;
 import interface_adapter.Battle.Battle_Controller;
 import interface_adapter.Battle.Battle_Presenter;
 import interface_adapter.Battle.Battle_ViewModel;
@@ -27,8 +29,9 @@ public class AppBuilder {
     // of the classes from the data_access package
 
     // DAO version using local file storage
-    // TODO: Initialize the DAO
-    //final FileGameDataAccessObject
+    private final FileGameDataAccessObject gameDataAccess = new FileGameDataAccessObject();
+    private final InMemoryBattleDataAccess battleDataAccess = new InMemoryBattleDataAccess(gameDataAccess);
+    private final InMemoryQuizDataAccessObject quizDataAccess = new InMemoryQuizDataAccessObject();
 
     // DAO version using a shared external database
     // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
