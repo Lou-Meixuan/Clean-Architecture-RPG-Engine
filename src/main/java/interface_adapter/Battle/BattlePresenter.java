@@ -1,31 +1,21 @@
 package interface_adapter.Battle;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.move.MoveState;
-import interface_adapter.move.MoveViewModel;
-import use_case.Battle.Battle_OutputBoundary;
-import use_case.Battle.Battle_OutputData;
+import use_case.Battle.BattleOutputBoundary;
+import use_case.Battle.BattleOutputData;
 
 /**
  * Presenter for the Battle Use Case.
  * Converts output data from the use case into a format suitable for the view.
  */
-public class Battle_Presenter implements Battle_OutputBoundary {
-    private final Battle_ViewModel battleViewModel;
+public class BattlePresenter implements BattleOutputBoundary {
+    private final BattleViewModel battleViewModel;
     private final ViewManagerModel viewManagerModel;
-    private final MoveViewModel moveViewModel;
+    // private final MoveViewModel moveViewModel;
 
-    public Battle_Presenter(Battle_ViewModel battleViewModel, ViewManagerModel viewManagerModel, MoveViewModel moveViewModel) {
+    public BattlePresenter(BattleViewModel battleViewModel, ViewManagerModel viewManagerModel) {
         this.battleViewModel = battleViewModel;
         this.viewManagerModel = viewManagerModel;
-        this.moveViewModel = moveViewModel;
-    }
-
-    // Backward compatibility constructor for existing code
-    public Battle_Presenter(Battle_ViewModel battleViewModel, ViewManagerModel viewManagerModel) {
-        this.battleViewModel = battleViewModel;
-        this.viewManagerModel = viewManagerModel;
-        this.moveViewModel = null;
     }
 
     /**
@@ -33,8 +23,8 @@ public class Battle_Presenter implements Battle_OutputBoundary {
      * This is called during the battle to update HP values.
      */
     @Override
-    public void updateMonsterTurnState(Battle_OutputData outputData) {
-        Battle_State state = battleViewModel.getState();
+    public void updateMonsterTurnState(BattleOutputData outputData) {
+        BattleState state = battleViewModel.getState();
 
         // Update HP values after each turn
         state.setUserHP(outputData.getUserHP());
@@ -44,9 +34,6 @@ public class Battle_Presenter implements Battle_OutputBoundary {
         String turnMessage = String.format("Monster Completed its turn. Your HP is %.1f, Monster HP is %.1f",
                 outputData.getUserHP(), outputData.getMonsterHP());
         state.setBattleMessage("\n" + turnMessage);
-
-        // Notify the view to update
-        battleViewModel.firePropertyChange();
     }
 
     /**
@@ -54,8 +41,8 @@ public class Battle_Presenter implements Battle_OutputBoundary {
      * This is called during the battle to update HP values.
      */
     @Override
-    public void updateUserTurnState(Battle_OutputData outputData) {
-        Battle_State state = battleViewModel.getState();
+    public void updateUserTurnState(BattleOutputData outputData) {
+        BattleState state = battleViewModel.getState();
 
         // Update HP values after each turn
         state.setUserHP(outputData.getUserHP());
@@ -76,9 +63,9 @@ public class Battle_Presenter implements Battle_OutputBoundary {
      * @param outputData the output data
      */
     @Override
-    public void prepareWinView(Battle_OutputData outputData) {
+    public void prepareWinView(BattleOutputData outputData) {
         // Get the current state
-        Battle_State state = battleViewModel.getState();
+        BattleState state = battleViewModel.getState();
 
         // Update state with final battle results
         state.setUserHP(outputData.getUserHP());
@@ -92,13 +79,6 @@ public class Battle_Presenter implements Battle_OutputBoundary {
         // Notify the view that state has changed
         battleViewModel.firePropertyChange();
 
-        // Update move view to show the monster is gone
-        if (moveViewModel != null) {
-            MoveState moveState = moveViewModel.getState();
-            moveState.setMonster(null);
-            moveViewModel.firePropertyChange();
-        }
-
         // switch to a different view after a delay
         viewManagerModel.setState("move");
         viewManagerModel.firePropertyChange();
@@ -110,9 +90,9 @@ public class Battle_Presenter implements Battle_OutputBoundary {
      * @param outputData the output data
      */
     @Override
-    public void prepareLossView(Battle_OutputData outputData) {
+    public void prepareLossView(BattleOutputData outputData) {
         // Get the current state
-        Battle_State state = battleViewModel.getState();
+        BattleState state = battleViewModel.getState();
 
         // Update state with final battle results
         state.setUser(outputData.getUser());

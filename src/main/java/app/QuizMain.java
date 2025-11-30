@@ -2,12 +2,9 @@ package app;
 
 import data_access.InMemoryQuizDataAccessObject;
 import data_access.QuizzesReader;
-import interface_adapter.Battle.Battle_ViewModel;
+import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.quiz.QuizController;
-import interface_adapter.quiz.QuizPresenter;
-import interface_adapter.quiz.LoadQuizPresenter;
-import interface_adapter.quiz.Quiz_ViewModel;
+import interface_adapter.quiz.*;
 import use_case.loadQuiz.LoadQuizInputBoundary;
 import use_case.loadQuiz.LoadQuizInteractor;
 import use_case.loadQuiz.LoadQuizOutputBoundary;
@@ -15,6 +12,7 @@ import use_case.quiz.SubmitQuizInputBoundary;
 import use_case.quiz.SubmitQuizInteractor;
 import use_case.quiz.SubmitQuizOutputBoundary;
 import view.QuizView;
+import interface_adapter.quiz.QuizState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,9 +26,11 @@ public class QuizMain {
             new QuizzesReader().loadQuizzes(repo);
 
             // Create ViewModels
-            Quiz_ViewModel quizViewModel = new Quiz_ViewModel();
-            Battle_ViewModel battleViewModel = new Battle_ViewModel();
+            QuizViewModel quizViewModel = new QuizViewModel();
+            BattleViewModel battleViewModel = new BattleViewModel();
             ViewManagerModel viewManagerModel = new ViewManagerModel();
+
+            viewManagerModel.setState(quizViewModel.getViewName());
 
             // Create Presenters
             LoadQuizOutputBoundary loadQuizPresenter = new LoadQuizPresenter(quizViewModel);
@@ -54,7 +54,7 @@ public class QuizMain {
             JPanel cardPanel = new JPanel(cardLayout);
 
             // Create Quiz View (now a JPanel, not JFrame)
-            QuizView quizView = new QuizView(controller, quizViewModel);
+            QuizView quizView = new QuizView(quizViewModel);
 
             // Create placeholder Battle View (you'll replace this with your actual BattleView)
             JPanel battleView = new JPanel();
@@ -75,9 +75,12 @@ public class QuizMain {
                 }
             });
 
+            QuizState quizState = new QuizState();
+            int quizId = quizState.setQuizId();
+
             // Show main frame and load first quiz
             mainFrame.setVisible(true);
-            quizView.loadQuiz(1); // Start with quiz ID 1
+            quizView.loadQuiz(quizId);
         });
     }
 }

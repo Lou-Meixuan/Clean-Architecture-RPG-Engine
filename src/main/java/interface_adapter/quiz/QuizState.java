@@ -4,11 +4,14 @@ import entity.Monster;
 import entity.User;
 
 import java.util.List;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * State object for the Quiz View.
  */
-public class Quiz_State {
+public class QuizState {
     private User user = null;
     private Monster monster = null;
     private boolean quizResult = false;
@@ -18,6 +21,10 @@ public class Quiz_State {
     public String feedbackMessage;
     private String questionText;
     private List<String> optionTexts;
+
+    private static final Set<Integer> USED_QUIZ_IDS = new HashSet<>();
+    private static final int MAX_QUIZ_ID = 20;
+    private static final Random RANDOM = new Random();
 
     public User getUser() {
         return user;
@@ -38,8 +45,20 @@ public class Quiz_State {
     public int getQuizId() {
         return quizId;
     }
-    public void setQuizId(int quizId) {
-        this.quizId = quizId;
+    public int setQuizId() {
+        // If all numbers have been used, reset so all become available again
+        if (USED_QUIZ_IDS.size() >= MAX_QUIZ_ID) {
+            USED_QUIZ_IDS.clear();
+        }
+
+        int id;
+        do {
+            id = RANDOM.nextInt(MAX_QUIZ_ID) + 1; // 1–20
+        } while (USED_QUIZ_IDS.contains(id));
+
+        USED_QUIZ_IDS.add(id);
+        this.quizId = id;
+        return id;
     }
     public boolean isCompleted() {
         return quizResult;

@@ -3,11 +3,11 @@ package use_case.Battle;
 import entity.Monster;
 import entity.User;
 
-public class Battle_OutputData {
+public class BattleOutputData {
     private final User user;
     private final Monster monster;
 
-    public Battle_OutputData(User user, Monster monster) {
+    public BattleOutputData(User user, Monster monster) {
         this.user = user;
         this.monster = monster;
         boolean battleEnded = !user.isAlive() || !monster.isAlive();

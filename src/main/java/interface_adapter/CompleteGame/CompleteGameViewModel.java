@@ -1,4 +1,4 @@
-package interface_adapter.complete_game;
+package interface_adapter.CompleteGame;
 
 public class CompleteGameViewModel {
     private String message;

@@ -7,7 +7,7 @@ import entity.User;
  * State object for the Battle View.
  *
  */
-public class Battle_State {
+public class BattleState {
     private User user = null;
     private Monster monster = null;
     private double userHp = 0;
@@ -15,6 +15,9 @@ public class Battle_State {
     private String battleMessage = "";
     private boolean battleEnded = false;
     private boolean userWon = false;
+
+    private boolean quizResult = false;
+    private boolean justFinishedQuiz = false;
 
     // Monster getters and setters
     public Monster getMonster() {
@@ -85,5 +88,22 @@ public class Battle_State {
 
     public String getMonsterName() {
         return monster != null ? monster.NAME : "Monster";
+    }
+
+
+    public boolean isQuizResult() {
+        return quizResult;
+    }
+
+    public void setQuizResult(boolean quizResult) {
+        this.quizResult = quizResult;
+    }
+
+    public boolean isJustFinishedQuiz() {
+        return justFinishedQuiz;
+    }
+
+    public void setJustFinishedQuiz(boolean justFinishedQuiz) {
+        this.justFinishedQuiz = justFinishedQuiz;
     }
 }

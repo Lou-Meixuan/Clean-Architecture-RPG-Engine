@@ -2,9 +2,9 @@ package view;
 
 import entity.Monster;
 import entity.User;
-import interface_adapter.Battle.Battle_Controller;
-import interface_adapter.Battle.Battle_State;
-import interface_adapter.Battle.Battle_ViewModel;
+import interface_adapter.Battle.BattleController;
+import interface_adapter.Battle.BattleState;
+import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.InventoryUseItem.InventoryUseItem_Controller;
 
 import javax.swing.*;
@@ -18,11 +18,10 @@ import java.beans.PropertyChangeListener;
  * The View for the Battle Use Case.
  * Displays the battle interface and handles user interactions.
  */
-public class Battle_View extends JPanel implements ActionListener, PropertyChangeListener {
+public class BattleView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "Battle";
-    private final Battle_ViewModel viewModel;
-    private final ViewManagerModel viewManagerModel;
-    private Battle_Controller battleController;
+    private final BattleViewModel viewModel;
+    private BattleController battleController;
     private InventoryUseItem_Controller inventoryController;
 
     // UI Components
@@ -37,10 +36,8 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
     private final JTextArea inventoryDetailsArea = new JTextArea(5,20);
 
 
-    public Battle_View(Battle_ViewModel battleViewModel, ViewManagerModel viewManagerModel, Quiz_ViewModel quizViewModel) {
+    public BattleView(BattleViewModel battleViewModel) {
         this.viewModel = battleViewModel;
-        this.viewManagerModel = viewManagerModel;
-        this.quizViewModel = quizViewModel;
         this.viewModel.addPropertyChangeListener(this);
 
         // Initialize UI components
@@ -142,7 +139,7 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
     /**
      * Sets the controller for this view.
      */
-    public void setBattleController(Battle_Controller controller) {
+    public void setBattleController(BattleController controller) {
         this.battleController = controller;
     }
 
@@ -175,7 +172,7 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
      * Handles the attack button click.
      */
     private void handleAttackButton() {
-        Battle_State state = viewModel.getState();
+        BattleState state = viewModel.getState();
 
         if (state.isBattleEnded()) {
             JOptionPane.showMessageDialog(this,
@@ -209,7 +206,18 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName())) {
-            Battle_State state = viewModel.getState();
+            BattleState state = viewModel.getState();
+            if (state.isJustFinishedQuiz()) {
+                state.setJustFinishedQuiz(false);
+
+                User user = state.getUser();
+                Monster monster = state.getMonster();
+                boolean quizResult = state.isQuizResult();
+
+                if (battleController != null) {
+                    battleController.execute(user, monster, quizResult);
+                }
+            }
             updateDisplay(state);
         }
     }
@@ -217,7 +225,7 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
     /**
      * Updates all display elements based on the current state.
      */
-    private void updateDisplay(Battle_State state) {
+    private void updateDisplay(BattleState state) {
         // Update user info
         if (state.getUser() != null) {
             userHpLabel.setText(String.format("HP: %.1f", state.getUserHp()));
@@ -230,17 +238,26 @@ public class Battle_View extends JPanel implements ActionListener, PropertyChang
         }
 
         // Update battle message
-        if (!state.getBattleMessage().isEmpty()) {
-            battleMessageArea.append("\n" + state.getBattleMessage());
-
-            // Auto-scroll to bottom
+        String message = state.getBattleMessage();
+        if (message != null && !message.isEmpty()) {
+            battleMessageArea.append("\n" + message);
             battleMessageArea.setCaretPosition(battleMessageArea.getDocument().getLength());
+
+            state.setBattleMessage("");
         }
 
         // Handle battle end
         if (state.isBattleEnded()) {
+            state.setBattleEnded(false);
             attackButton.setEnabled(false);
-            // Battle message already shows the result, view will switch automatically
+            // Show result dialog
+            String title = state.isUserWon() ? "Victory!" : "Defeat!";
+            int messageType = state.isUserWon() ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.WARNING_MESSAGE;
+
+            JOptionPane.showMessageDialog(this,
+                    state.getBattleMessage(),
+                    title,
+                    messageType);
         } else {
             // Battle continues - re-enable buttons
             attackButton.setEnabled(true);

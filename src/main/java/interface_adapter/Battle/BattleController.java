@@ -2,26 +2,26 @@ package interface_adapter.Battle;
 
 import entity.Monster;
 import entity.User;
-import use_case.Battle.Battle_InputBoundary;
-import use_case.Battle.Battle_InputData;
-import interface_adapter.quiz.Quiz_ViewModel;
+import use_case.Battle.BattleInputBoundary;
+import use_case.Battle.BattleInputData;
+import interface_adapter.quiz.QuizViewModel;
 
 /**
  * Controller for the Battle Use Case.
  *
  */
-public class Battle_Controller {
-    private final Battle_InputBoundary battleUseCaseInteractor;
-    private final Quiz_ViewModel quizViewModel;
+public class BattleController {
+    private final BattleInputBoundary battleUseCaseInteractor;
+    private final QuizViewModel quizViewModel;
 
 
-    public Battle_Controller(Battle_InputBoundary battleUseCaseInteractor, Quiz_ViewModel quizViewModel) {
+    public BattleController(BattleInputBoundary battleUseCaseInteractor, QuizViewModel quizViewModel) {
         this.battleUseCaseInteractor = battleUseCaseInteractor;
         this.quizViewModel = quizViewModel;
     }
 
     public void execute(User user, Monster monster, boolean resultOfQuiz){
-        final Battle_InputData battleInputData= new Battle_InputData(user, monster, resultOfQuiz);
+        final BattleInputData battleInputData= new BattleInputData(user, monster, resultOfQuiz);
         battleUseCaseInteractor.execute(battleInputData);
     }
 
