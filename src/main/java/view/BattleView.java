@@ -243,7 +243,7 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
             battleMessageArea.append("\n" + message);
             battleMessageArea.setCaretPosition(battleMessageArea.getDocument().getLength());
 
-            state.setBattleMessage("");  // ← 加这一行，清空消息
+            state.setBattleMessage("");
         }
 
         // Handle battle end
