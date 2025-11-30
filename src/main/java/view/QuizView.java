@@ -1,8 +1,8 @@
 package view;
 
 import interface_adapter.quiz.QuizController;
-import interface_adapter.quiz.Quiz_State;
-import interface_adapter.quiz.Quiz_ViewModel;
+import interface_adapter.quiz.QuizState;
+import interface_adapter.quiz.QuizViewModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,9 +12,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class QuizView extends JPanel implements PropertyChangeListener {
-
-    private final QuizController controller;
-    private final Quiz_ViewModel viewModel;
+    private final String viewName = "Quiz";
+    private QuizController controller;
+    private final QuizViewModel viewModel;
 
     private final JLabel questionLabel = new JLabel();
     private final ButtonGroup optionGroup = new ButtonGroup();
@@ -23,8 +23,7 @@ public class QuizView extends JPanel implements PropertyChangeListener {
 
     private int currentQuizId;
 
-    public QuizView(QuizController controller, Quiz_ViewModel viewModel) {
-        this.controller = controller;
+    public QuizView(QuizViewModel viewModel) {
         this.viewModel = viewModel;
 
         // Listen to ViewModel changes
@@ -81,9 +80,22 @@ public class QuizView extends JPanel implements PropertyChangeListener {
         controller.loadQuiz(quizId);
     }
 
+    /**
+     * Sets the controller for inventory
+     */
+    public void setQuizController(QuizController controller) {
+        this.controller = controller;
+    }
+    /**
+     * Returns the view name.
+     */
+    public String getViewName() {
+        return viewName;
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Quiz_State state = viewModel.getState();
+        QuizState state = viewModel.getState();
 
         // Check if quiz was loaded (question text is set)
         if (state.getQuestionText() != null) {
@@ -96,7 +108,7 @@ public class QuizView extends JPanel implements PropertyChangeListener {
         }
     }
 
-    private void updateQuizDisplay(Quiz_State state) {
+    private void updateQuizDisplay(QuizState state) {
         questionLabel.setText("<html><body style='width:400px; text-align:left;'>" +
                 state.getQuestionText() +
                 "</body></html>");
@@ -118,7 +130,7 @@ public class QuizView extends JPanel implements PropertyChangeListener {
         feedbackLabel.setText("");
     }
 
-    private void showFeedback(Quiz_State state) {
+    private void showFeedback(QuizState state) {
         // Show feedback in separate frame
         JFrame feedbackFrame = new JFrame("Quiz Result");
         feedbackFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

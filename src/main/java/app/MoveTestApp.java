@@ -7,10 +7,10 @@ import data_access.InMemoryBattleDataAccess;
 import data_access.InMemoryQuizDataAccessObject;
 import data_access.QuizzesReader;
 import entity.*;
-import interface_adapter.Battle.Battle_Controller;
-import interface_adapter.Battle.Battle_Presenter;
-import interface_adapter.Battle.Battle_State;
-import interface_adapter.Battle.Battle_ViewModel;
+import interface_adapter.Battle.BattleController;
+import interface_adapter.Battle.BattlePresenter;
+import interface_adapter.Battle.BattleState;
+import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.move.MoveController;
 import interface_adapter.move.MovePresenter;
@@ -18,11 +18,11 @@ import interface_adapter.move.MoveViewModel;
 import interface_adapter.quiz.LoadQuizPresenter;
 import interface_adapter.quiz.QuizController;
 import interface_adapter.quiz.QuizPresenter;
-import interface_adapter.quiz.Quiz_ViewModel;
+import interface_adapter.quiz.QuizViewModel;
 import interface_adapter.results.ResultsViewModel;
 import interface_adapter.results.ShowResultsController;
 import interface_adapter.results.ShowResultsPresenter;
-import use_case.Battle.Battle_Interactor;
+import use_case.Battle.BattleInteractor;
 import use_case.loadQuiz.LoadQuizInputBoundary;
 import use_case.loadQuiz.LoadQuizInteractor;
 import use_case.loadQuiz.LoadQuizOutputBoundary;
@@ -34,7 +34,7 @@ import use_case.quiz.SubmitQuizInteractor;
 import use_case.quiz.SubmitQuizOutputBoundary;
 import use_case.show_results.ShowResultsInputBoundary;
 import use_case.show_results.ShowResultsInteractor;
-import view.Battle_View;
+import view.BattleView;
 import view.MoveView;
 import view.QuizView;
 import view.ResultsView;
@@ -61,34 +61,40 @@ public class MoveTestApp {
 
         ViewManagerModel viewManagerModel = new ViewManagerModel();
 
-        Battle_ViewModel battleViewModel = new Battle_ViewModel();
-        Quiz_ViewModel quizViewModel = new Quiz_ViewModel();
+        BattleViewModel battleViewModel = new BattleViewModel();
+        QuizViewModel quizViewModel = new QuizViewModel();
+        InMemoryBattleDataAccess battleDataAccess = new InMemoryBattleDataAccess();
+        InMemoryQuizDataAccessObject repo = new InMemoryQuizDataAccessObject();
+
+        BattlePresenter battlePresenter = new BattlePresenter(battleViewModel, viewManagerModel);
+
+        BattleInteractor battleInteractor = new BattleInteractor(battleDataAccess, battlePresenter);
+
+        BattleController battleController = new BattleController(battleInteractor, quizViewModel);
+
+        BattleView battleView = new BattleView(battleViewModel);
+        battleView.setBattleController(battleController);
+
+        // Create Presenters
+        LoadQuizOutputBoundary loadQuizPresenter = new LoadQuizPresenter(quizViewModel);
+        SubmitQuizOutputBoundary submitQuizPresenter = new QuizPresenter(quizViewModel, battleViewModel, viewManagerModel);
+
+        // Create Interactors (Use Cases)
+        LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(repo, loadQuizPresenter);
+        SubmitQuizInputBoundary submitQuizInteractor = new SubmitQuizInteractor(repo, submitQuizPresenter);
+
+        // Create Controller (inject BOTH interactors)
+        QuizController quizController = new QuizController(submitQuizInteractor, loadQuizInteractor);
+
+        QuizView quizView = new QuizView(quizViewModel);
+        quizView.setQuizController(quizController);
+        new QuizzesReader().loadQuizzes(repo);
+        quizView.loadQuiz(1);
+
         MoveViewModel moveViewModel = new MoveViewModel();
         ResultsViewModel resultsViewModel = new ResultsViewModel();
 
         FileGameDataAccessObject gameDataAccess = new FileGameDataAccessObject();
-
-        InMemoryBattleDataAccess battleDataAccess = new InMemoryBattleDataAccess(gameDataAccess);
-
-        // Quiz setup
-        InMemoryQuizDataAccessObject quizDataAccess = new InMemoryQuizDataAccessObject();
-        new QuizzesReader().loadQuizzes(quizDataAccess);
-        LoadQuizOutputBoundary loadQuizPresenter = new LoadQuizPresenter(quizViewModel);
-        SubmitQuizOutputBoundary submitQuizPresenter = new QuizPresenter(quizViewModel, battleViewModel, viewManagerModel);
-        LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(quizDataAccess, loadQuizPresenter);
-        SubmitQuizInputBoundary submitQuizInteractor = new SubmitQuizInteractor(quizDataAccess, submitQuizPresenter);
-        QuizController quizController = new QuizController(submitQuizInteractor, loadQuizInteractor);
-
-        Battle_Presenter battlePresenter = new Battle_Presenter(battleViewModel, viewManagerModel, moveViewModel);
-
-        Battle_Interactor battleInteractor = new Battle_Interactor(battleDataAccess, battlePresenter);
-
-        Battle_Controller battleController = new Battle_Controller(battleInteractor, quizViewModel);
-
-        Battle_View battleView = new Battle_View(battleViewModel, viewManagerModel, quizViewModel);
-        battleView.setBattleController(battleController);
-
-        QuizView quizView = new QuizView(quizController, quizViewModel);
         System.out.println(gameDataAccess.getGame().getUser().getHP());
         MoveStaticMapInterface mapService = new GeoapifyStaticMap();
 
@@ -160,7 +166,7 @@ public class MoveTestApp {
             movePresenter.present(initialOutputData);
 
 
-            Battle_State battleState = battleViewModel.getState();
+            BattleState battleState = battleViewModel.getState();
             battleState.setUser(user);
             battleState.setMonster(mon != null ? mon : new Monster());
             battleState.setBattleMessage("Battle System initialized.");

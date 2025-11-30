@@ -6,11 +6,11 @@ import entity.Monster;
 import entity.Spells;
 import entity.User;
 
-public class Battle_Interactor implements Battle_InputBoundary {
+public class BattleInteractor implements BattleInputBoundary {
     private final BattleUserDataAccessInterface userDataAccessObject;
-    private final Battle_OutputBoundary battlePresenter;
+    private final BattleOutputBoundary battlePresenter;
 
-    public Battle_Interactor(BattleUserDataAccessInterface userDataAccessObject, Battle_OutputBoundary battleOutputBoundary) {
+    public BattleInteractor(BattleUserDataAccessInterface userDataAccessObject, BattleOutputBoundary battleOutputBoundary) {
         this.userDataAccessObject = userDataAccessObject;
         this.battlePresenter = battleOutputBoundary;
     }
@@ -24,7 +24,7 @@ public class Battle_Interactor implements Battle_InputBoundary {
      * fight method.
      */
     @Override
-    public void execute(Battle_InputData inputData) {
+    public void execute(BattleInputData inputData) {
         final User user = inputData.getUser();
         final Monster monster = inputData.getMonster();
         // TODO:Not sure if I need to create boolean or just use a method to get the boolean from DAO,
@@ -34,7 +34,7 @@ public class Battle_Interactor implements Battle_InputBoundary {
         // User's turn
         UserTurn(user, monster, resultOfQuiz);
         // Prepare final output
-        Battle_OutputData output = new Battle_OutputData(user, monster);
+        BattleOutputData output = new BattleOutputData(user, monster);
         // Check if monster is defeated
         if (!monster.isAlive()) {
             // Remove the defeated monster from the current location
@@ -51,7 +51,7 @@ public class Battle_Interactor implements Battle_InputBoundary {
         // Monster's turn
         MonsterTurn(user, monster);
         // Prepare final output
-        output = new Battle_OutputData(user, monster);
+        output = new BattleOutputData(user, monster);
         // Present final result
         if (!user.isAlive()) {
             battlePresenter.prepareLossView(output);
@@ -66,7 +66,7 @@ public class Battle_Interactor implements Battle_InputBoundary {
         double DMG = monster.attack(spell);
         user.HPDecrease(DMG);
         // notify presenter to update the view (After the User attack)
-        Battle_OutputData turnOutput = new Battle_OutputData(user, monster);
+        BattleOutputData turnOutput = new BattleOutputData(user, monster);
         battlePresenter.updateUserTurnState(turnOutput);
     }
 
@@ -80,7 +80,7 @@ public class Battle_Interactor implements Battle_InputBoundary {
         }
         monster.HPDecrease(DMG);
         // notify presenter to update the view (After the User attack)
-        Battle_OutputData turnOutput = new Battle_OutputData(user, monster);
+        BattleOutputData turnOutput = new BattleOutputData(user, monster);
         battlePresenter.updateUserTurnState(turnOutput);
     }
 }

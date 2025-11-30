@@ -1,4 +1,4 @@
-package interface_adapter.complete_game;
+package interface_adapter.CompleteGame;
 import use_case.CompleteGame.CompleteGameInputBoundary;
 import use_case.CompleteGame.CompleteGameInputData;
 

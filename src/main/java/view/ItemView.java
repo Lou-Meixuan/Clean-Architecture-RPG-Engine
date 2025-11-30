@@ -9,13 +9,13 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class Item_View extends JPanel implements PropertyChangeListener {
+public class ItemView extends JPanel implements PropertyChangeListener {
     private final InventoryAddItem_ViewModel viewModel;
     private final JLabel itemNameLabel;
     private final JTextArea itemDescription;
 
 
-    public Item_View(InventoryAddItem_ViewModel viewModel) {
+    public ItemView(InventoryAddItem_ViewModel viewModel) {
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
         setLayout(new BorderLayout(10, 10));

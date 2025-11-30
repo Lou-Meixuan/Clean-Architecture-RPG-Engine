@@ -5,15 +5,15 @@ import use_case.loadQuiz.LoadQuizOutputData;
 
 public class LoadQuizPresenter implements LoadQuizOutputBoundary {
 
-    private final Quiz_ViewModel viewModel;
+    private final QuizViewModel viewModel;
 
-    public LoadQuizPresenter(Quiz_ViewModel viewModel) {
+    public LoadQuizPresenter(QuizViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
     @Override
     public void present(LoadQuizOutputData data) {
-        Quiz_State state = viewModel.getState();
+        QuizState state = viewModel.getState();
         state.setQuizId(data.getQuizId());
         state.setQuestionText(data.getQuestionText());
         state.setOptionTexts(data.getOptionTexts());
