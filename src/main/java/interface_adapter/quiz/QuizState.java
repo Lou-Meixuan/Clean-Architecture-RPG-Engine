@@ -27,26 +27,32 @@ public class QuizState {
     private static final Random RANDOM = new Random();
 
     public User getUser() {
+
         return user;
     }
 
     public void setUser(User user) {
+
         this.user = user;
     }
 
     public Monster getMonster() {
+
         return monster;
     }
 
     public void setMonster(Monster monster) {
+
         this.monster = monster;
     }
 
     public int getQuizId() {
+
         return quizId;
     }
+
     public int setQuizId() {
-        // If all numbers have been used, reset so all become available again
+        // if all 20 numbers have been used, reset so all become available again
         if (USED_QUIZ_IDS.size() >= MAX_QUIZ_ID) {
             USED_QUIZ_IDS.clear();
         }
@@ -61,39 +67,52 @@ public class QuizState {
         return id;
     }
     public boolean isCompleted() {
+
         return quizResult;
     }
 
     public void setCompleted(boolean quizResult) {
+
         this.quizResult = quizResult;
     }
+
     public String getStatus() {
+
         return status;
     }
 
     public void setStatus(String status) {
+
         this.status = status;
     }
+
     public String getFeedbackMessage() {
+
         return feedbackMessage;
     }
+
     public void setFeedbackMessage(String feedbackMessage) {
+
         this.feedbackMessage = feedbackMessage;
     }
 
     public String getQuestionText() {
+
         return questionText;
     }
 
     public void setQuestionText(String questionText) {
+
         this.questionText = questionText;
     }
 
     public List<String> getOptionTexts() {
+
         return optionTexts;
     }
 
     public void setOptionTexts(List<String> optionTexts) {
+
         this.optionTexts = optionTexts;
     }
 }

@@ -6,13 +6,13 @@ import interface_adapter.ViewManagerModel;
 import use_case.quiz.SubmitQuizOutputBoundary;
 import use_case.quiz.SubmitQuizOutputData;
 
-public class QuizPresenter implements SubmitQuizOutputBoundary {
+public class SubmitQuizPresenter implements SubmitQuizOutputBoundary {
 
     private final QuizViewModel viewModel;
     private final BattleViewModel battleViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    public QuizPresenter(QuizViewModel viewModel, BattleViewModel battleViewModel, ViewManagerModel viewManagerModel) {
+    public SubmitQuizPresenter(QuizViewModel viewModel, BattleViewModel battleViewModel, ViewManagerModel viewManagerModel) {
         this.viewModel = viewModel;
         this.battleViewModel = battleViewModel;
         this.viewManagerModel = viewManagerModel;

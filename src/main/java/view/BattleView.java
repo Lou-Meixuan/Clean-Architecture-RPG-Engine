@@ -6,6 +6,7 @@ import interface_adapter.Battle.BattleController;
 import interface_adapter.Battle.BattleState;
 import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.InventoryUseItem.InventoryUseItem_Controller;
+import interface_adapter.quiz.QuizViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,8 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
     private final BattleViewModel viewModel;
     private BattleController battleController;
     private InventoryUseItem_Controller inventoryController;
+    private final QuizViewModel quizViewModel;
+
 
     // UI Components
     private final JLabel titleLabel;
@@ -36,8 +39,9 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
     private final JTextArea inventoryDetailsArea = new JTextArea(5,20);
 
 
-    public BattleView(BattleViewModel battleViewModel) {
+    public BattleView(BattleViewModel battleViewModel, QuizViewModel quizViewModel) {
         this.viewModel = battleViewModel;
+        this.quizViewModel = quizViewModel;
         this.viewModel.addPropertyChangeListener(this);
 
         // Initialize UI components
@@ -183,6 +187,7 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
         }
 
         if (battleController != null && state.getUser() != null && state.getMonster() != null) {
+
             // Disable attack button
             attackButton.setEnabled(false);
             User user = state.getUser();

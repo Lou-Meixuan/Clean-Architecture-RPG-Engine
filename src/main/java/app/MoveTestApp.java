@@ -86,14 +86,11 @@ public class MoveTestApp {
 
         BattleInteractor battleInteractor = new BattleInteractor(gameDataAccess, battlePresenter);
 
-        BattleController battleController = new BattleController(battleInteractor, quizViewModel);
-
-        BattleView battleView = new BattleView(battleViewModel);
-        battleView.setBattleController(battleController);
+        BattleView battleView = new BattleView(battleViewModel, quizViewModel);
 
         // Create Presenters
         LoadQuizOutputBoundary loadQuizPresenter = new LoadQuizPresenter(quizViewModel);
-        SubmitQuizOutputBoundary submitQuizPresenter = new QuizPresenter(quizViewModel, battleViewModel, viewManagerModel);
+        SubmitQuizOutputBoundary submitQuizPresenter = new SubmitQuizPresenter(quizViewModel, battleViewModel, viewManagerModel);
 
         // Create Interactors (Use Cases)
         LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(repo, loadQuizPresenter);
@@ -101,7 +98,9 @@ public class MoveTestApp {
 
         // Create Controller (inject BOTH interactors)
         QuizController quizController = new QuizController(submitQuizInteractor, loadQuizInteractor);
+        BattleController battleController = new BattleController(battleInteractor, quizViewModel, quizController);
 
+        battleView.setBattleController(battleController);
         QuizView quizView = new QuizView(quizViewModel);
         quizView.setQuizController(quizController);
         new QuizzesReader().loadQuizzes(repo);

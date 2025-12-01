@@ -34,7 +34,7 @@ public class QuizMain {
 
             // Create Presenters
             LoadQuizOutputBoundary loadQuizPresenter = new LoadQuizPresenter(quizViewModel);
-            SubmitQuizOutputBoundary submitQuizPresenter = new QuizPresenter(quizViewModel, battleViewModel, viewManagerModel);
+            SubmitQuizOutputBoundary submitQuizPresenter = new SubmitQuizPresenter(quizViewModel, battleViewModel, viewManagerModel);
 
             // Create Interactors (Use Cases)
             LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(repo, loadQuizPresenter);

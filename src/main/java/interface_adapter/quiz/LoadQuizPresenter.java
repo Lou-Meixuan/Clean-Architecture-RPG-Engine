@@ -14,9 +14,12 @@ public class LoadQuizPresenter implements LoadQuizOutputBoundary {
     @Override
     public void present(LoadQuizOutputData data) {
         QuizState state = viewModel.getState();
-        state.setQuizId();
+
         state.setQuestionText(data.getQuestionText());
         state.setOptionTexts(data.getOptionTexts());
+
+        state.setStatus(null);
+        state.setFeedbackMessage(null);
 
         // Fire property change to notify view
         viewModel.firePropertyChange();

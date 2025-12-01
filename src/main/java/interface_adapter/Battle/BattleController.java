@@ -5,6 +5,8 @@ import entity.User;
 import use_case.Battle.BattleInputBoundary;
 import use_case.Battle.BattleInputData;
 import interface_adapter.quiz.QuizViewModel;
+import interface_adapter.quiz.QuizState;
+import interface_adapter.quiz.QuizController;
 
 /**
  * Controller for the Battle Use Case.
@@ -13,11 +15,13 @@ import interface_adapter.quiz.QuizViewModel;
 public class BattleController {
     private final BattleInputBoundary battleUseCaseInteractor;
     private final QuizViewModel quizViewModel;
+    private final QuizController quizController;
 
 
-    public BattleController(BattleInputBoundary battleUseCaseInteractor, QuizViewModel quizViewModel) {
+    public BattleController(BattleInputBoundary battleUseCaseInteractor, QuizViewModel quizViewModel, QuizController quizController) {
         this.battleUseCaseInteractor = battleUseCaseInteractor;
         this.quizViewModel = quizViewModel;
+        this.quizController = quizController;
     }
 
     public void execute(User user, Monster monster, boolean resultOfQuiz){
@@ -26,8 +30,21 @@ public class BattleController {
     }
 
     public void switchToQuizView(User user, Monster monster){
-        quizViewModel.getState().setUser(user);
-        quizViewModel.getState().setMonster(monster);
+        QuizState quizState = quizViewModel.getState();
+
+        // store battle context in quiz state
+        quizState.setUser(user);
+        quizState.setMonster(monster);
+
+        // generate a new random quiz ID
+        quizState.setQuizId();
+
+        int quizId = quizState.getQuizId();
+
+        // load that quiz
+        quizController.loadQuiz(quizId);
+
+        // tell the battle use case to switch to quiz view
         battleUseCaseInteractor.switchToQuizView();
     }
 }

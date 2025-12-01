@@ -51,7 +51,7 @@ public class AppBuilder {
 
     public AppBuilder addBattleView() {
         battleViewModel = new BattleViewModel();
-        battleView = new BattleView(battleViewModel);
+        battleView = new BattleView(battleViewModel, quizViewModel);
         cardPanel.add(battleView, battleView.getViewName());
         return this;
     }

@@ -201,6 +201,7 @@ public class QuizView extends JPanel implements PropertyChangeListener {
             return;
         }
 
-        controller.onSubmit(currentQuizId, selectedId);
+        int quizId = viewModel.getState().getQuizId();
+        controller.onSubmit(quizId, selectedId);
     }
 }
