@@ -1,4 +1,4 @@
-package interface_adapter.ShowResults;
+package interface_adapter.results;
 
 import use_case.show_results.ShowResultsOutputBoundary;
 import use_case.show_results.ShowResultsOutputData;
@@ -7,20 +7,20 @@ import use_case.show_results.ShowResultsOutputData;
  * Presenter for showing results screen.
  */
 public class ShowResultsPresenter implements ShowResultsOutputBoundary {
-    private final ShowResultsViewModel showResultsViewModel;
+    private final ResultsViewModel resultsViewModel;
 
-    public ShowResultsPresenter(ShowResultsViewModel showResultsViewModel) {
-        this.showResultsViewModel = showResultsViewModel;
+    public ShowResultsPresenter(ResultsViewModel resultsViewModel) {
+        this.resultsViewModel = resultsViewModel;
     }
 
     @Override
     public void prepareSuccessView(ShowResultsOutputData outputData) {
-        final ShowResultsState state = showResultsViewModel.getState();
+        final ResultsState state = resultsViewModel.getState();
         state.setUserName(outputData.getUserName());
         state.setTotalMoves(outputData.getTotalMoves());
         state.setPathHistory(outputData.getPathHistory());
         state.setFinalLocation(outputData.getFinalLocation());
 
-        showResultsViewModel.firePropertyChange();
+        resultsViewModel.firePropertyChange();
     }
 }

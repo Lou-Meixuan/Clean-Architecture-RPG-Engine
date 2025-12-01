@@ -1,7 +1,7 @@
 package view;
 
-import interface_adapter.ShowResults.ShowResultsState;
-import interface_adapter.ShowResults.ShowResultsViewModel;
+import interface_adapter.results.ResultsState;
+import interface_adapter.results.ResultsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +11,9 @@ import java.beans.PropertyChangeListener;
 /**
  * View for displaying game results and statistics.
  */
-public class ShowResultsView extends JPanel implements PropertyChangeListener {
+public class ResultsView extends JPanel implements PropertyChangeListener {
     private final String viewName = "results";
-    private final ShowResultsViewModel showResultsViewModel;
+    private final ResultsViewModel resultsViewModel;
 
     private final JLabel titleLabel;
     private final JLabel userNameLabel;
@@ -22,16 +22,16 @@ public class ShowResultsView extends JPanel implements PropertyChangeListener {
     private final JTextArea pathHistoryArea;
     private final JButton backButton;
 
-    public ShowResultsView(ShowResultsViewModel showResultsViewModel) {
-        this.showResultsViewModel = showResultsViewModel;
-        this.showResultsViewModel.addPropertyChangeListener(this);
+    public ResultsView(ResultsViewModel resultsViewModel) {
+        this.resultsViewModel = resultsViewModel;
+        this.resultsViewModel.addPropertyChangeListener(this);
 
         // Set layout
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Title
-        titleLabel = new JLabel(ShowResultsViewModel.TITLE_LABEL);
+        titleLabel = new JLabel(ResultsViewModel.TITLE_LABEL);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -60,7 +60,7 @@ public class ShowResultsView extends JPanel implements PropertyChangeListener {
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Back button
-        backButton = new JButton(ShowResultsViewModel.BACK_BUTTON_LABEL);
+        backButton = new JButton(ResultsViewModel.BACK_BUTTON_LABEL);
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Add components
@@ -82,12 +82,12 @@ public class ShowResultsView extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
-            final ShowResultsState state = (ShowResultsState) evt.getNewValue();
+            final ResultsState state = (ResultsState) evt.getNewValue();
             updateView(state);
         }
     }
 
-    private void updateView(ShowResultsState state) {
+    private void updateView(ResultsState state) {
         userNameLabel.setText("Player: " + state.getUserName());
         totalMovesLabel.setText("Total Moves: " + state.getTotalMoves());
         finalLocationLabel.setText("Final Location: " + state.getFinalLocation());

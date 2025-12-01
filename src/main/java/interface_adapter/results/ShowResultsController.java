@@ -1,4 +1,4 @@
-package interface_adapter.ShowResults;
+package interface_adapter.results;
 
 import use_case.show_results.ShowResultsInputBoundary;
 import use_case.show_results.ShowResultsInputData;

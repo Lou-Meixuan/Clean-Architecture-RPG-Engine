@@ -1,11 +1,11 @@
-package interface_adapter.ShowResults;
+package interface_adapter.results;
 
 import java.util.List;
 
 /**
  * State for the results screen showing game statistics.
  */
-public class ShowResultsState {
+public class ResultsState {
     private String userName = "";
     private int totalMoves = 0;
     private List<String> pathHistory;
