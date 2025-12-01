@@ -15,13 +15,11 @@ import interface_adapter.quiz.QuizController;
 public class BattleController {
     private final BattleInputBoundary battleUseCaseInteractor;
     private final QuizViewModel quizViewModel;
-    private final QuizController quizController;
 
 
-    public BattleController(BattleInputBoundary battleUseCaseInteractor, QuizViewModel quizViewModel, QuizController quizController) {
+    public BattleController(BattleInputBoundary battleUseCaseInteractor, QuizViewModel quizViewModel) {
         this.battleUseCaseInteractor = battleUseCaseInteractor;
         this.quizViewModel = quizViewModel;
-        this.quizController = quizController;
     }
 
     public void execute(User user, Monster monster, boolean resultOfQuiz){

@@ -99,7 +99,7 @@ public class MoveTestApp {
 
         // Create Controller (inject BOTH interactors)
         QuizController quizController = new QuizController(submitQuizInteractor, loadQuizInteractor);
-        BattleController battleController = new BattleController(battleInteractor, quizViewModel, quizController);
+        BattleController battleController = new BattleController(battleInteractor, quizViewModel);
 
         battleView.setBattleController(battleController);
         QuizView quizView = new QuizView(quizViewModel);
