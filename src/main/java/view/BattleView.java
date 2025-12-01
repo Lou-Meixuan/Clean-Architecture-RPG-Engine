@@ -7,7 +7,6 @@ import interface_adapter.Battle.BattleState;
 import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.InventoryUseItem.InventoryUseItem_Controller;
 import interface_adapter.quiz.QuizViewModel;
-import interface_adapter.quiz.QuizState;
 
 import javax.swing.*;
 import java.awt.*;

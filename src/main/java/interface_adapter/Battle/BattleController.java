@@ -5,7 +5,6 @@ import entity.User;
 import use_case.Battle.BattleInputBoundary;
 import use_case.Battle.BattleInputData;
 import interface_adapter.quiz.QuizViewModel;
-import interface_adapter.quiz.QuizViewModel;
 import interface_adapter.quiz.QuizState;
 import interface_adapter.quiz.QuizController;
 
