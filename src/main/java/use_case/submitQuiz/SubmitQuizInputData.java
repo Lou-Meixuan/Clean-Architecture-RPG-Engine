@@ -1,4 +1,4 @@
-package use_case.quiz;
+package use_case.submitQuiz;
 
 public class SubmitQuizInputData {
     private final int quizId;

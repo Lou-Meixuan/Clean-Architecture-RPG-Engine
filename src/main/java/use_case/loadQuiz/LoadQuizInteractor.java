@@ -2,7 +2,7 @@ package use_case.loadQuiz;
 
 import entity.AnswerOption;
 import entity.Quiz;
-import use_case.quiz.QuizDataAccessInterface;
+import use_case.submitQuiz.QuizDataAccessInterface;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -5,7 +5,7 @@ public final class Quiz {
     private final Question question;
     private boolean completed;
     private Integer userAnswerOptionId; // null until user selects something
-    private Boolean answeredCorrectly;  // null until quiz is submitted
+    private Boolean answeredCorrectly;  // null until submitQuiz is submitted
 
     public Quiz(int quizId, Question question) {
         this.quizId = quizId;
@@ -29,7 +29,7 @@ public final class Quiz {
         this.userAnswerOptionId = optionId;
     }
 
-    // unfinished or finished quiz
+    // unfinished or finished submitQuiz
     public QuizResult submit() {
         if (userAnswerOptionId == null) {
             return QuizResult.warning("Question Not Answered");

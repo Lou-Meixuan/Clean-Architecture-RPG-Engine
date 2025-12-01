@@ -30,13 +30,13 @@ public class BattleController {
     public void switchToQuizView(User user, Monster monster){
         QuizState quizState = quizViewModel.getState();
 
-        // store battle context in quiz state
+        // store battle context in submitQuiz state
         quizState.setUser(user);
         quizState.setMonster(monster);
         quizState.setQuizId();
         quizViewModel.firePropertyChange();
 
-        // tell the battle use case to switch to quiz view
+        // tell the battle use case to switch to submitQuiz view
         battleUseCaseInteractor.switchToQuizView();
     }
 }

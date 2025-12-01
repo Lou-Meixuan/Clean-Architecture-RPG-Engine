@@ -1,4 +1,4 @@
-package use_case.quiz;
+package use_case.submitQuiz;
 
 public interface SubmitQuizOutputBoundary {
     void present(SubmitQuizOutputData data);

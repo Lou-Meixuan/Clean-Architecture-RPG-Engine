@@ -124,7 +124,7 @@ public class BattlePresenter implements BattleOutputBoundary {
      */
     @Override
     public void prepareQuizView() {
-        // Switch to quiz view
+        // Switch to submitQuiz view
         viewManagerModel.setState("Quiz");
         viewManagerModel.firePropertyChange();
     }

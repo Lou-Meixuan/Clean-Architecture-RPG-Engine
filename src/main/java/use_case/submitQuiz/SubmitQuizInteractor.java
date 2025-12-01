@@ -1,4 +1,4 @@
-package use_case.quiz;
+package use_case.submitQuiz;
 
 import entity.Quiz;
 import entity.QuizResult;
@@ -15,7 +15,7 @@ public final class SubmitQuizInteractor implements SubmitQuizInputBoundary {
 
     @Override
     public void submit(SubmitQuizInputData data) {
-        // load quiz
+        // load submitQuiz
         Quiz quiz = repository.findById(data.getQuizId());
 
         // record selected option if not null
@@ -24,10 +24,10 @@ public final class SubmitQuizInteractor implements SubmitQuizInputBoundary {
             quiz.recordAnswer(selected);
         }
 
-        // apply quiz logic (correct/incorrect/warning determined by entity)
+        // apply submitQuiz logic (correct/incorrect/warning determined by entity)
         QuizResult result = quiz.submit();
 
-        // save quiz state
+        // save submitQuiz state
         repository.save(quiz);
 
         // create output data for presenter
