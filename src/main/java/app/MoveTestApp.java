@@ -57,6 +57,8 @@ public class MoveTestApp {
 
         ViewManagerModel viewManagerModel = new ViewManagerModel();
 
+        MoveViewModel moveViewModel = new MoveViewModel();
+
         OpenGameViewModel openGameViewModel = new OpenGameViewModel();
         BattleViewModel battleViewModel = new BattleViewModel();
         QuizViewModel quizViewModel = new QuizViewModel();
@@ -64,7 +66,7 @@ public class MoveTestApp {
         System.out.println(gameDataAccess.getGame().getUser().getHP());
 
         ScreenSwitchBoundary openGameScreenSwitcher =
-                new OpenGameScreenSwitcher(viewManagerModel);
+                new OpenGameScreenSwitcher(moveViewModel, viewManagerModel);
 
         OpenGameOutputBoundary openGamePresenter =
                 new OpenGamePresenter(openGameViewModel, viewManagerModel);
@@ -78,8 +80,6 @@ public class MoveTestApp {
         OpenGameView openGameView = new OpenGameView(openGameViewModel);
 
         openGameView.setOpenGameController(openGameController);
-
-        MoveViewModel moveViewModel = new MoveViewModel();
 
         BattlePresenter battlePresenter = new BattlePresenter(battleViewModel, moveViewModel, viewManagerModel);
 
