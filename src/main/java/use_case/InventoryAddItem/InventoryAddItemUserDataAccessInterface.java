@@ -1,10 +1,10 @@
-package use_case.Inventory_AddItem;
+package use_case.InventoryAddItem;
 
 import entity.Item;
 import entity.Inventory;
 import entity.User;
 
-public interface Inventory_AddItemUserDataAccessInterface {
+public interface InventoryAddItemUserDataAccessInterface {
 
     /**
      * returns inventory of user

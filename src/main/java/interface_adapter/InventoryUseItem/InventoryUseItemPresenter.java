@@ -1,14 +1,13 @@
 package interface_adapter.InventoryUseItem;
 
-import use_case.Inventory_UseItem.Inventory_UseItem_OutputData;
-import use_case.Inventory_UseItem.Inventory_UseItem_OutputBoundary;
-import entity.Item;
+import use_case.InventoryUseItem.InventoryUseItemOutputData;
+import use_case.InventoryUseItem.InventoryUseItemOutputBoundary;
 import entity.Inventory;
 
-public class InventoryUseItem_Presenter implements Inventory_UseItem_OutputBoundary {
+public class InventoryUseItemPresenter implements InventoryUseItemOutputBoundary {
 
     @Override
-    public void useItem(Inventory_UseItem_OutputData outputData) {
+    public void useItem(InventoryUseItemOutputData outputData) {
         Inventory inventory = outputData.getInventory();
         int hp = outputData.getHpIncrease();
         int def = outputData.getDefIncrease();
@@ -26,7 +25,7 @@ public class InventoryUseItem_Presenter implements Inventory_UseItem_OutputBound
     }
 
     @Override
-    public void viewInventory(Inventory_UseItem_OutputData outputData) {
+    public void viewInventory(InventoryUseItemOutputData outputData) {
         Inventory inventory = outputData.getInventory();
 
         // test lines

@@ -1,10 +1,10 @@
 import entity.Item;
 import entity.User;
 import org.junit.Test;
-import use_case.Inventory_AddItem.Inventory_AddItem_OutputBoundary;
-import use_case.Inventory_AddItem.Inventory_AddItem_OutputData;
-import use_case.Inventory_AddItem.Inventory_AddItem_Interactor;
-import use_case.Inventory_AddItem.Inventory_InputData_AddItem;
+import use_case.InventoryAddItem.InventoryAddItemOutputBoundary;
+import use_case.InventoryAddItem.InventoryAddItemOutputData;
+import use_case.InventoryAddItem.InventoryAddItemInteractor;
+import use_case.InventoryAddItem.InventoryAddItemInputData;
 
 import static org.junit.Assert.*;
 
@@ -17,18 +17,18 @@ public class AddItemInteractorTest {
         User user = new User();
         Item item = new Item("Blades of Frost", "Weapon");
 
-        Inventory_AddItem_OutputBoundary output = new Inventory_AddItem_OutputBoundary() {
+        InventoryAddItemOutputBoundary output = new InventoryAddItemOutputBoundary() {
             @Override
-            public void present(Inventory_AddItem_OutputData data) {
+            public void present(InventoryAddItemOutputData data) {
                 assertEquals(item, data.getItem());
                 assertTrue(data.getInventory().getItems().contains(item));
             }
         };
 
-        Inventory_AddItem_Interactor interactor = new Inventory_AddItem_Interactor(output);
+        InventoryAddItemInteractor interactor = new InventoryAddItemInteractor(output);
         interactor.setUser(user);
 
-        Inventory_InputData_AddItem input = new Inventory_InputData_AddItem(item);
+        InventoryAddItemInputData input = new InventoryAddItemInputData(item);
         interactor.addItem(input);
 
         assertTrue(user.getInventory().getItems().contains(item));
@@ -41,16 +41,16 @@ public class AddItemInteractorTest {
     public void addItemUserNull() {
         Item item = new Item("Blades of Frost", "Weapon");
 
-        Inventory_AddItem_OutputBoundary output = new Inventory_AddItem_OutputBoundary() {
+        InventoryAddItemOutputBoundary output = new InventoryAddItemOutputBoundary() {
             @Override
-            public void present(Inventory_AddItem_OutputData data) {
+            public void present(InventoryAddItemOutputData data) {
                 fail("Output should not be called when user is null");
             }
         };
 
-        Inventory_AddItem_Interactor interactor = new Inventory_AddItem_Interactor(output);
+        InventoryAddItemInteractor interactor = new InventoryAddItemInteractor(output);
 
-        interactor.addItem(new Inventory_InputData_AddItem(item));
+        interactor.addItem(new InventoryAddItemInputData(item));
     }
 
     //  add item input is null
@@ -58,14 +58,14 @@ public class AddItemInteractorTest {
     public void addItemInputNull() {
         User user = new User();
 
-        Inventory_AddItem_OutputBoundary output = new Inventory_AddItem_OutputBoundary() {
+        InventoryAddItemOutputBoundary output = new InventoryAddItemOutputBoundary() {
             @Override
-            public void present(Inventory_AddItem_OutputData data) {
+            public void present(InventoryAddItemOutputData data) {
                 fail("Output should not be called when inputData is null");
             }
         };
 
-        Inventory_AddItem_Interactor interactor = new Inventory_AddItem_Interactor(output);
+        InventoryAddItemInteractor interactor = new InventoryAddItemInteractor(output);
         interactor.setUser(user);
 
         interactor.addItem(null);
@@ -78,16 +78,16 @@ public class AddItemInteractorTest {
     public void addItemItemNull() {
         User user = new User();
 
-        Inventory_InputData_AddItem input = new Inventory_InputData_AddItem(null);
+        InventoryAddItemInputData input = new InventoryAddItemInputData(null);
 
-        Inventory_AddItem_OutputBoundary output = new Inventory_AddItem_OutputBoundary() {
+        InventoryAddItemOutputBoundary output = new InventoryAddItemOutputBoundary() {
             @Override
-            public void present(Inventory_AddItem_OutputData data) {
+            public void present(InventoryAddItemOutputData data) {
                 fail("Output should not be called when item is null");
             }
         };
 
-        Inventory_AddItem_Interactor interactor = new Inventory_AddItem_Interactor(output);
+        InventoryAddItemInteractor interactor = new InventoryAddItemInteractor(output);
         interactor.setUser(user);
 
         interactor.addItem(input);

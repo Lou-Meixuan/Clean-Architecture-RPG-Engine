@@ -3,7 +3,7 @@ package interface_adapter.InventoryAddItem;
 import entity.Item;
 import entity.User;
 
-public class InventoryAddItem_State {
+public class InventoryAddItemState {
     /**
      * State object for Added Item View
      */

@@ -1,4 +1,4 @@
-package use_case.Inventory_AddItem;
+package use_case.InventoryAddItem;
 
 import entity.Inventory;
 import entity.Item;
@@ -7,11 +7,11 @@ import entity.Item;
  * Output data for AddItem(Inventory) Use case
  * Contains updated inventory
  */
-public class Inventory_AddItem_OutputData {
+public class InventoryAddItemOutputData {
     private final Inventory inventory;
     private final Item item;
 
-    public  Inventory_AddItem_OutputData(Inventory inventory, Item item) {
+    public InventoryAddItemOutputData(Inventory inventory, Item item) {
         this.inventory = inventory;
         this.item = item;
     }

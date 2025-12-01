@@ -5,10 +5,10 @@ import interface_adapter.ViewModel;
  * view model sets state of use item
  */
 
-public class InventoryUseItem_ViewModel extends ViewModel<InventoryUseItem_State> {
-    public InventoryUseItem_ViewModel( ) {
+public class InventoryUseItemViewModel extends ViewModel<InventoryUseItemState> {
+    public InventoryUseItemViewModel( ) {
         super("InventoryUseItemState");
-        setState(new InventoryUseItem_State());
+        setState(new InventoryUseItemState());
     }
 }
 

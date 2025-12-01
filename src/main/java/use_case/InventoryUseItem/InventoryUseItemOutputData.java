@@ -1,4 +1,4 @@
-package use_case.Inventory_UseItem;
+package use_case.InventoryUseItem;
 
 import entity.Inventory;
 
@@ -6,12 +6,12 @@ import entity.Inventory;
 /**
  * Updates the user's stats based on the item type
  */
-public class Inventory_UseItem_OutputData {
+public class InventoryUseItemOutputData {
     private final Inventory inventory;
     private final int hpIncrease;
     private final int defIncrease;
     private final int dmgIncrease;
-    public Inventory_UseItem_OutputData(Inventory inventory, int hpIncrease , int defIncrease , int dmgIncrease ) {
+    public InventoryUseItemOutputData(Inventory inventory, int hpIncrease , int defIncrease , int dmgIncrease ) {
         this.inventory = inventory;
         this.hpIncrease = hpIncrease;
         this.defIncrease = defIncrease;

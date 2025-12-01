@@ -1,4 +1,4 @@
-package use_case.Inventory_UseItem;
+package use_case.InventoryUseItem;
 
 
 import entity.User;
@@ -7,7 +7,7 @@ import entity.User;
  * Input Boundary for item use case
  */
 
-public interface Inventory_InputBoundary_UseItem {
+public interface InventoryUseItemInputBoundary {
 
     /**
      * set user
@@ -16,7 +16,7 @@ public interface Inventory_InputBoundary_UseItem {
     /**
      * @param inputData called when user uses item from inventory
      */
-    void useItem(Inventory_InputData_UseItem inputData);
+    void useItem(InventoryUseItemInputData inputData);
 
     /**
      * no param. called when user wants to view inventory

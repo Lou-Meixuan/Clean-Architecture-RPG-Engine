@@ -1,4 +1,4 @@
-package use_case.Inventory_AddItem;
+package use_case.InventoryAddItem;
 
 import entity.User;
 
@@ -6,7 +6,7 @@ import entity.User;
  * Input boundary for Add Item use case
  */
 
-public interface Inventory_InputBoundary_AddItem {
+public interface InventoryAddItemInputBoundary {
 
     /**
      * set user
@@ -17,5 +17,5 @@ public interface Inventory_InputBoundary_AddItem {
      * To be used by Inventory_AddItem_Interactor;
      * @param inputData item to be added to inventory
      */
-    void addItem(Inventory_InputData_AddItem inputData);
+    void addItem(InventoryAddItemInputData inputData);
 }

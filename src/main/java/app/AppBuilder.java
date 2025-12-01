@@ -4,9 +4,16 @@ import API.GeoapifyStaticMap;
 import API.MoveStaticMapInterface;
 import data_access.FileGameDataAccessObject;
 import data_access.QuizzesReader;
+import entity.Inventory;
 import interface_adapter.Battle.BattleController;
 import interface_adapter.Battle.BattlePresenter;
 import interface_adapter.Battle.BattleViewModel;
+import interface_adapter.InventoryAddItem.InventoryAddItemController;
+import interface_adapter.InventoryAddItem.InventoryAddItemPresenter;
+import interface_adapter.InventoryAddItem.InventoryAddItemViewModel;
+import interface_adapter.InventoryUseItem.InventoryUseItemController;
+import interface_adapter.InventoryUseItem.InventoryUseItemPresenter;
+import interface_adapter.InventoryUseItem.InventoryUseItemViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.move.MoveController;
 import interface_adapter.move.MovePresenter;
@@ -21,6 +28,12 @@ import interface_adapter.results.ShowResultsPresenter;
 import use_case.Battle.BattleInputBoundary;
 import use_case.Battle.BattleInteractor;
 import use_case.Battle.BattleOutputBoundary;
+import use_case.InventoryAddItem.InventoryAddItemInputBoundary;
+import use_case.InventoryAddItem.InventoryAddItemInteractor;
+import use_case.InventoryAddItem.InventoryAddItemOutputBoundary;
+import use_case.InventoryUseItem.InventoryUseItemInputBoundary;
+import use_case.InventoryUseItem.InventoryUseItemInteractor;
+import use_case.InventoryUseItem.InventoryUseItemOutputBoundary;
 import use_case.loadQuiz.LoadQuizInputBoundary;
 import use_case.loadQuiz.LoadQuizInteractor;
 import use_case.loadQuiz.LoadQuizOutputBoundary;
@@ -65,6 +78,10 @@ public class AppBuilder {
     private QuizViewModel quizViewModel;
     private ResultsView resultsView;
     private ResultsViewModel resultsViewModel;
+    private ItemView itemView;
+    private InventoryAddItemViewModel inventoryAddItemViewModel;
+    private InventoryView inventoryView;
+    private InventoryUseItemViewModel inventoryUseItemViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -102,6 +119,20 @@ public class AppBuilder {
         resultsViewModel = new ResultsViewModel();
         resultsView = new ResultsView(resultsViewModel);
         cardPanel.add(resultsView, resultsView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addAddInventoryView() {
+        inventoryAddItemViewModel = new InventoryAddItemViewModel();
+        itemView = new ItemView(inventoryAddItemViewModel);
+        cardPanel.add(itemView, itemView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addUseInventoryView() {
+        inventoryUseItemViewModel = new InventoryUseItemViewModel();
+        inventoryView = new InventoryView(inventoryUseItemViewModel);
+        cardPanel.add(inventoryView, inventoryView.getViewName());
         return this;
     }
 
@@ -162,6 +193,25 @@ public class AppBuilder {
         ShowResultsController controller = new ShowResultsController(showResultsInteractor);
         moveView.setResultController(controller);
         resultsView.setResultController(controller);
+        return this;
+    }
+
+    public AppBuilder addAddInventoryUseCase() {
+        final InventoryAddItemOutputBoundary inventoryAddItemOutputBoundary = new InventoryAddItemPresenter(
+                inventoryAddItemViewModel);
+        final InventoryAddItemInputBoundary inventoryAddItemInteractor = new InventoryAddItemInteractor(inventoryAddItemOutputBoundary);
+
+        InventoryAddItemController controller = new InventoryAddItemController(inventoryAddItemInteractor);
+        itemView.setController(controller);
+        return this;
+    }
+    public AppBuilder addUseInventoryUseCase() {
+        final InventoryUseItemOutputBoundary inventoryUseItemPresenter = new InventoryUseItemPresenter();
+        final InventoryUseItemInputBoundary inventoryUseItemInteractor = new InventoryUseItemInteractor(
+                inventoryUseItemPresenter);
+
+        // InventoryUseItemController controller = new InventoryUseItemController();
+        // inventoryView.setController(controller);
         return this;
     }
 

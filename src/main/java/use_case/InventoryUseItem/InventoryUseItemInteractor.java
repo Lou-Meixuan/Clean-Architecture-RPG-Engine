@@ -1,13 +1,13 @@
-package use_case.Inventory_UseItem;
+package use_case.InventoryUseItem;
 
 import entity.Item;
 import entity.User;
 
-public class Inventory_UseItem_Interactor implements Inventory_InputBoundary_UseItem{
-    private final Inventory_UseItem_OutputBoundary outputBoundary;
+public class InventoryUseItemInteractor implements InventoryUseItemInputBoundary {
+    private final InventoryUseItemOutputBoundary outputBoundary;
     private User user;
 
-    public Inventory_UseItem_Interactor(Inventory_UseItem_OutputBoundary outputBoundary) {
+    public InventoryUseItemInteractor(InventoryUseItemOutputBoundary outputBoundary) {
         this.outputBoundary = outputBoundary;
     }
     /**
@@ -39,7 +39,7 @@ public class Inventory_UseItem_Interactor implements Inventory_InputBoundary_Use
      * @param inputDataUseItem item from inventory to be used
      */
     @Override
-    public void useItem(Inventory_InputData_UseItem inputDataUseItem) {
+    public void useItem(InventoryUseItemInputData inputDataUseItem) {
         if (user == null || inputDataUseItem == null) {return;}
         // Item from data access
         Item item = user.getItemByName(inputDataUseItem.getItemName());
@@ -66,7 +66,7 @@ public class Inventory_UseItem_Interactor implements Inventory_InputBoundary_Use
         user.removeItem(item);
 
         // updated inventory
-        Inventory_UseItem_OutputData output = new Inventory_UseItem_OutputData(user.getInventory(), hp, def, dmg);
+        InventoryUseItemOutputData output = new InventoryUseItemOutputData(user.getInventory(), hp, def, dmg);
         outputBoundary.useItem(output);
     }
     /**
@@ -74,7 +74,7 @@ public class Inventory_UseItem_Interactor implements Inventory_InputBoundary_Use
      */
     @Override
     public void viewInventory() {
-        Inventory_UseItem_OutputData output = new Inventory_UseItem_OutputData(user.getInventory(), 0, 0, 0);
+        InventoryUseItemOutputData output = new InventoryUseItemOutputData(user.getInventory(), 0, 0, 0);
     outputBoundary.viewInventory(output);
     }
 

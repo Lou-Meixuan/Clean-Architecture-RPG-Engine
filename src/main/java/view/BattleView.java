@@ -5,7 +5,7 @@ import entity.User;
 import interface_adapter.Battle.BattleController;
 import interface_adapter.Battle.BattleState;
 import interface_adapter.Battle.BattleViewModel;
-import interface_adapter.InventoryUseItem.InventoryUseItem_Controller;
+import interface_adapter.InventoryUseItem.InventoryUseItemController;
 import interface_adapter.quiz.QuizViewModel;
 
 import javax.swing.*;
@@ -23,7 +23,7 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
     private final String viewName = "Battle";
     private final BattleViewModel viewModel;
     private BattleController battleController;
-    private InventoryUseItem_Controller inventoryController;
+    private InventoryUseItemController inventoryController;
     private final QuizViewModel quizViewModel;
 
 
@@ -150,7 +150,7 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
     /**
      * Sets the controller for inventory
      */
-    public void setInventoryController(InventoryUseItem_Controller controller) {
+    public void setInventoryController(InventoryUseItemController controller) {
         this.inventoryController = controller;
     }
     /**

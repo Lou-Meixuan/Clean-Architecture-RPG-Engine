@@ -1,15 +1,15 @@
 package interface_adapter.InventoryUseItem;
 
 import entity.User;
-import use_case.Inventory_UseItem.Inventory_InputData_UseItem;
-import use_case.Inventory_UseItem.Inventory_InputBoundary_UseItem;
+import use_case.InventoryUseItem.InventoryUseItemInputData;
+import use_case.InventoryUseItem.InventoryUseItemInputBoundary;
 
-public class InventoryUseItem_Controller {
+public class InventoryUseItemController {
 
-private final Inventory_InputBoundary_UseItem useItemBoundary;
+private final InventoryUseItemInputBoundary useItemBoundary;
 private User user;
 
-public InventoryUseItem_Controller(Inventory_InputBoundary_UseItem useItemBoundary, User user) {
+public InventoryUseItemController(InventoryUseItemInputBoundary useItemBoundary, User user) {
     this.useItemBoundary = useItemBoundary;
     this.user = user; }
 
@@ -20,7 +20,7 @@ public InventoryUseItem_Controller(Inventory_InputBoundary_UseItem useItemBounda
 // when user calls to use item
 public void useItem(String itemName) {
     useItemBoundary.setUser(user);
-    Inventory_InputData_UseItem inputData = new Inventory_InputData_UseItem(itemName);
+    InventoryUseItemInputData inputData = new InventoryUseItemInputData(itemName);
     useItemBoundary.useItem(inputData); }
 
 
