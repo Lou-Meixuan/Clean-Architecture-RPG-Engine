@@ -51,8 +51,6 @@ public class BattleInteractor implements BattleInputBoundary {
         }
         // Monster's turn
         MonsterTurn(user, monster);
-        // Prepare final output
-        output = new BattleOutputData(user, monster);
         // Present final result
         if (!user.isAlive()) {
             userDataAccessObject.restoreUserToBeforeBattle();
@@ -60,7 +58,7 @@ public class BattleInteractor implements BattleInputBoundary {
             AdventureGame game = userDataAccessObject.getGame();
             List<Location> path = game.getPathHistory();
             if (path.size() > 1) {
-                path.remove(path.size() - 1);  // 移除当前位置
+                path.remove(path.size() - 1); // remove current location
                 int previousIndex = path.size() - 1;
                 try {
                     java.lang.reflect.Field indexField = GameMap.class.getDeclaredField("currentLocationIndex");
