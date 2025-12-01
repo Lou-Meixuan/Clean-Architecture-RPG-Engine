@@ -120,34 +120,6 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface,
     // ==================== OpenGameDataAccessInterface ====================
 
     @Override
-    public GameState loadGame() {
-        if (this.game != null) {
-            String currentLocation = game.getGameMap().getCurrentLocation().getName();
-            String finalDestination = currentLocation;
-
-            try {
-                Field locationsField = GameMap.class.getDeclaredField("locations");
-                locationsField.setAccessible(true);
-                @SuppressWarnings("unchecked")
-                List<Location> locations = (List<Location>) locationsField.get(game.getGameMap());
-                if (!locations.isEmpty()) {
-                    finalDestination = locations.get(locations.size() - 1).getName();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return new GameState(currentLocation, finalDestination);
-        }
-        return null;
-    }
-
-    @Override
-    public void saveGame(GameState state) {
-
-    }
-
-    @Override
     public boolean saveFileExists() {
         File file = new File(FILE_PATH);
         return file.exists() && file.length() > 0;

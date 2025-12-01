@@ -60,12 +60,13 @@ public class MoveTestApp {
 
         BattleViewModel battleViewModel = new BattleViewModel();
         QuizViewModel quizViewModel = new QuizViewModel();
-        InMemoryQuizDataAccessObject repo = new InMemoryQuizDataAccessObject();
+
 //        ScreenSwitchBoundary openGameScreenSwitcher =
 //                new OpenGameScreenSwitcher(viewManagerModel);
 //        OpenGameOutputBoundary openGamePresenter =
 //                new OpenGamePresenter(openGameViewModel, viewManagerModel);
 
+        MoveViewModel moveViewModel = new MoveViewModel();
 
         OpenGameOutputBoundary openGamePresenter =
                 new OpenGamePresenter(openGameViewModel, viewManagerModel);
@@ -80,38 +81,40 @@ public class MoveTestApp {
                 new OpenGameController(openGameInteractor);
 
         OpenGameView openGameView =
-                new OpenGameView(openGameController, openGameViewModel);
+                new OpenGameView(openGameViewModel);
+
+        openGameView.setOpenGameController(openGameController);
 
         FileGameDataAccessObject gameDataAccess = new FileGameDataAccessObject();
         System.out.println(gameDataAccess.getGame().getUser().getHP());
 
-        BattlePresenter battlePresenter = new BattlePresenter(battleViewModel, viewManagerModel);
+        BattlePresenter battlePresenter = new BattlePresenter(battleViewModel, moveViewModel, viewManagerModel);
 
         BattleInteractor battleInteractor = new BattleInteractor(gameDataAccess, battlePresenter);
 
         BattleController battleController = new BattleController(battleInteractor, quizViewModel);
 
-        BattleView battleView = new BattleView(battleViewModel);
+        BattleView battleView = new BattleView(battleViewModel, quizViewModel);
         battleView.setBattleController(battleController);
 
         // Create Presenters
         LoadQuizOutputBoundary loadQuizPresenter = new LoadQuizPresenter(quizViewModel);
-        SubmitQuizOutputBoundary submitQuizPresenter = new QuizPresenter(quizViewModel, battleViewModel, viewManagerModel);
+        SubmitQuizOutputBoundary submitQuizPresenter = new SubmitQuizPresenter(quizViewModel, battleViewModel, viewManagerModel);
 
         // Create Interactors (Use Cases)
-        LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(repo, loadQuizPresenter);
-        SubmitQuizInputBoundary submitQuizInteractor = new SubmitQuizInteractor(repo, submitQuizPresenter);
+        LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(gameDataAccess, loadQuizPresenter);
+        SubmitQuizInputBoundary submitQuizInteractor = new SubmitQuizInteractor(gameDataAccess, submitQuizPresenter);
 
         // Create Controller (inject BOTH interactors)
         QuizController quizController = new QuizController(submitQuizInteractor, loadQuizInteractor);
 
         QuizView quizView = new QuizView(quizViewModel);
         quizView.setQuizController(quizController);
-        new QuizzesReader().loadQuizzes(repo);
+        new QuizzesReader().loadQuizzes(gameDataAccess);
         QuizState quizState = new QuizState();
         quizView.loadQuiz(quizState.setQuizId());
 
-        MoveViewModel moveViewModel = new MoveViewModel();
+
         ResultsViewModel resultsViewModel = new ResultsViewModel();
 
         MoveStaticMapInterface mapService = new GeoapifyStaticMap();
@@ -124,7 +127,7 @@ public class MoveTestApp {
         MoveView moveView = new MoveView(moveViewModel);
         moveView.setMoveController(moveController);
 
-        ShowResultsPresenter resultsPresenter = new ShowResultsPresenter(resultsViewModel);
+        ShowResultsPresenter resultsPresenter = new ShowResultsPresenter(resultsViewModel, moveViewModel, viewManagerModel);
         ShowResultsInputBoundary resultsInteractor = new ShowResultsInteractor(gameDataAccess, resultsPresenter);
         ShowResultsController resultsController = new ShowResultsController(resultsInteractor);
         ResultsView resultsView = new ResultsView(resultsViewModel);
@@ -155,21 +158,6 @@ public class MoveTestApp {
                 }
             }
         });
-
-
-
-        moveView.getEndGameButton().addActionListener(e -> {
-            resultsController.execute();
-            viewManagerModel.setState(resultsViewModel.getViewName());
-            viewManagerModel.firePropertyChange();
-        });
-
-        resultsView.getBackButton().addActionListener(e -> {
-            System.out.println("Restarting game...");
-            application.dispose();
-            createAndShowGUI();
-        });
-
 
         try {
             AdventureGame initialGame = gameDataAccess.getGame();
