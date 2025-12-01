@@ -34,7 +34,8 @@ public class OpenGameView extends JPanel {
         continueGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Buttons
-        newGameButton.addActionListener(e -> controller.startNewGame());
+//        newGameButton.addActionListener(e -> controller.startNewGame());
+        newGameButton.addActionListener(e -> onStartNewGame());
         continueGameButton.addActionListener(e -> controller.continueGame());
 
         add(Box.createRigidArea(new Dimension(0, 20)));
@@ -45,6 +46,9 @@ public class OpenGameView extends JPanel {
         add(Box.createRigidArea(new Dimension(0, 10)));
 
         add(continueGameButton);
+    }
+    private void onStartNewGame() {
+        controller.startNewGame();
     }
 
     private void updateView() {
