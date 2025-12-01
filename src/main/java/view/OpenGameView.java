@@ -97,7 +97,7 @@ public class OpenGameView extends JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        setPreferredSize(new Dimension(1000, 200));
+        setPreferredSize(new Dimension(300, 200));
 
         // Center align
         messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

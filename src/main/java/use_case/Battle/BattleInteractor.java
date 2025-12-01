@@ -27,8 +27,6 @@ public class BattleInteractor implements BattleInputBoundary {
     public void execute(BattleInputData inputData) {
         final User user = inputData.getUser();
         final Monster monster = inputData.getMonster();
-        // TODO:Not sure if I need to create boolean or just use a method to get the boolean from DAO,
-        //  since I don't have the DAO rn, I will just use the boolean for now.
         final boolean resultOfQuiz = inputData.getResultOfQuiz();
 
         // User's turn

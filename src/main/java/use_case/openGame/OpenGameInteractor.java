@@ -1,5 +1,4 @@
 //package use_case.openGame;
-//
 //import entity.GameState;
 //
 //public class OpenGameInteractor implements OpenGameInputBoundary {
@@ -18,64 +17,83 @@
 //
 //    @Override
 //    public void execute(OpenGameInputData inputData) {
+//        GameState state;
 //
-//        // CASE 1: START NEW GAME
 //        if (inputData.isNewGame()) {
-//
-//            if (dataAccess.saveFileExists()) {
-//                presenter.prepareFailView("A saved game already exists. Please click 'Continue Game'.");
-//                return;
-//            }
-//            //TODO: Can remove these?
-//
-//            GameState newState = new GameState(
+//            state = new GameState(
 //                    inputData.getStartingLocation(),
 //                    inputData.getDestination()
 //            );
 //
-//            // dataAccess.saveGame(newState);
+//            dataAccess.saveGame(state);
 //
 //            presenter.prepareSuccessView(
 //                    new OpenGameOutputData(
 //                            "New game started!",
-//                            newState,
+//                            state,
 //                            true
 //                    )
 //            );
 //
+//            // After preparing success view, switch to Move screen:
 //            screenSwitcher.switchToMoveScreen();
 //            return;
 //        }
 //
-//        // CASE 2: CONTINUE GAME
-//        if (!dataAccess.saveFileExists()) {
-//            presenter.prepareFailView("No saved game found. Please start a new game.");
+//        // CONTINUE GAME LOGIC
+//        state = dataAccess.loadGame();
+//
+//        if (state == null) {
+//            presenter.prepareFailView("No saved game found!");
 //            return;
 //        }
+//        else {
+//            // CONTINUE GAME LOGIC
 //
-//        GameState saved = dataAccess.loadGame();
+//            if (!dataAccess.saveFileExists()) {
+//                presenter.prepareFailView("No saved game to continue.");
+//                return;
+//            }
 //
-//        if (saved == null) {
-//            presenter.prepareFailView("Saved game is corrupted.");
-//            return;
+//            state = dataAccess.loadGame();
+//
+//            if (state == null) {
+//                presenter.prepareFailView("Save file corrupted.");
+//                return;
+//            }
+//
+//            presenter.prepareSuccessView(
+//                    new OpenGameOutputData(
+//                            "Game loaded!",
+//                            state,
+//                            false
+//                    )
+//            );
 //        }
 //
 //        presenter.prepareSuccessView(
 //                new OpenGameOutputData(
 //                        "Game loaded!",
-//                        saved,
+//                        state,
 //                        false
 //                )
 //        );
 //
+//        // Switch to Move screen
 //        screenSwitcher.switchToMoveScreen();
-//    }
 //
+//        // If game is already completed → go to results instead
+//        if (state.isCompleted()) {
+//            screenSwitcher.switchToResultScreen();
+//        }
+//    }
 //    @Override
 //    public void switchToMoveScreen() {
 //        screenSwitcher.switchToMoveScreen();
 //    }
+//
 //}
+
 
 package use_case.openGame;
 
@@ -105,17 +123,20 @@ public class OpenGameInteractor implements OpenGameInputBoundary {
                 presenter.prepareFailView("A saved game already exists. Please click 'Continue Game'.");
                 return;
             }
-            //TODO: Can remove these?
 
             GameState newState = new GameState(
                     inputData.getStartingLocation(),
                     inputData.getDestination()
             );
 
-            // dataAccess.saveGame(newState);
+            dataAccess.saveGame(newState);
 
             presenter.prepareSuccessView(
-                    new OpenGameOutputData("New game started!" )
+                    new OpenGameOutputData(
+                            "New game started!",
+                            newState,
+                            true
+                    )
             );
 
             screenSwitcher.switchToMoveScreen();
@@ -136,7 +157,11 @@ public class OpenGameInteractor implements OpenGameInputBoundary {
         }
 
         presenter.prepareSuccessView(
-                new OpenGameOutputData("Game loaded!")
+                new OpenGameOutputData(
+                        "Game loaded!",
+                        saved,
+                        false
+                )
         );
 
         screenSwitcher.switchToMoveScreen();
