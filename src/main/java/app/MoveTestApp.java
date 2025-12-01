@@ -120,11 +120,13 @@ public class MoveTestApp {
         MoveView moveView = new MoveView(moveViewModel);
         moveView.setMoveController(moveController);
 
-        ShowResultsPresenter resultsPresenter = new ShowResultsPresenter(resultsViewModel);
+        ShowResultsPresenter resultsPresenter = new ShowResultsPresenter(resultsViewModel, moveViewModel, viewManagerModel);
         ShowResultsInputBoundary resultsInteractor = new ShowResultsInteractor(gameDataAccess, resultsPresenter);
         ShowResultsController resultsController = new ShowResultsController(resultsInteractor);
         ResultsView resultsView = new ResultsView(resultsViewModel);
 
+        moveView.setResultController(resultsController);
+        resultsView.setResultController(resultsController);
 
         views.add(openGameView, openGameView.getViewName());
         views.add(moveView, moveView.getViewName());
@@ -151,20 +153,6 @@ public class MoveTestApp {
         });
         viewManagerModel.setState("OpenGame");
         viewManagerModel.firePropertyChange();
-
-
-        moveView.getEndGameButton().addActionListener(e -> {
-            resultsController.execute();
-            viewManagerModel.setState(resultsViewModel.getViewName());
-            viewManagerModel.firePropertyChange();
-        });
-
-        resultsView.getBackButton().addActionListener(e -> {
-            System.out.println("Restarting game...");
-            application.dispose();
-            createAndShowGUI();
-        });
-
 
         try {
             AdventureGame initialGame = gameDataAccess.getGame();

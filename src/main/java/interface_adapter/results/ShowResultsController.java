@@ -20,4 +20,8 @@ public class ShowResultsController {
         final ShowResultsInputData inputData = new ShowResultsInputData();
         showResultsUseCaseInteractor.execute(inputData);
     }
+
+    public void switchToOpenGameView() {
+        showResultsUseCaseInteractor.switchToOpenGameView();
+    }
 }

@@ -162,12 +162,13 @@ public class AppBuilder {
     }
 
     public AppBuilder addResultsUseCase() {
-        final ShowResultsOutputBoundary showResultsOutputBoundary = new ShowResultsPresenter(resultsViewModel);
+        final ShowResultsOutputBoundary showResultsOutputBoundary = new ShowResultsPresenter(resultsViewModel, moveViewModel, viewManagerModel);
         final ShowResultsInputBoundary showResultsInteractor = new ShowResultsInteractor(
                 gameDataAccess, showResultsOutputBoundary);
 
         ShowResultsController controller = new ShowResultsController(showResultsInteractor);
-        //resultsView.set(controller);
+        moveView.setResultController(controller);
+        resultsView.setResultController(controller);
         return this;
     }
 

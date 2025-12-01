@@ -25,6 +25,11 @@ public class MoveInteractor implements MoveInputBoundary {
             this.moveGameDataAccess.saveGame(game);
         }
 
+        updateGame();
+    }
+
+    public void updateGame() {
+        AdventureGame game = moveGameDataAccess.getGame();
         boolean canMoveLeft = game.canMove(Direction.LEFT);
         boolean canMoveRight = game.canMove(Direction.RIGHT);
 

@@ -2,6 +2,7 @@ package view;
 
 import interface_adapter.results.ResultsState;
 import interface_adapter.results.ResultsViewModel;
+import interface_adapter.results.ShowResultsController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,8 @@ public class ResultsView extends JPanel implements PropertyChangeListener {
     private final String viewName = "results";
     private final ResultsViewModel resultsViewModel;
 
+    private ShowResultsController resultController;
+
     private final JLabel titleLabel;
     private final JLabel userNameLabel;
     private final JLabel totalMovesLabel;
@@ -25,6 +28,8 @@ public class ResultsView extends JPanel implements PropertyChangeListener {
     public ResultsView(ResultsViewModel resultsViewModel) {
         this.resultsViewModel = resultsViewModel;
         this.resultsViewModel.addPropertyChangeListener(this);
+
+        this.resultController = null;
 
         // Set layout
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -77,6 +82,11 @@ public class ResultsView extends JPanel implements PropertyChangeListener {
         this.add(scrollPane);
         this.add(Box.createRigidArea(new Dimension(0, 20)));
         this.add(backButton);
+
+        backButton.addActionListener(e -> {
+            System.out.println("Restarting game...");
+            resultController.switchToOpenGameView();
+        });
     }
 
     @Override
@@ -105,7 +115,7 @@ public class ResultsView extends JPanel implements PropertyChangeListener {
         return viewName;
     }
 
-    public JButton getBackButton() {
-        return backButton;
+    public void setResultController(ShowResultsController resultController) {
+        this.resultController = resultController;
     }
 }
