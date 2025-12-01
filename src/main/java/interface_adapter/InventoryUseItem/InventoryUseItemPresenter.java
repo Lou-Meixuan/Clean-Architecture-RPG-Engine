@@ -4,7 +4,7 @@ import use_case.InventoryUseItem.InventoryUseItemOutputData;
 import use_case.InventoryUseItem.InventoryUseItemOutputBoundary;
 import entity.Inventory;
 
-public class InventoryUseItem_Presenter implements InventoryUseItemOutputBoundary {
+public class InventoryUseItemPresenter implements InventoryUseItemOutputBoundary {
 
     @Override
     public void useItem(InventoryUseItemOutputData outputData) {

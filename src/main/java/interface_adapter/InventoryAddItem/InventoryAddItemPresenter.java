@@ -9,10 +9,10 @@ import use_case.InventoryAddItem.InventoryAddItemOutputData;
  * updates viewModel state with added item.
  */
 
-public class InventoryAddItem_Presenter implements InventoryAddItemOutputBoundary {
-    private final InventoryAddItem_ViewModel viewModel;
+public class InventoryAddItemPresenter implements InventoryAddItemOutputBoundary {
+    private final InventoryAddItemViewModel viewModel;
 
-    public InventoryAddItem_Presenter(InventoryAddItem_ViewModel viewModel) {
+    public InventoryAddItemPresenter(InventoryAddItemViewModel viewModel) {
         this.viewModel = viewModel; }
 
     @Override

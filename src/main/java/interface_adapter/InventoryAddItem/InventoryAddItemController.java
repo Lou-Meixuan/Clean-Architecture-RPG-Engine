@@ -9,10 +9,10 @@ import use_case.InventoryAddItem.InventoryAddItemInputData;
  * Controller for AddItem usecase
  * Gets user input
  */
-public class InventoryAddItem_Controller {
+public class InventoryAddItemController {
     private final InventoryAddItemInputBoundary addItemBoundary;
 
-    public InventoryAddItem_Controller(InventoryAddItemInputBoundary addItemBoundary) {
+    public InventoryAddItemController(InventoryAddItemInputBoundary addItemBoundary) {
         this.addItemBoundary = addItemBoundary;
     }
 

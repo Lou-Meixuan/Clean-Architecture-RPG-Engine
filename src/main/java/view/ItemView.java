@@ -3,12 +3,9 @@ package view;
 // imports
 import entity.Item;
 
-import interface_adapter.InventoryAddItem.InventoryAddItem_ViewModel;
-import interface_adapter.InventoryAddItem.InventoryAddItem_Controller;
-import interface_adapter.InventoryAddItem.InventoryAddItem_State;
+import interface_adapter.InventoryAddItem.InventoryAddItemViewModel;
+import interface_adapter.InventoryAddItem.InventoryAddItemController;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.awt.*;
 
@@ -16,13 +13,13 @@ import java.awt.*;
 
 public class ItemView extends JPanel {
     private final String viewName = "AddItem";
-    private final InventoryAddItem_ViewModel viewModel;
+    private final InventoryAddItemViewModel viewModel;
     private final JLabel itemNameLabel;
     private final JTextArea itemDescription;
-    private InventoryAddItem_Controller controller;
+    private InventoryAddItemController controller;
     private final JButton okbutton = new JButton("Ok");
 
-    public ItemView(InventoryAddItem_ViewModel viewModel) {
+    public ItemView(InventoryAddItemViewModel viewModel) {
         this.viewModel = viewModel;
         // borders
         setLayout(new BorderLayout(10, 10));
@@ -58,7 +55,7 @@ public class ItemView extends JPanel {
     }
 
     // set controller
-    public void setController(InventoryAddItem_Controller controller) {
+    public void setController(InventoryAddItemController controller) {
         this.controller = controller;
     }
 }

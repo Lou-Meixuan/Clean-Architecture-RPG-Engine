@@ -4,12 +4,12 @@ import entity.User;
 import use_case.InventoryUseItem.InventoryUseItemInputData;
 import use_case.InventoryUseItem.InventoryUseItemInputBoundary;
 
-public class InventoryUseItem_Controller {
+public class InventoryUseItemController {
 
 private final InventoryUseItemInputBoundary useItemBoundary;
 private User user;
 
-public InventoryUseItem_Controller(InventoryUseItemInputBoundary useItemBoundary, User user) {
+public InventoryUseItemController(InventoryUseItemInputBoundary useItemBoundary, User user) {
     this.useItemBoundary = useItemBoundary;
     this.user = user; }
 

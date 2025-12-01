@@ -2,8 +2,8 @@ package view;
 
 // imports
 import entity.User;
-import interface_adapter.InventoryUseItem.InventoryUseItem_Controller;
-import interface_adapter.InventoryUseItem.InventoryUseItem_ViewModel;
+import interface_adapter.InventoryUseItem.InventoryUseItemController;
+import interface_adapter.InventoryUseItem.InventoryUseItemViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,13 +12,13 @@ import java.beans.PropertyChangeListener;
 
 public class InventoryView extends JPanel implements PropertyChangeListener {
     private final String viewName = "UseItem";
-    private final InventoryUseItem_ViewModel viewModel;
-    private InventoryUseItem_Controller controller;
+    private final InventoryUseItemViewModel viewModel;
+    private InventoryUseItemController controller;
     // ui
     private final JComboBox<String> inventoryDropdown = new JComboBox<>();
     private final JButton useItemButton = new JButton("Use Item");
 
-    public InventoryView(InventoryUseItem_ViewModel viewModel) {
+    public InventoryView(InventoryUseItemViewModel viewModel) {
         this.viewModel = viewModel;
         viewModel.addPropertyChangeListener(this);
 
@@ -46,7 +46,7 @@ public class InventoryView extends JPanel implements PropertyChangeListener {
     }
 
     // set controller
-    public void setController(InventoryUseItem_Controller controller) { this.controller = controller; }
+    public void setController(InventoryUseItemController controller) { this.controller = controller; }
 
     //update dropdown with most recent inventory
     private void updateDropdown() {
