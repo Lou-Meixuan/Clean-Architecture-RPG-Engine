@@ -85,18 +85,18 @@ public class OpenGameInteractor implements OpenGameInputBoundary {
     private final OpenGameDataAccessInterface dataAccess;
     // private final ScreenSwitchBoundary screenSwitcher;
 
-    //    public OpenGameInteractor(OpenGameOutputBoundary presenter,
+//    public OpenGameInteractor(OpenGameOutputBoundary presenter,
 //                              OpenGameDataAccessInterface dataAccess,
 //                              ScreenSwitchBoundary screenSwitcher) {
 //        this.presenter = presenter;
 //        this.dataAccess = dataAccess;
 //        this.screenSwitcher = screenSwitcher;
 //    }
-    public OpenGameInteractor(OpenGameOutputBoundary presenter,
-                              OpenGameDataAccessInterface dataAccess) {
-        this.presenter = presenter;
-        this.dataAccess = dataAccess;
-    }
+public OpenGameInteractor(OpenGameOutputBoundary presenter,
+                          OpenGameDataAccessInterface dataAccess) {
+    this.presenter = presenter;
+    this.dataAccess = dataAccess;
+}
 
 
     @Override

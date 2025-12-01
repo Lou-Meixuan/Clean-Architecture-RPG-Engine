@@ -13,6 +13,7 @@ import interface_adapter.move.MovePresenter;
 import interface_adapter.move.MoveViewModel;
 import interface_adapter.opengame.OpenGameController;
 import interface_adapter.opengame.OpenGamePresenter;
+import interface_adapter.opengame.OpenGameScreenSwitcher;
 import interface_adapter.opengame.OpenGameViewModel;
 import interface_adapter.quiz.*;
 import interface_adapter.results.ResultsViewModel;
