@@ -8,20 +8,33 @@ import data_access.InMemoryQuizDataAccessObject;
 import interface_adapter.Battle.BattleController;
 import interface_adapter.Battle.BattlePresenter;
 import interface_adapter.Battle.BattleViewModel;
+import interface_adapter.ShowResults.ShowResultsController;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.move.MoveController;
 import interface_adapter.move.MovePresenter;
 import interface_adapter.move.MoveViewModel;
 import interface_adapter.opengame.OpenGameViewModel;
+import interface_adapter.quiz.LoadQuizPresenter;
+import interface_adapter.quiz.QuizController;
+import interface_adapter.quiz.QuizPresenter;
 import interface_adapter.quiz.QuizViewModel;
-import interface_adapter.result.ResultViewModel;
-import interface_adapter.results.ResultsViewModel;
+import interface_adapter.ShowResults.ShowResultsViewModel;
+import interface_adapter.ShowResults.ShowResultsPresenter;
 import use_case.Battle.BattleInputBoundary;
 import use_case.Battle.BattleInteractor;
 import use_case.Battle.BattleOutputBoundary;
+import use_case.loadQuiz.LoadQuizInputBoundary;
+import use_case.loadQuiz.LoadQuizInteractor;
+import use_case.loadQuiz.LoadQuizOutputBoundary;
 import use_case.move.MoveInputBoundary;
 import use_case.move.MoveInteractor;
 import use_case.move.MoveOutputBoundary;
+import use_case.quiz.SubmitQuizInputBoundary;
+import use_case.quiz.SubmitQuizInteractor;
+import use_case.quiz.SubmitQuizOutputBoundary;
+import use_case.show_results.ShowResultsInputBoundary;
+import use_case.show_results.ShowResultsInteractor;
+import use_case.show_results.ShowResultsOutputBoundary;
 import view.*;
 
 import javax.swing.*;
@@ -46,15 +59,18 @@ public class AppBuilder {
 
     private BattleView battleView;
     private BattleViewModel battleViewModel;
+
     private MoveView moveView;
     private MoveViewModel moveViewModel;
+
     private OpenGameView openGameView;
     private OpenGameViewModel openGameViewModel;
+
     private QuizView quizView;
     private QuizViewModel quizViewModel;
-    private ResultsView resultsView;
-    private ResultsViewModel resultsViewModel;
-    private ResultScreenView resultScreenView;
+
+    private ShowResultsView showResultsView;
+    private ShowResultsViewModel showResultsViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -88,10 +104,10 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addResultsView() {
-        resultsViewModel = new ResultsViewModel();
-        resultsView = new ResultsView(resultsViewModel);
-        cardPanel.add(resultsView, resultsView.getViewName());
+    public AppBuilder addShowResultsView() {
+        showResultsViewModel = new ShowResultsViewModel();
+        showResultsView = new ShowResultsView(showResultsViewModel);
+        cardPanel.add(showResultsView, showResultsView.getViewName());
         return this;
     }
 
@@ -122,10 +138,25 @@ public class AppBuilder {
     }
 
     public AppBuilder addQuizUseCase() {
+        final LoadQuizOutputBoundary loadQuizOutputBoundary = new LoadQuizPresenter(quizViewModel);
+        final SubmitQuizOutputBoundary submitQuizOutputBoundary = new QuizPresenter(
+                quizViewModel, battleViewModel, viewManagerModel);
+        final LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(
+                quizDataAccess, loadQuizOutputBoundary);
+        final SubmitQuizInputBoundary submitQuizInteractor = new SubmitQuizInteractor(
+                quizDataAccess, submitQuizOutputBoundary);
+
+        QuizController controller = new QuizController(submitQuizInteractor, loadQuizInteractor);
+        quizView.setQuizController(controller);
         return this;
     }
 
-    public AppBuilder addResultsUseCase() {
+    public AppBuilder addShowResultsUseCase() {
+        final ShowResultsOutputBoundary showResultsOutputBoundary = new ShowResultsPresenter(showResultsViewModel);
+        final ShowResultsInputBoundary showResultsInteractor = new ShowResultsInteractor(
+                gameDataAccess, showResultsOutputBoundary);
+
+        ShowResultsController controller = new ShowResultsController(showResultsInteractor);
         return this;
     }
 
@@ -134,13 +165,12 @@ public class AppBuilder {
     }
 
     public JFrame build() {
-        final JFrame application = new JFrame("Java Adventure Game");
+        final JFrame application = new JFrame("User Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
 
-        // TODO: add view name
-        // viewManagerModel.setState(openGameView.getViewName());
+        //viewManagerModel.setState(OpenGameView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;
