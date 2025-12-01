@@ -22,6 +22,8 @@ import interface_adapter.quiz.QuizController;
 import interface_adapter.quiz.QuizViewModel;
 import interface_adapter.quiz.SubmitQuizPresenter;
 import interface_adapter.results.ResultsViewModel;
+import interface_adapter.results.ShowResultsController;
+import interface_adapter.results.ShowResultsPresenter;
 import use_case.Battle.BattleInputBoundary;
 import use_case.Battle.BattleInteractor;
 import use_case.Battle.BattleOutputBoundary;
@@ -35,6 +37,9 @@ import use_case.openGame.*;
 import use_case.quiz.SubmitQuizInputBoundary;
 import use_case.quiz.SubmitQuizInteractor;
 import use_case.quiz.SubmitQuizOutputBoundary;
+import use_case.show_results.ShowResultsInputBoundary;
+import use_case.show_results.ShowResultsInteractor;
+import use_case.show_results.ShowResultsOutputBoundary;
 import view.*;
 
 import javax.swing.*;
@@ -157,10 +162,12 @@ public class AppBuilder {
     }
 
     public AppBuilder addResultsUseCase() {
-        return this;
-    }
+        final ShowResultsOutputBoundary showResultsOutputBoundary = new ShowResultsPresenter(resultsViewModel);
+        final ShowResultsInputBoundary showResultsInteractor = new ShowResultsInteractor(
+                gameDataAccess, showResultsOutputBoundary);
 
-    public AppBuilder addResultScreenUseCase() {
+        ShowResultsController controller = new ShowResultsController(showResultsInteractor);
+        //resultsView.set(controller);
         return this;
     }
 
@@ -170,8 +177,7 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-        // TODO: add view name
-        // viewManagerModel.setState(openGameView.getViewName());
+        viewManagerModel.setState(openGameView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;

@@ -1,0 +1,44 @@
+{
+    "pathHistory": [
+        0,
+        1
+    ],
+    "user": {
+        "DEF": 0,
+        "alive": true,
+        "bonusHP": 0,
+        "HP": 23,
+        "inventory": {
+            "items": [],
+            "empty": true
+        },
+        "DMG": 8
+    },
+    "gameMap": {
+        "currentLocationIndex": 1,
+        "locations": [
+            {
+                "latitude": 43.6594,
+                "name": "Bahen Centre for Information Technology",
+                "longitude": -79.3981,
+                "monster": null
+            },
+            {
+                "latitude": 43.6606,
+                "name": "Myhal Centre For Engineering Innovation & Entrepreneurship",
+                "longitude": -79.3966,
+                "monster": {
+                    "name": "Tiefling",
+                    "hp": 20,
+                    "active": true
+                }
+            },
+            {
+                "latitude": 43.6624,
+                "name": "Gerstein Science Information Centre",
+                "longitude": -79.394,
+                "monster": null
+            }
+        ]
+    }
+}
