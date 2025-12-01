@@ -1,7 +1,6 @@
 package app.opening_game;
 
 import data_access.OpenGameFileDataAccess;
-import interface_adapter.ViewManagerModel;
 import interface_adapter.opengame.OpenGameController;
 import interface_adapter.opengame.OpenGamePresenter;
 import interface_adapter.opengame.OpenGameViewModel;
@@ -14,17 +13,13 @@ import view.OpenGameView;
 
 public class OpenGameUseCaseFactory {
 
-    public static OpenGameView create(
-            ScreenSwitchBoundary switcher,
-            ViewManagerModel viewManagerModel   // <-- FIX: we now require this
-    ) {
+    public static OpenGameView create(ScreenSwitchBoundary switcher) {
 
         // 1. Create ViewModel
         OpenGameViewModel viewModel = new OpenGameViewModel();
 
         // 2. Create Presenter
-        OpenGameOutputBoundary presenter =
-                new OpenGamePresenter(viewModel, viewManagerModel);
+        OpenGameOutputBoundary presenter = new OpenGamePresenter(viewModel);
 
         // 3. Create Data Access
         OpenGameDataAccessInterface dataAccess =
