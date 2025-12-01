@@ -2,7 +2,10 @@ package app;
 
 import API.GeoapifyStaticMap;
 import API.MoveStaticMapInterface;
-import data_access.*;
+import data_access.FileGameDataAccessObject;
+import data_access.InMemoryBattleDataAccess;
+import data_access.InMemoryQuizDataAccessObject;
+import data_access.QuizzesReader;
 import entity.*;
 import interface_adapter.Battle.BattleController;
 import interface_adapter.Battle.BattlePresenter;
@@ -12,10 +15,6 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.move.MoveController;
 import interface_adapter.move.MovePresenter;
 import interface_adapter.move.MoveViewModel;
-import interface_adapter.opengame.OpenGameController;
-import interface_adapter.opengame.OpenGamePresenter;
-import interface_adapter.opengame.OpenGameScreenSwitcher;
-import interface_adapter.opengame.OpenGameViewModel;
 import interface_adapter.quiz.*;
 import interface_adapter.results.ResultsViewModel;
 import interface_adapter.results.ShowResultsController;
@@ -27,13 +26,15 @@ import use_case.loadQuiz.LoadQuizOutputBoundary;
 import use_case.move.MoveInputBoundary;
 import use_case.move.MoveInteractor;
 import use_case.move.MoveOutputData;
-import use_case.openGame.*;
 import use_case.quiz.SubmitQuizInputBoundary;
 import use_case.quiz.SubmitQuizInteractor;
 import use_case.quiz.SubmitQuizOutputBoundary;
 import use_case.show_results.ShowResultsInputBoundary;
 import use_case.show_results.ShowResultsInteractor;
-import view.*;
+import view.BattleView;
+import view.MoveView;
+import view.QuizView;
+import view.ResultsView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,30 +58,11 @@ public class MoveTestApp {
 
         ViewManagerModel viewManagerModel = new ViewManagerModel();
 
-        OpenGameViewModel openGameViewModel = new OpenGameViewModel();
         BattleViewModel battleViewModel = new BattleViewModel();
         QuizViewModel quizViewModel = new QuizViewModel();
         InMemoryQuizDataAccessObject repo = new InMemoryQuizDataAccessObject();
         FileGameDataAccessObject gameDataAccess = new FileGameDataAccessObject();
         System.out.println(gameDataAccess.getGame().getUser().getHP());
-
-        ScreenSwitchBoundary openGameScreenSwitcher =
-                new OpenGameScreenSwitcher(viewManagerModel);
-
-        OpenGameOutputBoundary openGamePresenter =
-                new OpenGamePresenter(openGameViewModel, viewManagerModel);
-
-        OpenGameDataAccessInterface openGameDAO =
-                new OpenGameFileDataAccess("userdata.json");
-
-        OpenGameInputBoundary openGameInteractor =
-                new OpenGameInteractor(openGamePresenter, openGameDAO, openGameScreenSwitcher);
-
-        OpenGameController openGameController =
-                new OpenGameController(openGameInteractor);
-
-        OpenGameView openGameView =
-                new OpenGameView(openGameController, openGameViewModel);
 
         BattlePresenter battlePresenter = new BattlePresenter(battleViewModel, viewManagerModel);
 
@@ -127,7 +109,6 @@ public class MoveTestApp {
         ResultsView resultsView = new ResultsView(resultsViewModel);
 
 
-        views.add(openGameView, openGameView.getViewName());
         views.add(moveView, moveView.getViewName());
         views.add(resultsView, resultsView.getViewName());
         views.add(battleView, "Battle");
@@ -150,8 +131,6 @@ public class MoveTestApp {
                 }
             }
         });
-        viewManagerModel.setState("OpenGame");
-        viewManagerModel.firePropertyChange();
 
 
         moveView.getEndGameButton().addActionListener(e -> {
