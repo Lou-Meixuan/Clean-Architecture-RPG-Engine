@@ -9,7 +9,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-public class FileGameDataAccessObject implements MoveGameDataAccessInterface, ShowResultsGameDataAccessInterface, BattleUserDataAccessInterface {
+public class FileGameDataAccessObject implements MoveGameDataAccessInterface,
+        ShowResultsGameDataAccessInterface, BattleUserDataAccessInterface {
 
     // Battle state tracking
     private User userBeforeBattle;
