@@ -3,8 +3,7 @@ package app;
 import API.GeoapifyStaticMap;
 import API.MoveStaticMapInterface;
 import data_access.FileGameDataAccessObject;
-import data_access.InMemoryQuizDataAccessObject;
-import data_access.OpenGameFileDataAccess;
+import data_access.QuizzesReader;
 import interface_adapter.Battle.BattleController;
 import interface_adapter.Battle.BattlePresenter;
 import interface_adapter.Battle.BattleViewModel;
@@ -16,10 +15,7 @@ import interface_adapter.opengame.OpenGameController;
 import interface_adapter.opengame.OpenGamePresenter;
 import interface_adapter.opengame.OpenGameScreenSwitcher;
 import interface_adapter.opengame.OpenGameViewModel;
-import interface_adapter.quiz.LoadQuizPresenter;
-import interface_adapter.quiz.QuizController;
-import interface_adapter.quiz.QuizViewModel;
-import interface_adapter.quiz.SubmitQuizPresenter;
+import interface_adapter.quiz.*;
 import interface_adapter.results.ResultsViewModel;
 import interface_adapter.results.ShowResultsController;
 import interface_adapter.results.ShowResultsPresenter;
@@ -56,8 +52,6 @@ public class AppBuilder {
 
     // DAO version using local file storage
     private final FileGameDataAccessObject gameDataAccess = new FileGameDataAccessObject();
-    private final InMemoryQuizDataAccessObject quizDataAccess = new InMemoryQuizDataAccessObject();
-    private final OpenGameDataAccessInterface openGameDAO = new OpenGameFileDataAccess("userdata.json");
 
     // DAO version using a shared external database
     // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
@@ -138,7 +132,7 @@ public class AppBuilder {
         final ScreenSwitchBoundary openGameScreenSwitcher = new OpenGameScreenSwitcher(viewManagerModel);
         final OpenGameOutputBoundary openGameOutputBoundary = new OpenGamePresenter(
                 openGameViewModel, viewManagerModel);
-        final OpenGameInputBoundary openGameInteractor = new OpenGameInteractor(openGameOutputBoundary, openGameDAO ,
+        final OpenGameInputBoundary openGameInteractor = new OpenGameInteractor(openGameOutputBoundary, gameDataAccess ,
                 openGameScreenSwitcher);
 
         OpenGameController controller = new OpenGameController(openGameInteractor);
@@ -149,14 +143,17 @@ public class AppBuilder {
     public AppBuilder addQuizUseCase() {
         final LoadQuizOutputBoundary loadQuizOutputBoundary = new LoadQuizPresenter(quizViewModel);
         final LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(
-                quizDataAccess, loadQuizOutputBoundary);
+                gameDataAccess, loadQuizOutputBoundary);
         final SubmitQuizOutputBoundary submitQuizOutputBoundary = new SubmitQuizPresenter(
                 quizViewModel, battleViewModel, viewManagerModel);
         final SubmitQuizInputBoundary submitQuizInteractor = new SubmitQuizInteractor(
-                quizDataAccess, submitQuizOutputBoundary);
+                gameDataAccess, submitQuizOutputBoundary);
 
         QuizController controller = new QuizController(submitQuizInteractor, loadQuizInteractor);
         quizView.setQuizController(controller);
+        new QuizzesReader().loadQuizzes(gameDataAccess);
+        QuizState quizState = new QuizState();
+        quizView.loadQuiz(quizState.setQuizId());
         return this;
     }
 

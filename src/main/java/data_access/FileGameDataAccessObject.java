@@ -3,14 +3,20 @@ package data_access;
 import entity.*;
 import use_case.Battle.BattleUserDataAccessInterface;
 import use_case.move.MoveGameDataAccessInterface;
+import use_case.openGame.OpenGameDataAccessInterface;
+import use_case.quiz.QuizDataAccessInterface;
 import use_case.show_results.ShowResultsGameDataAccessInterface;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class FileGameDataAccessObject implements MoveGameDataAccessInterface, ShowResultsGameDataAccessInterface, BattleUserDataAccessInterface {
+public class FileGameDataAccessObject implements MoveGameDataAccessInterface,
+        ShowResultsGameDataAccessInterface, BattleUserDataAccessInterface,
+        QuizDataAccessInterface, OpenGameDataAccessInterface {
 
     // Battle state tracking
     private User userBeforeBattle;
@@ -21,6 +27,7 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface, Sh
     private AdventureGame game;
     private final FileDataAccess fileDataAccess;
     private static final String FILE_PATH = "userdata.json";
+    private final Map<Integer, Quiz> store = new HashMap<>();
 
     public FileGameDataAccessObject() {
         this.fileDataAccess = new FileDataAccess();
@@ -83,8 +90,7 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface, Sh
         startNewGame();
     }
 
-    // BattleUserDataAccessInterface implementation
-
+    // ==================== BattleUserDataAccessInterface ====================
     @Override
     public void save(User user, Monster monster) {
         // If this is the first save (before battle starts)
@@ -181,5 +187,62 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface, Sh
             e.printStackTrace();
         }
         return clone;
+    }
+
+    // ==================== QuizUserDataAccessInterface ====================
+    @Override
+    public Quiz findById(int quizId) {
+        return store.get(quizId);
+    }
+
+    @Override
+    public void save(Quiz quiz) {
+        store.put(quiz.getQuizId(), quiz);
+    }
+
+    // helper for preloading quizzes during tests
+    public void put(Quiz quiz) {
+        save(quiz);
+    }
+
+    // ==================== OpenGameDataAccessInterface ====================
+
+    @Override
+    public GameState loadGame() {
+        if (this.game != null) {
+            String currentLocation = game.getGameMap().getCurrentLocation().getName();
+            String finalDestination = currentLocation;
+
+            try {
+                Field locationsField = GameMap.class.getDeclaredField("locations");
+                locationsField.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                List<Location> locations = (List<Location>) locationsField.get(game.getGameMap());
+                if (!locations.isEmpty()) {
+                    finalDestination = locations.get(locations.size() - 1).getName();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return new GameState(currentLocation, finalDestination);
+        }
+        return null;
+    }
+
+    @Override
+    public void saveGame(GameState state) {
+
+    }
+
+    @Override
+    public boolean saveFileExists() {
+        File file = new File(FILE_PATH);
+        return file.exists() && file.length() > 0;
+    }
+
+    @Override
+    public void deleteSaveFile() {
+        clearGameData();
     }
 }

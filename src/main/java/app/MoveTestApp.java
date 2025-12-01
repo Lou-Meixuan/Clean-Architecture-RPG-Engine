@@ -60,7 +60,6 @@ public class MoveTestApp {
         OpenGameViewModel openGameViewModel = new OpenGameViewModel();
         BattleViewModel battleViewModel = new BattleViewModel();
         QuizViewModel quizViewModel = new QuizViewModel();
-        InMemoryQuizDataAccessObject repo = new InMemoryQuizDataAccessObject();
         FileGameDataAccessObject gameDataAccess = new FileGameDataAccessObject();
         System.out.println(gameDataAccess.getGame().getUser().getHP());
 
@@ -70,11 +69,8 @@ public class MoveTestApp {
         OpenGameOutputBoundary openGamePresenter =
                 new OpenGamePresenter(openGameViewModel, viewManagerModel);
 
-        OpenGameDataAccessInterface openGameDAO =
-                new OpenGameFileDataAccess("userdata.json");
-
         OpenGameInputBoundary openGameInteractor =
-                new OpenGameInteractor(openGamePresenter, openGameDAO, openGameScreenSwitcher);
+                new OpenGameInteractor(openGamePresenter, gameDataAccess, openGameScreenSwitcher);
 
         OpenGameController openGameController =
                 new OpenGameController(openGameInteractor);
@@ -94,8 +90,8 @@ public class MoveTestApp {
         SubmitQuizOutputBoundary submitQuizPresenter = new SubmitQuizPresenter(quizViewModel, battleViewModel, viewManagerModel);
 
         // Create Interactors (Use Cases)
-        LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(repo, loadQuizPresenter);
-        SubmitQuizInputBoundary submitQuizInteractor = new SubmitQuizInteractor(repo, submitQuizPresenter);
+        LoadQuizInputBoundary loadQuizInteractor = new LoadQuizInteractor(gameDataAccess, loadQuizPresenter);
+        SubmitQuizInputBoundary submitQuizInteractor = new SubmitQuizInteractor(gameDataAccess, submitQuizPresenter);
 
         // Create Controller (inject BOTH interactors)
         QuizController quizController = new QuizController(submitQuizInteractor, loadQuizInteractor);
@@ -104,7 +100,7 @@ public class MoveTestApp {
         battleView.setBattleController(battleController);
         QuizView quizView = new QuizView(quizViewModel);
         quizView.setQuizController(quizController);
-        new QuizzesReader().loadQuizzes(repo);
+        new QuizzesReader().loadQuizzes(gameDataAccess);
         QuizState quizState = new QuizState();
         quizView.loadQuiz(quizState.setQuizId());
 
