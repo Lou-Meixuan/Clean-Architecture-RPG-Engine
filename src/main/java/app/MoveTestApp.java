@@ -56,9 +56,6 @@ public class MoveTestApp {
         JPanel views = new JPanel(cardLayout);
 
         ViewManagerModel viewManagerModel = new ViewManagerModel();
-
-        MoveViewModel moveViewModel = new MoveViewModel();
-
         OpenGameViewModel openGameViewModel = new OpenGameViewModel();
 
         BattleViewModel battleViewModel = new BattleViewModel();
@@ -69,8 +66,6 @@ public class MoveTestApp {
 //        OpenGameOutputBoundary openGamePresenter =
 //                new OpenGamePresenter(openGameViewModel, viewManagerModel);
 
-        ScreenSwitchBoundary openGameScreenSwitcher =
-                new OpenGameScreenSwitcher(moveViewModel, viewManagerModel);
 
         OpenGameOutputBoundary openGamePresenter =
                 new OpenGamePresenter(openGameViewModel, viewManagerModel);
@@ -89,6 +84,8 @@ public class MoveTestApp {
 
         FileGameDataAccessObject gameDataAccess = new FileGameDataAccessObject();
         System.out.println(gameDataAccess.getGame().getUser().getHP());
+
+        MoveViewModel moveViewModel = new MoveViewModel();
 
         BattlePresenter battlePresenter = new BattlePresenter(battleViewModel, moveViewModel, viewManagerModel);
 

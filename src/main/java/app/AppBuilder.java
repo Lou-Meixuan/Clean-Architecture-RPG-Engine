@@ -129,10 +129,10 @@ public class AppBuilder {
     }
 
     public AppBuilder addOpenGameUseCase() {
-        final ScreenSwitchBoundary openGameScreenSwitcher = new OpenGameScreenSwitcher(moveViewModel, viewManagerModel);
+        final ScreenSwitchBoundary openGameScreenSwitcher = new OpenGameScreenSwitcher(viewManagerModel);
         final OpenGameOutputBoundary openGameOutputBoundary = new OpenGamePresenter(
                 openGameViewModel, viewManagerModel);
-        final OpenGameInputBoundary openGameInteractor = new OpenGameInteractor(openGameOutputBoundary, gameDataAccess,
+        final OpenGameInputBoundary openGameInteractor = new OpenGameInteractor(openGameOutputBoundary, gameDataAccess ,
                 openGameScreenSwitcher);
 
         OpenGameController controller = new OpenGameController(openGameInteractor);
