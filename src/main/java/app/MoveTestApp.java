@@ -85,9 +85,7 @@ public class MoveTestApp {
         FileGameDataAccessObject gameDataAccess = new FileGameDataAccessObject();
         System.out.println(gameDataAccess.getGame().getUser().getHP());
 
-        MoveViewModel moveViewModel = new MoveViewModel();
-
-        BattlePresenter battlePresenter = new BattlePresenter(battleViewModel, moveViewModel, viewManagerModel);
+        BattlePresenter battlePresenter = new BattlePresenter(battleViewModel, viewManagerModel);
 
         BattleInteractor battleInteractor = new BattleInteractor(gameDataAccess, battlePresenter);
 
@@ -113,6 +111,7 @@ public class MoveTestApp {
         QuizState quizState = new QuizState();
         quizView.loadQuiz(quizState.setQuizId());
 
+        MoveViewModel moveViewModel = new MoveViewModel();
         ResultsViewModel resultsViewModel = new ResultsViewModel();
 
         MoveStaticMapInterface mapService = new GeoapifyStaticMap();
