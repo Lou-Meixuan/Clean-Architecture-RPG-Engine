@@ -1,17 +1,27 @@
 package app;
 
+import API.GeoapifyStaticMap;
+import API.MoveStaticMapInterface;
 import data_access.FileGameDataAccessObject;
 import data_access.InMemoryBattleDataAccess;
 import data_access.InMemoryQuizDataAccessObject;
-import interface_adapter.Battle.Battle_Controller;
+import interface_adapter.Battle.BattleController;
 import interface_adapter.Battle.BattlePresenter;
 import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.move.MoveController;
+import interface_adapter.move.MovePresenter;
 import interface_adapter.move.MoveViewModel;
 import interface_adapter.opengame.OpenGameViewModel;
 import interface_adapter.quiz.QuizViewModel;
+import interface_adapter.result.ResultViewModel;
 import interface_adapter.results.ResultsViewModel;
+import use_case.Battle.BattleInputBoundary;
+import use_case.Battle.BattleInteractor;
 import use_case.Battle.BattleOutputBoundary;
+import use_case.move.MoveInputBoundary;
+import use_case.move.MoveInteractor;
+import use_case.move.MoveOutputBoundary;
 import view.*;
 
 import javax.swing.*;
@@ -85,24 +95,25 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addResultScreenView() {
-        resultsViewModel = new ResultsViewModel();
-        // resultScreenView = new ResultScreenView(resultsViewModel);
-        // cardPanel.add(resultScreenView, resultScreenView.getViewName());
-        return this;
-    }
-
     public AppBuilder addBattleUseCase() {
-        final BattleOutputBoundary signupOutputBoundary = new BattlePresenter(battleViewModel, viewManagerModel);
-        //final Battle_InputBoundary battleInteractor = new Battle_Interactor(
-        //        userDataAccessObject, signupOutputBoundary);
+        final BattleOutputBoundary battleOutputBoundary = new BattlePresenter(battleViewModel, viewManagerModel);
+        final BattleInputBoundary battleInteractor = new BattleInteractor(
+                battleDataAccess, battleOutputBoundary);
 
-        //Battle_Controller controller = new Battle_Controller(battleInteractor);
-        // battleView.setBattleController(controller);
+        BattleController controller = new BattleController(battleInteractor, quizViewModel);
+        battleView.setBattleController(controller);
         return this;
     }
 
     public AppBuilder addMoveUseCase() {
+        MoveStaticMapInterface mapService = new GeoapifyStaticMap();
+        final MoveOutputBoundary moveOutputBoundary = new MovePresenter(viewManagerModel, moveViewModel,
+                mapService, battleViewModel);
+        final MoveInputBoundary moveInteractor = new MoveInteractor(
+                gameDataAccess, moveOutputBoundary);
+
+        MoveController controller = new MoveController(moveInteractor);
+        moveView.setMoveController(controller);
         return this;
     }
 
