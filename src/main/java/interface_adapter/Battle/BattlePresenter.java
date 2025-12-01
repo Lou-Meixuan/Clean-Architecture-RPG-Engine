@@ -1,6 +1,8 @@
 package interface_adapter.Battle;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.move.MoveState;
+import interface_adapter.move.MoveViewModel;
 import use_case.Battle.BattleOutputBoundary;
 import use_case.Battle.BattleOutputData;
 
@@ -11,11 +13,12 @@ import use_case.Battle.BattleOutputData;
 public class BattlePresenter implements BattleOutputBoundary {
     private final BattleViewModel battleViewModel;
     private final ViewManagerModel viewManagerModel;
-    // private final MoveViewModel moveViewModel;
+    private final MoveViewModel moveViewModel;
 
-    public BattlePresenter(BattleViewModel battleViewModel, ViewManagerModel viewManagerModel) {
+    public BattlePresenter(BattleViewModel battleViewModel, MoveViewModel moveViewModel, ViewManagerModel viewManagerModel) {
         this.battleViewModel = battleViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.moveViewModel = moveViewModel;
     }
 
     /**
@@ -109,6 +112,10 @@ public class BattlePresenter implements BattleOutputBoundary {
         // switch to a different view after a delay
         viewManagerModel.setState("move");
         viewManagerModel.firePropertyChange();
+
+        MoveState moveState = moveViewModel.getState();
+        moveState.setNeedUpdate(true);
+        moveViewModel.firePropertyChange();
     }
 
     /**

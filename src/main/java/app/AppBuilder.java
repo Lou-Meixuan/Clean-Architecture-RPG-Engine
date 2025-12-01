@@ -107,7 +107,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addBattleUseCase() {
-        final BattleOutputBoundary battleOutputBoundary = new BattlePresenter(battleViewModel, viewManagerModel);
+        final BattleOutputBoundary battleOutputBoundary = new BattlePresenter(battleViewModel, moveViewModel, viewManagerModel);
         final BattleInputBoundary battleInteractor = new BattleInteractor(
                 gameDataAccess, battleOutputBoundary);
 

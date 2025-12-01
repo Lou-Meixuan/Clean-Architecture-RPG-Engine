@@ -5,6 +5,9 @@ import entity.Monster;
 import entity.User;
 
 public interface BattleUserDataAccessInterface {
+
+    void loadGameData();
+
     /**
      * saved the user and the monster
      */
@@ -43,5 +46,4 @@ public interface BattleUserDataAccessInterface {
     void resetBattleState();
 
     void restoreUserToBeforeBattle();
-
 }

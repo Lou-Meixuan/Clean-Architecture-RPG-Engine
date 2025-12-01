@@ -74,6 +74,11 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface,
     }
 
     @Override
+    public void loadGameData() {
+        this.game = fileDataAccess.load(AdventureGame.class);
+    }
+
+    @Override
     public void clearGameData() {
         File file = new File(FILE_PATH);
         System.out.println("Attempting to clear game data...");

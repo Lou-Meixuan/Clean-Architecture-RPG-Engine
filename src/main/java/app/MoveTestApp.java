@@ -79,7 +79,9 @@ public class MoveTestApp {
 
         openGameView.setOpenGameController(openGameController);
 
-        BattlePresenter battlePresenter = new BattlePresenter(battleViewModel, viewManagerModel);
+        MoveViewModel moveViewModel = new MoveViewModel();
+
+        BattlePresenter battlePresenter = new BattlePresenter(battleViewModel, moveViewModel, viewManagerModel);
 
         BattleInteractor battleInteractor = new BattleInteractor(gameDataAccess, battlePresenter);
 
@@ -104,7 +106,6 @@ public class MoveTestApp {
         QuizState quizState = new QuizState();
         quizView.loadQuiz(quizState.setQuizId());
 
-        MoveViewModel moveViewModel = new MoveViewModel();
         ResultsViewModel resultsViewModel = new ResultsViewModel();
         MoveStaticMapInterface mapService = new GeoapifyStaticMap();
 
