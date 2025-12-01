@@ -1,10 +1,8 @@
 package use_case.Battle;
 
-import entity.AdventureGame;
-import entity.Location;
-import entity.Monster;
-import entity.Spells;
-import entity.User;
+import entity.*;
+
+import java.util.List;
 
 public class BattleInteractor implements BattleInputBoundary {
     private final BattleUserDataAccessInterface userDataAccessObject;
@@ -29,6 +27,10 @@ public class BattleInteractor implements BattleInputBoundary {
         final Monster monster = inputData.getMonster();
         final boolean resultOfQuiz = inputData.getResultOfQuiz();
 
+        if (userDataAccessObject.getUserBeforeBattle() == null) {
+            userDataAccessObject.save(user, monster);
+        }
+
         // User's turn
         UserTurn(user, monster, resultOfQuiz);
         // Prepare final output
@@ -42,6 +44,7 @@ public class BattleInteractor implements BattleInputBoundary {
 
             // Save the game state so defeated monsters don't respawn
             userDataAccessObject.saveGame(game);
+            userDataAccessObject.resetBattleState();
 
             battlePresenter.prepareWinView(output);
             return;
@@ -52,6 +55,32 @@ public class BattleInteractor implements BattleInputBoundary {
         output = new BattleOutputData(user, monster);
         // Present final result
         if (!user.isAlive()) {
+            userDataAccessObject.restoreUserToBeforeBattle();
+            // go back the last location
+            AdventureGame game = userDataAccessObject.getGame();
+            List<Location> path = game.getPathHistory();
+            if (path.size() > 1) {
+                path.remove(path.size() - 1);  // 移除当前位置
+                // 使用反射设置 currentLocationIndex
+                int previousIndex = path.size() - 1;
+                try {
+                    java.lang.reflect.Field indexField = GameMap.class.getDeclaredField("currentLocationIndex");
+                    indexField.setAccessible(true);
+                    indexField.setInt(game.getGameMap(), previousIndex);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // 保存游戏状态（玩家回到之前位置，HP恢复）
+            userDataAccessObject.saveGame(game);
+
+            // 重置战斗状态，为下次战斗做准备
+            userDataAccessObject.resetBattleState();
+
+            // 更新 output 以反映恢复后的状态
+            output = new BattleOutputData(user, monster);
+
             battlePresenter.prepareLossView(output);
         }
     }

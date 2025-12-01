@@ -40,4 +40,8 @@ public interface BattleUserDataAccessInterface {
      */
     void saveGame(AdventureGame game);
 
+    void resetBattleState();
+
+    void restoreUserToBeforeBattle();
+
 }

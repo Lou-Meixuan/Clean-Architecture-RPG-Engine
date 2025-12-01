@@ -6,6 +6,7 @@ import use_case.move.MoveGameDataAccessInterface;
 import use_case.show_results.ShowResultsGameDataAccessInterface;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,12 +89,15 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface, Sh
     public void save(User user, Monster monster) {
         // If this is the first save (before battle starts)
         if (userBeforeBattle == null) {
-            userBeforeBattle = user;
-            monsterBeforeBattle = monster;
+            userBeforeBattle = cloneUser(user);
+            monsterBeforeBattle = cloneMonster(monster);
+            System.out.println("=== BATTLE STATE SAVED ===");
+            System.out.println("Saved User HP: " + (userBeforeBattle != null ? userBeforeBattle.getHP() : "null"));
+            System.out.println("Saved Monster HP: " + (monsterBeforeBattle != null ? monsterBeforeBattle.getHP() : "null"));
         }
-        // Always update the "after" state
-        userAfterBattle = user;
-        monsterAfterBattle = monster;
+        // Always update the "after" state with deep copy
+        userAfterBattle = cloneUser(user);
+        monsterAfterBattle = cloneMonster(monster);
     }
 
     @Override
@@ -114,5 +118,68 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface, Sh
     @Override
     public Monster getMonsterAfterBattle() {
         return monsterAfterBattle;
+    }
+
+
+    public void resetBattleState() {
+        userBeforeBattle = null;
+        userAfterBattle = null;
+        monsterBeforeBattle = null;
+        monsterAfterBattle = null;
+    }
+
+    @Override
+    public void restoreUserToBeforeBattle() {
+        System.out.println("=== RESTORING USER ===");
+        System.out.println("userBeforeBattle: " + (userBeforeBattle != null ? "exists, HP=" + userBeforeBattle.getHP() : "null"));
+        System.out.println("game: " + (game != null ? "exists" : "null"));
+
+        if (userBeforeBattle != null && game != null) {
+            User currentUser = game.getUser();
+            System.out.println("currentUser before restore: HP=" + currentUser.getHP());
+            copyUserFields(userBeforeBattle, currentUser);
+            System.out.println("currentUser after restore: HP=" + currentUser.getHP());
+        }
+    }
+
+    private User cloneUser(User user) {
+        if (user == null) return null;
+
+        User clone = new User();
+        copyUserFields(user, clone);
+        return clone;
+    }
+
+
+    private void copyUserFields(User source, User target) {
+        try {
+            for (Field field : User.class.getDeclaredFields()) {
+                field.setAccessible(true);
+                Object value = field.get(source);
+                field.set(target, value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private Monster cloneMonster(Monster monster) {
+        if (monster == null) return null;
+
+        Monster clone = new Monster();
+        try {
+            // clone HP
+            Field hpField = Monster.class.getDeclaredField("HP");
+            hpField.setAccessible(true);
+            hpField.set(clone, hpField.get(monster));
+
+            // clone NAME
+            clone.NAME = monster.NAME;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return clone;
     }
 }

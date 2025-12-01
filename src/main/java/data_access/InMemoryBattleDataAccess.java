@@ -5,6 +5,8 @@ import entity.Monster;
 import entity.User;
 import use_case.Battle.BattleUserDataAccessInterface;
 
+import java.lang.reflect.Field;
+
 /**
  * In-Memory implementation of BattleUserDataAccessInterface.
  * Stores battle state in memory during the battle.
@@ -32,7 +34,7 @@ public class InMemoryBattleDataAccess implements BattleUserDataAccessInterface {
     }
 
     /**
-     * Saves the current state of user and monster.
+     * Saves the current state of user and monster using deep copy.
      * This creates a snapshot of the current battle state.
      */
     @Override
@@ -41,9 +43,11 @@ public class InMemoryBattleDataAccess implements BattleUserDataAccessInterface {
         if (userBeforeBattle == null) {
             userBeforeBattle = cloneUser(user);
             monsterBeforeBattle = cloneMonster(monster);
+            System.out.println("=== BATTLE STATE SAVED ===");
+            System.out.println("Saved User HP: " + (userBeforeBattle != null ? userBeforeBattle.getHP() : "null"));
+            System.out.println("Saved Monster HP: " + (monsterBeforeBattle != null ? monsterBeforeBattle.getHP() : "null"));
         }
-
-        // Always update the "after" state
+        // Always update the "after" state with deep copy
         userAfterBattle = cloneUser(user);
         monsterAfterBattle = cloneMonster(monster);
     }
@@ -83,7 +87,8 @@ public class InMemoryBattleDataAccess implements BattleUserDataAccessInterface {
     /**
      * Resets the battle state (for starting a new battle).
      */
-    public void reset() {
+    @Override
+    public void resetBattleState() {
         userBeforeBattle = null;
         userAfterBattle = null;
         monsterBeforeBattle = null;
@@ -91,27 +96,62 @@ public class InMemoryBattleDataAccess implements BattleUserDataAccessInterface {
     }
 
     /**
-     * Creates a shallow clone of the User.
-     * For a real implementation, we might need deep cloning.
+     * Restores the user to the state before the battle.
+     * Called when the user is defeated by a monster.
+     */
+    @Override
+    public void restoreUserToBeforeBattle() {
+        if (userBeforeBattle != null && gameDataAccess != null) {
+            User currentUser = gameDataAccess.getGame().getUser();
+            copyUserFields(userBeforeBattle, currentUser);
+        }
+    }
+
+    /**
+     * Creates a deep clone of the User using reflection.
      */
     private User cloneUser(User user) {
         if (user == null) return null;
 
-        // For now, just return the reference
-        // TODO: Implement proper cloning if we need to preserve history
-        return user;
+        User clone = new User();
+        copyUserFields(user, clone);
+        return clone;
     }
 
     /**
-     * Creates a shallow clone of the Monster.
-     * For a real implementation, we might need deep cloning.
+     * Copy all fields from source User to target User.
+     */
+    private void copyUserFields(User source, User target) {
+        try {
+            for (Field field : User.class.getDeclaredFields()) {
+                field.setAccessible(true);
+                Object value = field.get(source);
+                field.set(target, value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Creates a deep clone of the Monster using reflection.
      */
     private Monster cloneMonster(Monster monster) {
         if (monster == null) return null;
 
-        // For now, just return the reference
-        // TODO: Implement proper cloning if we need to preserve history
-        return monster;
+        Monster clone = new Monster();
+        try {
+            // Copy HP
+            Field hpField = Monster.class.getDeclaredField("HP");
+            hpField.setAccessible(true);
+            hpField.set(clone, hpField.get(monster));
+
+            // Copy NAME
+            clone.NAME = monster.NAME;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return clone;
     }
 
     @Override
