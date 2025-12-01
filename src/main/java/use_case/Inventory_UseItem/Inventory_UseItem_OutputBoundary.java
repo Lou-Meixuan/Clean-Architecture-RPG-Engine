@@ -9,5 +9,5 @@ public interface Inventory_UseItem_OutputBoundary {
      * used when User views inventory
      * @param outputData contains list of items (user inventory)
      */
-    void presentInventory(Inventory_UseItem_OutputData outputData);
+    void viewInventory(Inventory_UseItem_OutputData outputData);
 }

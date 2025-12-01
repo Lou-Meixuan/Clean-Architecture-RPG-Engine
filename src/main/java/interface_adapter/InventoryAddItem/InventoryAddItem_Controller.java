@@ -1,8 +1,8 @@
 package interface_adapter.InventoryAddItem;
 
 import entity.User;
-
-import use_case.Inventory_AddItem.Inventory_AddItem_Interactor;
+import entity.Item;
+import use_case.Inventory_AddItem.Inventory_InputBoundary_AddItem;
 import use_case.Inventory_AddItem.Inventory_InputData_AddItem;
 
 /**
@@ -10,21 +10,20 @@ import use_case.Inventory_AddItem.Inventory_InputData_AddItem;
  * Gets user input
  */
 public class InventoryAddItem_Controller {
-    private final Inventory_AddItem_Interactor interactor;
+    private final Inventory_InputBoundary_AddItem addItemBoundary;
 
-    public InventoryAddItem_Controller(Inventory_AddItem_Interactor interactor) {
-        this.interactor = interactor;
+    public InventoryAddItem_Controller(Inventory_InputBoundary_AddItem addItemBoundary) {
+        this.addItemBoundary = addItemBoundary;
     }
 
     /**
-     *
      * @param user inventory of user to be updated
-     * @param item name of item to be added
+     * @param item item to be added
      */
-    public void addItem(User user, String item) {
-        interactor.setUser(user);
+    public void addItem(User user, Item item) {
+        addItemBoundary.setUser(user);
         Inventory_InputData_AddItem inputData = new Inventory_InputData_AddItem(item);
-        interactor.addItem(inputData);
+        addItemBoundary.addItem(inputData);
 
 
     }

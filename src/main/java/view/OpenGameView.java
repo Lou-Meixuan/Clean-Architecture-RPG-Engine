@@ -1,75 +1,5 @@
-//package view;
-//
-//import interface_adapter.opengame.OpenGameController;
-//import interface_adapter.opengame.OpenGameViewModel;
-//
-//import javax.swing.*;
-//import java.awt.*;
-//
-//public class OpenGameView extends JPanel {
-//    // TODO: Add a view name
-//    private final OpenGameController controller;
-//    private final OpenGameViewModel viewModel;
-//
-//    private final JTextField startField = new JTextField(15);
-//    private final JTextField destinationField = new JTextField(15);
-//
-//    private final JButton newGameButton = new JButton("Start New Game");
-//    private final JButton continueGameButton = new JButton("Continue Game");
-//    private final JLabel messageLabel = new JLabel("Welcome!");
-//    // TODO: Change the signature, only the view model is the input
-//    public OpenGameView(OpenGameController controller,
-//                        OpenGameViewModel viewModel) {
-//
-//        this.controller = controller;
-//        this.viewModel = viewModel;
-//
-//        // TODO: change the add listener stuff
-//        // View listens to ViewModel updates
-//        this.viewModel.addListener(this::updateView);
-//
-//        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//        setPreferredSize(new Dimension(300, 250));
-//
-//        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-//
-//        add(Box.createRigidArea(new Dimension(0, 10)));
-//        add(messageLabel);
-//
-//        // Starting Location
-//        add(new JLabel("Starting Location:"));
-//        add(startField);
-//
-//        // Destination
-//        add(new JLabel("Destination:"));
-//        add(destinationField);
-//
-//        newGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        continueGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//
-//        newGameButton.addActionListener(e -> {
-//            String start = startField.getText();
-//            String dest = destinationField.getText();
-//            controller.startNewGame(start, dest);
-//        });
-//
-//        continueGameButton.addActionListener(e -> controller.continueGame());
-//
-//        add(Box.createRigidArea(new Dimension(0, 10)));
-//        add(newGameButton);
-//        add(Box.createRigidArea(new Dimension(0, 10)));
-//        add(continueGameButton);
-//    }
-//
-//    private void updateView() {
-//        messageLabel.setText(viewModel.getMessage());
-//    }
-//}
-
-
 package view;
 
-import interface_adapter.Battle.BattleController;
 import interface_adapter.opengame.OpenGameController;
 import interface_adapter.opengame.OpenGameViewModel;
 
@@ -80,14 +10,17 @@ public class OpenGameView extends JPanel {
 
     private final String viewName = "OpenGame";
 
-    private OpenGameController openGameController;
+    private final OpenGameController controller;
     private final OpenGameViewModel viewModel;
 
     private final JButton newGameButton = new JButton("Start New Game");
     private final JButton continueGameButton = new JButton("Continue Game");
     private final JLabel messageLabel = new JLabel("Welcome!", SwingConstants.CENTER);
 
-    public OpenGameView(OpenGameViewModel viewModel) {
+    public OpenGameView(OpenGameController controller,
+                        OpenGameViewModel viewModel) {
+
+        this.controller = controller;
         this.viewModel = viewModel;
 
         // Listen to ViewModel updates
@@ -95,7 +28,7 @@ public class OpenGameView extends JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        setPreferredSize(new Dimension(300, 200));
+        setPreferredSize(new Dimension(1000, 200));
 
         // Center align
         messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -103,8 +36,8 @@ public class OpenGameView extends JPanel {
         continueGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Buttons
-        newGameButton.addActionListener(e -> openGameController.startNewGame());
-        continueGameButton.addActionListener(e -> openGameController.continueGame());
+        newGameButton.addActionListener(e -> controller.startNewGame());
+        continueGameButton.addActionListener(e -> controller.continueGame());
 
         add(Box.createRigidArea(new Dimension(0, 20)));
         add(messageLabel);
@@ -114,9 +47,6 @@ public class OpenGameView extends JPanel {
         add(Box.createRigidArea(new Dimension(0, 10)));
 
         add(continueGameButton);
-    }
-    public void setOpenGameController(OpenGameController controller) {
-        this.openGameController = controller;
     }
 
     private void updateView() {

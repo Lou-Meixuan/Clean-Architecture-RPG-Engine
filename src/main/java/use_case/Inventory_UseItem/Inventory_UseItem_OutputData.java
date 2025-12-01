@@ -20,6 +20,7 @@ public class Inventory_UseItem_OutputData {
 
     public Inventory getInventory() {
         return inventory; }
+
     public int getHpIncrease() { return hpIncrease;}
     public int getDefIncrease() { return defIncrease;}
     public int getDmgIncrease() { return dmgIncrease;}

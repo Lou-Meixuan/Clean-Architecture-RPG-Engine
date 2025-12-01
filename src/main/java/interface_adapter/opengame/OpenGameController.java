@@ -14,18 +14,17 @@ public class OpenGameController {
 
     public void startNewGame() {
         OpenGameInputData data =
-                new OpenGameInputData(true, "Start", "End");
+                //TODO: CAN DELETE THE LAST TWO VARS?
+                new OpenGameInputData(true);
         interactor.execute(data);
     }
     public void switchToMoveScreen() {
         interactor.switchToMoveScreen();
     }
 
-
-
     public void continueGame() {
         OpenGameInputData data =
-                new OpenGameInputData(false, null, null);
+                new OpenGameInputData(false);
         interactor.execute(data);
     }
 

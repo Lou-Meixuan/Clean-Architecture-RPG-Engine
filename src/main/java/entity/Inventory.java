@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 /**
  * Inventory Class
@@ -30,6 +31,15 @@ public class Inventory {
     }
     public List<Item> getItems(){
         return List.copyOf(INVENTORY);
+    }
+
+    public List<String> getItemsList() {
+        List<String> list = new ArrayList<String>();
+        if(!INVENTORY.isEmpty()){
+            for(Item item : INVENTORY){
+                list.add(item.getName());
+            } return list;
+        } return list;
     }
 
     public boolean isEmpty() {

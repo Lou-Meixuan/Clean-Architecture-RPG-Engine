@@ -4,7 +4,6 @@ import use_case.Inventory_UseItem.Inventory_UseItem_OutputData;
 import use_case.Inventory_UseItem.Inventory_UseItem_OutputBoundary;
 import entity.Item;
 import entity.Inventory;
-import java.util.List;
 
 public class InventoryUseItem_Presenter implements Inventory_UseItem_OutputBoundary {
 
@@ -27,7 +26,7 @@ public class InventoryUseItem_Presenter implements Inventory_UseItem_OutputBound
     }
 
     @Override
-    public void presentInventory(Inventory_UseItem_OutputData outputData) {
+    public void viewInventory(Inventory_UseItem_OutputData outputData) {
         Inventory inventory = outputData.getInventory();
 
         // test lines
