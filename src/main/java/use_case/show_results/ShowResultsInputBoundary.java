@@ -9,4 +9,6 @@ public interface ShowResultsInputBoundary {
      * @param showResultsInputData the input data
      */
     void execute(ShowResultsInputData showResultsInputData);
+
+    void switchToOpenGameView();
 }

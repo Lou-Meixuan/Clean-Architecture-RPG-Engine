@@ -20,4 +20,8 @@ public class MoveController {
     public void switchToBattleView(Monster monster) {
         moveUseCaseInteractor.switchToBattleView(monster);
     }
+
+    public void updateGame() {
+        moveUseCaseInteractor.updateGame();
+    }
 }

@@ -4,6 +4,8 @@ import entity.Direction;
 import interface_adapter.move.MoveController;
 import interface_adapter.move.MoveState;
 import interface_adapter.move.MoveViewModel;
+import interface_adapter.results.ShowResultsController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -15,6 +17,7 @@ public class MoveView extends JPanel implements PropertyChangeListener {
     private final String viewName = "move";
     private final MoveViewModel moveViewModel;
     private MoveController moveController;
+    private ShowResultsController resultsController;
 
     private final JLabel linearMapLabel;
     private final JLabel staticMapImageLabel;
@@ -26,6 +29,7 @@ public class MoveView extends JPanel implements PropertyChangeListener {
     public MoveView(MoveViewModel moveViewModel) {
         this.moveViewModel = moveViewModel;
         this.moveController = null;
+        this.resultsController = null;
 
         this.moveViewModel.addPropertyChangeListener(this);
 
@@ -69,12 +73,24 @@ public class MoveView extends JPanel implements PropertyChangeListener {
         goRightButton.addActionListener(
                 e -> moveController.execute(Direction.RIGHT)
         );
+
+        endGameButton.addActionListener(e -> {
+            resultsController.execute();
+            moveController.updateGame();
+        });
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName())) {
             MoveState state = (MoveState) evt.getNewValue();
+
+            if (state.getNeedUpdate()) {
+                state.setNeedUpdate(false);
+                moveController.updateGame();
+                return;
+            }
+
             linearMapLabel.setText(state.getLinearMap());
             staticMapImageLabel.setIcon(state.getStaticMapImage());
             currentLocationLabel.setText("Current Location: " + state.getCurrentLocationName());
@@ -101,11 +117,11 @@ public class MoveView extends JPanel implements PropertyChangeListener {
         return viewName;
     }
 
-    public JButton getEndGameButton() {
-        return endGameButton;
-    }
-
     public void setMoveController(MoveController moveController) {
         this.moveController = moveController;
+    }
+
+    public void setResultController(ShowResultsController resultsController) {
+        this.resultsController = resultsController;
     }
 }

@@ -3,8 +3,8 @@ package interface_adapter.move;
 import API.MoveStaticMapInterface;
 import entity.Monster;
 import entity.User;
-import interface_adapter.Battle.Battle_State;
-import interface_adapter.Battle.Battle_ViewModel;
+import interface_adapter.Battle.BattleState;
+import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.move.MoveOutputBoundary;
 import use_case.move.MoveOutputData;
@@ -15,11 +15,11 @@ public class MovePresenter implements MoveOutputBoundary {
 
     private final MoveViewModel moveViewModel;
     private final MoveStaticMapInterface staticMapService;
-    private final Battle_ViewModel battleViewModel;
+    private final BattleViewModel battleViewModel;
     private final ViewManagerModel viewManagerModel;
 
 
-    public MovePresenter(ViewManagerModel viewManagerModel, MoveViewModel moveViewModel, MoveStaticMapInterface staticMapService, Battle_ViewModel battleViewModel) {
+    public MovePresenter(ViewManagerModel viewManagerModel, MoveViewModel moveViewModel, MoveStaticMapInterface staticMapService, BattleViewModel battleViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.moveViewModel = moveViewModel;
         this.staticMapService = staticMapService;
@@ -53,10 +53,14 @@ public class MovePresenter implements MoveOutputBoundary {
 
     @Override
     public void switchToBattleView(User user, Monster monster) {
-        Battle_State battleState = battleViewModel.getState();
+        BattleState battleState = battleViewModel.getState();
 
+        // Reset battle state for new battle
         battleState.setUser(user);
         battleState.setMonster(monster);
+        battleState.setBattleEnded(false);
+        battleState.setUserWon(false);
+        battleState.setBattleMessage("Battle is starting...");
 
         battleViewModel.firePropertyChange();
 

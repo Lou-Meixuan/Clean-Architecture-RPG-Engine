@@ -10,6 +10,7 @@ public class MoveState {
     private ImageIcon staticMapImage = null;
     private boolean leftButtonEnabled = true;
     private boolean rightButtonEnabled = true;
+    private boolean needUpdate = false;
 
     private Monster monster = null;
 //    private Item item = null;
@@ -20,6 +21,7 @@ public class MoveState {
         this.currentLocationName = copy.currentLocationName;
         this.leftButtonEnabled = copy.leftButtonEnabled;
         this.rightButtonEnabled = copy.rightButtonEnabled;
+        this.needUpdate = copy.needUpdate;
         this.monster = copy.monster;
 //        this.item = copy.item;
     }
@@ -72,6 +74,14 @@ public class MoveState {
 
     public void setMonster(Monster monster) {
         this.monster = monster;
+    }
+
+    public boolean getNeedUpdate() {
+        return needUpdate;
+    }
+
+    public void setNeedUpdate(boolean needUpdate) {
+        this.needUpdate = needUpdate;
     }
 
 //    public Item getItem() {

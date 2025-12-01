@@ -1,5 +1,7 @@
 package interface_adapter.results;
 
+import interface_adapter.ViewManagerModel;
+import interface_adapter.move.MoveViewModel;
 import use_case.show_results.ShowResultsOutputBoundary;
 import use_case.show_results.ShowResultsOutputData;
 
@@ -8,9 +10,13 @@ import use_case.show_results.ShowResultsOutputData;
  */
 public class ShowResultsPresenter implements ShowResultsOutputBoundary {
     private final ResultsViewModel resultsViewModel;
+    private final ViewManagerModel viewManagerModel;
+    private final MoveViewModel moveViewModel;
 
-    public ShowResultsPresenter(ResultsViewModel resultsViewModel) {
+    public ShowResultsPresenter(ResultsViewModel resultsViewModel, MoveViewModel moveViewModel, ViewManagerModel viewManagerModel) {
         this.resultsViewModel = resultsViewModel;
+        this.moveViewModel = moveViewModel;
+        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
@@ -22,5 +28,16 @@ public class ShowResultsPresenter implements ShowResultsOutputBoundary {
         state.setFinalLocation(outputData.getFinalLocation());
 
         resultsViewModel.firePropertyChange();
+
+        viewManagerModel.setState(resultsViewModel.getViewName());
+        viewManagerModel.firePropertyChange();
+    }
+
+    @Override
+    public void switchToOpenGameView() {
+        moveViewModel.firePropertyChange();
+
+        viewManagerModel.setState("OpenGame");
+        viewManagerModel.firePropertyChange();
     }
 }

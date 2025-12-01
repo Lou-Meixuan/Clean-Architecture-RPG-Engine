@@ -1,33 +1,22 @@
 package use_case.Battle;
 
+import entity.AdventureGame;
 import entity.Monster;
 import entity.User;
 
 public interface BattleUserDataAccessInterface {
     /**
-     * saved the user and the monster
+     * Get the current game state
      */
-    void save(User user, Monster monster);
+    AdventureGame getGame();
 
     /**
-     * return the User that contains the user information which is before user starting the battle
+     * Save the entire game state (including defeated monsters)
      */
-    User getUserBeforeBattle();
+    void saveGame(AdventureGame game);
 
     /**
-     * return the User that contains the user information which is after user starting th battle
+     * Load the entire game state
      */
-    User getUserAfterBattle();
-
-    /**
-     * return the Monster that contains the monster information which is before user starting the battle
-     */
-    Monster getMonsterBeforeBattle();
-
-    /**
-     * return the Monster that contains the monster information which is after user starting the battle
-     */
-    Monster getMonsterAfterBattle();
-
-
+    void loadGameData();
 }

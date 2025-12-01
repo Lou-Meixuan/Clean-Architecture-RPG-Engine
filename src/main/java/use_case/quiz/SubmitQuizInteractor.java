@@ -41,4 +41,9 @@ public final class SubmitQuizInteractor implements SubmitQuizInputBoundary {
         // presenter receives result
         presenter.present(output);
     }
+
+    @Override
+    public void switchToBattleView(boolean isCorrect) {
+        presenter.switchToBattleView(isCorrect);
+    }
 }

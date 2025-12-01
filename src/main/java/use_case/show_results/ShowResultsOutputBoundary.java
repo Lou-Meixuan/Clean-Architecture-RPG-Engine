@@ -9,4 +9,6 @@ public interface ShowResultsOutputBoundary {
      * @param outputData the output data
      */
     void prepareSuccessView(ShowResultsOutputData outputData);
+
+    void switchToOpenGameView();
 }

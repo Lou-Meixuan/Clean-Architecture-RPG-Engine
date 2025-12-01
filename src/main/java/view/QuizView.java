@@ -1,39 +1,34 @@
 package view;
 
-import entity.AnswerOption;
-import entity.Quiz;
 import interface_adapter.quiz.QuizController;
+import interface_adapter.quiz.QuizState;
 import interface_adapter.quiz.QuizViewModel;
-import use_case.quiz.QuizDataAccessInterface;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class QuizView extends JFrame {
-
-    private final QuizDataAccessInterface repo;
-    private final QuizController controller;
-    private final QuizViewModel vm;
+public class QuizView extends JPanel implements PropertyChangeListener {
+    private final String viewName = "Quiz";
+    private QuizController controller;
+    private final QuizViewModel viewModel;
 
     private final JLabel questionLabel = new JLabel();
     private final ButtonGroup optionGroup = new ButtonGroup();
     private final JRadioButton[] optionButtons = new JRadioButton[4];
-    private final JButton submitButton = new JButton("Submit");
     private final JLabel feedbackLabel = new JLabel("", SwingConstants.CENTER);
 
     private int currentQuizId;
-    // TODO: Change the signature, only the view model is the input
-    public QuizView(QuizDataAccessInterface repo, QuizController controller, QuizViewModel vm) {
-        this.repo = repo;
-        this.controller = controller;
-        this.vm = vm;
 
-        setTitle("Quiz System");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(560, 360);
-        setLocationRelativeTo(null);
+    public QuizView(QuizViewModel viewModel) {
+        this.viewModel = viewModel;
+
+        // Listen to ViewModel changes
+        this.viewModel.addPropertyChangeListener(this);
+
         setLayout(new BorderLayout());
 
         // main panel (with padding around everything)
@@ -65,6 +60,7 @@ public class QuizView extends JFrame {
         bottomPanel.setOpaque(false);
         bottomPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 
+        JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(this::handleSubmit);
         submitButton.setFont(new Font("SansSerif", Font.BOLD, 14));
         submitButton.setPreferredSize(new Dimension(0, 36));
@@ -81,25 +77,112 @@ public class QuizView extends JFrame {
 
     public void loadQuiz(int quizId) {
         this.currentQuizId = quizId;
-        Quiz quiz = repo.findById(quizId);
-        if (quiz == null) {
+        controller.loadQuiz(quizId);
+    }
+
+    /**
+     * Sets the controller for inventory
+     */
+    public void setQuizController(QuizController controller) {
+        this.controller = controller;
+    }
+    /**
+     * Returns the view name.
+     */
+    public String getViewName() {
+        return viewName;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        QuizState state = viewModel.getState();
+        if (state.getStatus() != null) {
+            showFeedback(state);  // 清空 status 的逻辑移到 showFeedback 里了
             return;
         }
 
+        int newQuizId = state.getQuizId();
+        if (newQuizId > 0 && newQuizId != currentQuizId) {
+            currentQuizId = newQuizId;
+            controller.loadQuiz(currentQuizId);
+        }
+
+        if (state.getQuestionText() != null) {
+            updateQuizDisplay(state);
+        }
+    }
+
+    private void updateQuizDisplay(QuizState state) {
         questionLabel.setText("<html><body style='width:400px; text-align:left;'>" +
-                quiz.getQuestion().getText() +
+                state.getQuestionText() +
                 "</body></html>");
 
-        var opts = quiz.getQuestion().getOptions();
-        for (int i = 0; i < 4 && i < opts.size(); i++) {
-            AnswerOption opt = opts.get(i);
+        var optionTexts = state.getOptionTexts();
+        for (int i = 0; i < 4 && i < optionTexts.size(); i++) {
             optionButtons[i].setText("<html><body style='width:400px;'>" +
-                    opt.getText() +
+                    optionTexts.get(i) +
                     "</body></html>");
-            optionButtons[i].setSelected(false);
+            optionButtons[i].setVisible(true);
         }
+
+        // Hide unused buttons
+        for (int i = optionTexts.size(); i < 4; i++) {
+            optionButtons[i].setVisible(false);
+        }
+
         optionGroup.clearSelection();
         feedbackLabel.setText("");
+    }
+
+    private void showFeedback(QuizState state) {
+        String status = state.getStatus();
+        boolean isCorrect = "CORRECT".equals(status);
+        state.setStatus(null);
+
+        JFrame feedbackFrame = new JFrame("Quiz Result");
+        feedbackFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        feedbackFrame.setSize(300, 150);
+        feedbackFrame.setLocationRelativeTo(this);
+
+        JLabel messageLabel = new JLabel(state.getFeedbackMessage(), SwingConstants.CENTER);
+        messageLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.add(messageLabel, BorderLayout.CENTER);
+
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> {
+            feedbackFrame.dispose();
+            if ("CORRECT".equals(status) || "INCORRECT".equals(status)) {
+                controller.switchToBattleView(isCorrect);  // 传递结果
+            }
+        });
+        panel.add(okButton, BorderLayout.SOUTH);
+
+        feedbackFrame.add(panel);
+        feedbackFrame.setVisible(true);
+    }
+
+    private void showNoSelectionWarning() {
+        JFrame warningFrame = new JFrame("Warning");
+        warningFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        warningFrame.setSize(350, 150);
+        warningFrame.setLocationRelativeTo(this);
+
+        JLabel messageLabel = new JLabel("Question Not Answered", SwingConstants.CENTER);
+        messageLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.add(messageLabel, BorderLayout.CENTER);
+
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> warningFrame.dispose());
+        panel.add(okButton, BorderLayout.SOUTH);
+
+        warningFrame.add(panel);
+        warningFrame.setVisible(true);
     }
 
     private void handleSubmit(ActionEvent e) {
@@ -119,22 +202,12 @@ public class QuizView extends JFrame {
             }
         }
 
-        controller.onSubmit(currentQuizId, selectedId);
-
-        // feedback msg in separate frame
-        JFrame feedbackFrame = new JFrame();
-        feedbackFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        feedbackFrame.setSize(300, 150);
-        feedbackFrame.setLocationRelativeTo(this);
-
-        JLabel messageLabel = new JLabel(vm.feedbackMessage, SwingConstants.CENTER);
-        messageLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
-        feedbackFrame.add(messageLabel);
-        feedbackFrame.setVisible(true);
-
-        // close original quiz window automatically
-        if ("INCORRECT".equals(vm.status) || "CORRECT".equals(vm.status)) {
-            this.dispose();
+        if (selectedId == null) {
+            showNoSelectionWarning();
+            return;
         }
+
+        int quizId = viewModel.getState().getQuizId();
+        controller.onSubmit(quizId, selectedId);
     }
 }

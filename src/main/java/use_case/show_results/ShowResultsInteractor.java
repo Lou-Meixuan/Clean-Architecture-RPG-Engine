@@ -39,4 +39,9 @@ public class ShowResultsInteractor implements ShowResultsInputBoundary {
 
         presenter.prepareSuccessView(outputData);
     }
+
+    @Override
+    public void switchToOpenGameView() {
+        presenter.switchToOpenGameView();
+    }
 }

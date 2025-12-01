@@ -1,8 +1,12 @@
 package interface_adapter.quiz;
 
-public class QuizViewModel {
-    public int quizId;
-    public boolean isCompleted;
-    public String status;          // "CORRECT" or "INCORRECT" or "WARNING"
-    public String feedbackMessage; // "Correct Answer" or "Incorrect Answer" or "Not Answered"
+import interface_adapter.ViewModel;
+
+public class QuizViewModel extends ViewModel<QuizState> {
+
+    public QuizViewModel() {
+        super("Quiz");
+        setState(new QuizState());
+    }
 }
+

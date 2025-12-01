@@ -186,67 +186,67 @@ public class OpenGameFileDataAccess implements OpenGameDataAccessInterface {
         this.saveFilePath = saveFilePath;
     }
 
-    @Override
-    public GameState loadGame() {
-        try {
-            File file = new File(saveFilePath);
-            if (!file.exists()) {
-                return null;
-            }
-
-            // ----- Read file as text -----
-            FileReader reader = new FileReader(file, StandardCharsets.UTF_8);
-            char[] buffer = new char[(int) file.length()];
-            reader.read(buffer);
-            reader.close();
-
-            String jsonString = new String(buffer);
-
-            // ----- Convert text → JSON -----
-            JSONObject json = new JSONObject(jsonString);
-
-            // ----- Build GameState -----
-            String currentLocation = json.getString("currentLocation");
-            String finalDestination = json.getString("finalDestination");
-
-            GameState state = new GameState(currentLocation, finalDestination);
-
-            // ----- Load inventory -----
-            JSONArray items = json.getJSONArray("inventory");
-            for (int i = 0; i < items.length(); i++) {
-                state.addItem(items.getString(i));
-            }
-
-            // ----- Completed flag -----
-            if (json.getBoolean("isCompleted")) {
-                state.setCurrentLocation(finalDestination);  // auto marks completed
-            }
-
-            return state;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public void saveGame(GameState state) {
-        try {
-            JSONObject json = new JSONObject();
-            json.put("currentLocation", state.getCurrentLocation());
-            json.put("finalDestination", state.getFinalDestination());
-            json.put("isCompleted", state.isCompleted());
-            json.put("inventory", new JSONArray(state.getInventory()));
-
-            FileWriter writer = new FileWriter(saveFilePath, StandardCharsets.UTF_8);
-            writer.write(json.toString(4)); // pretty print
-            writer.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    @Override
+//    public GameState loadGame() {
+//        try {
+//            File file = new File(saveFilePath);
+//            if (!file.exists()) {
+//                return null;
+//            }
+//
+//            // ----- Read file as text -----
+//            FileReader reader = new FileReader(file, StandardCharsets.UTF_8);
+//            char[] buffer = new char[(int) file.length()];
+//            reader.read(buffer);
+//            reader.close();
+//
+//            String jsonString = new String(buffer);
+//
+//            // ----- Convert text → JSON -----
+//            JSONObject json = new JSONObject(jsonString);
+//
+//            // ----- Build GameState -----
+//            String currentLocation = json.getString("currentLocation");
+//            String finalDestination = json.getString("finalDestination");
+//
+//            GameState state = new GameState(currentLocation, finalDestination);
+//
+//            // ----- Load inventory -----
+//            JSONArray items = json.getJSONArray("inventory");
+//            for (int i = 0; i < items.length(); i++) {
+//                state.addItem(items.getString(i));
+//            }
+//
+//            // ----- Completed flag -----
+//            if (json.getBoolean("isCompleted")) {
+//                state.setCurrentLocation(finalDestination);  // auto marks completed
+//            }
+//
+//            return state;
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+//
+//    @Override
+//    public void saveGame(GameState state) {
+//        try {
+//            JSONObject json = new JSONObject();
+//            json.put("currentLocation", state.getCurrentLocation());
+//            json.put("finalDestination", state.getFinalDestination());
+//            json.put("isCompleted", state.isCompleted());
+//            json.put("inventory", new JSONArray(state.getInventory()));
+//
+//            FileWriter writer = new FileWriter(saveFilePath, StandardCharsets.UTF_8);
+//            writer.write(json.toString(4)); // pretty print
+//            writer.close();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public boolean saveFileExists() {
