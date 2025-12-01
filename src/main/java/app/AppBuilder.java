@@ -3,6 +3,7 @@ package app;
 import data_access.FileGameDataAccessObject;
 import data_access.InMemoryBattleDataAccess;
 import data_access.InMemoryQuizDataAccessObject;
+import interface_adapter.Battle.Battle_Controller;
 import interface_adapter.Battle.BattlePresenter;
 import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.ViewManagerModel;
@@ -43,6 +44,7 @@ public class AppBuilder {
     private QuizViewModel quizViewModel;
     private ResultsView resultsView;
     private ResultsViewModel resultsViewModel;
+    private ResultScreenView resultScreenView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
