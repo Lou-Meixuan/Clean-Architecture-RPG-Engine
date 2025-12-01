@@ -84,6 +84,13 @@ public class MoveView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName())) {
             MoveState state = (MoveState) evt.getNewValue();
+
+            if (state.getNeedUpdate()) {
+                state.setNeedUpdate(false);
+                moveController.updateGame();
+                return;
+            }
+
             linearMapLabel.setText(state.getLinearMap());
             staticMapImageLabel.setIcon(state.getStaticMapImage());
             currentLocationLabel.setText("Current Location: " + state.getCurrentLocationName());

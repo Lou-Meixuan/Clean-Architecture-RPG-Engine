@@ -27,10 +27,6 @@ public class BattleInteractor implements BattleInputBoundary {
         final Monster monster = inputData.getMonster();
         final boolean resultOfQuiz = inputData.getResultOfQuiz();
 
-        if (userDataAccessObject.getUserBeforeBattle() == null) {
-            userDataAccessObject.save(user, monster);
-        }
-
         // User's turn
         UserTurn(user, monster, resultOfQuiz);
         // Prepare final output
@@ -44,7 +40,6 @@ public class BattleInteractor implements BattleInputBoundary {
 
             // Save the game state so defeated monsters don't respawn
             userDataAccessObject.saveGame(game);
-            userDataAccessObject.resetBattleState();
 
             battlePresenter.prepareWinView(output);
             return;
@@ -53,31 +48,7 @@ public class BattleInteractor implements BattleInputBoundary {
         MonsterTurn(user, monster);
         // Present final result
         if (!user.isAlive()) {
-            userDataAccessObject.restoreUserToBeforeBattle();
-            // go back the last location
-            AdventureGame game = userDataAccessObject.getGame();
-            List<Location> path = game.getPathHistory();
-            if (path.size() > 1) {
-                path.remove(path.size() - 1); // remove current location
-                int previousIndex = path.size() - 1;
-                try {
-                    java.lang.reflect.Field indexField = GameMap.class.getDeclaredField("currentLocationIndex");
-                    indexField.setAccessible(true);
-                    indexField.setInt(game.getGameMap(), previousIndex);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // save the game
-            userDataAccessObject.saveGame(game);
-
-            // reset battle
-            userDataAccessObject.resetBattleState();
-
-            // update output
-            output = new BattleOutputData(user, monster);
-
+            userDataAccessObject.loadGameData();
             battlePresenter.prepareLossView(output);
         }
     }
