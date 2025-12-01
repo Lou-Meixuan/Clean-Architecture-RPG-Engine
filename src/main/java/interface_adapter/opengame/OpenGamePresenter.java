@@ -19,11 +19,11 @@ public class OpenGamePresenter implements OpenGameOutputBoundary {
 
         // Update ViewModel
         viewModel.setMessage(outputData.getMessage());
-        viewModel.setState(outputData.getGameState());
+        // viewModel.setState(outputData.getGameState());
         viewModel.firePropertyChange();   // Notify OpenGameView
 
         // Switch to Move screen
-        viewManagerModel.setState("move");   // must match MoveView.getViewName()
+        viewManagerModel.setState("move");
         viewManagerModel.firePropertyChange();
     }
 
@@ -33,6 +33,11 @@ public class OpenGamePresenter implements OpenGameOutputBoundary {
         viewModel.setMessage(errorMessage);
         viewModel.setState(null);
         viewModel.firePropertyChange();   // update UI (stays on same screen)
+    }
+
+    @Override
+    public void switchToMoveScreen() {
+        //null
     }
 
     public OpenGameViewModel getViewModel() {
