@@ -35,14 +35,8 @@ public class BattleController {
         // store battle context in quiz state
         quizState.setUser(user);
         quizState.setMonster(monster);
-
-        // generate a new random quiz ID
         quizState.setQuizId();
-
-        int quizId = quizState.getQuizId();
-
-        // load that quiz
-        quizController.loadQuiz(quizId);
+        quizViewModel.firePropertyChange();
 
         // tell the battle use case to switch to quiz view
         battleUseCaseInteractor.switchToQuizView();
