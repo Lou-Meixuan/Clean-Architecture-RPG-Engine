@@ -5,7 +5,7 @@ public class OpenGameInputData {
 //    private final String startingLocation;
 //    private final String destination;
 
-//    public OpenGameInputData(boolean newGame,
+    //    public OpenGameInputData(boolean newGame,
 //                             String startingLocation,
 //                             String destination) {
 //        this.newGame = newGame;
