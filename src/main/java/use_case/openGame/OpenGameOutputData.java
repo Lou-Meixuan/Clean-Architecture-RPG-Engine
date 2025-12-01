@@ -25,3 +25,4 @@ public class OpenGameOutputData {
         return isNewGame;
     }
 }
+
