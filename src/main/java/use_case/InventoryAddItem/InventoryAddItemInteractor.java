@@ -11,8 +11,7 @@ private final InventoryAddItemOutputBoundary outputBoundary;
 private final InventoryAddItemUserDataAccessInterface addItemUserDataAccessInterface;
 
 
-public InventoryAddItemInteractor(InventoryAddItemOutputBoundary outputBoundary,
-                                  InventoryAddItemUserDataAccessInterface addItemUserDataAccessInterface) {
+public InventoryAddItemInteractor(InventoryAddItemOutputBoundary outputBoundary, InventoryAddItemUserDataAccessInterface addItemUserDataAccessInterface) {
     this.outputBoundary = outputBoundary;
     this.addItemUserDataAccessInterface = addItemUserDataAccessInterface;
 }

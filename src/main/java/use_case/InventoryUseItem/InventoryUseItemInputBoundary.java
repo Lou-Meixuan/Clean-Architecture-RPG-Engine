@@ -1,19 +1,28 @@
 package use_case.InventoryUseItem;
 
+
+import entity.User;
+
 /**
- * Input Boundary for inventory use item use case
+ * Input Boundary for item use case
  */
+
 public interface InventoryUseItemInputBoundary {
 
     /**
-     * Called when user uses an item from inventory
-     * @param inputData contains item name and user
+     * set user
+     */
+    void setUser(User user);
+    /**
+     * @param inputData called when user uses item from inventory
      */
     void useItem(InventoryUseItemInputData inputData);
 
     /**
-     * Called when user wants to view inventory
-     * @param inputData contains user
+     * no param. called when user wants to view inventory
      */
-    void viewInventory(InventoryUseItemInputData inputData);
+    void viewInventory();
+
 }
+
+

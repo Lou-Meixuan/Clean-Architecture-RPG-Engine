@@ -14,22 +14,21 @@ public class Main {
         AppBuilder appBuilder = new AppBuilder(dataAccessFactory);
         JFrame application = appBuilder
                 .addQuizView()
-                .addUseInventoryView()
                 .addBattleView()
                 .addMoveView()
                 .addOpenGameView()
                 .addResultsView()
                 .addAddInventoryView()
-
+                .addUseInventoryView()
 
                 // Use cases
                 .addOpenGameUseCase()
-                .addUseInventoryUseCase()
                 .addMoveUseCase()
                 .addBattleUseCase()
                 .addQuizUseCase()
                 .addResultsUseCase()
                 .addAddInventoryUseCase()
+                .addUseInventoryUseCase()
                 .build();
 
         application.pack();
