@@ -85,10 +85,6 @@ public class InventoryView extends JPanel implements PropertyChangeListener {
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if (visible && controller != null) {
-            // Refresh inventory whenever the view is shown
-            controller.viewInventory();
-        }
     }
 
     /**

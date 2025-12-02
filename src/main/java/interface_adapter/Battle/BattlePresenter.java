@@ -29,6 +29,9 @@ public class BattlePresenter implements BattleOutputBoundary {
     public void updateMonsterTurnState(BattleOutputData outputData) {
         BattleState state = battleViewModel.getState();
 
+        state.setUser(outputData.getUser());
+        state.setMonster(outputData.getMonster());
+
         // Update HP values after each turn
         state.setUserHP(outputData.getUserHP());
         state.setMonsterHP(outputData.getMonsterHP());
@@ -49,6 +52,9 @@ public class BattlePresenter implements BattleOutputBoundary {
     @Override
     public void updateUserTurnState(BattleOutputData outputData) {
         BattleState state = battleViewModel.getState();
+
+        state.setUser(outputData.getUser());
+        state.setMonster(outputData.getMonster());
 
         // Update HP values after each turn
         state.setUserHP(outputData.getUserHP());
@@ -118,6 +124,7 @@ public class BattlePresenter implements BattleOutputBoundary {
 
         MoveState moveState = moveViewModel.getState();
         moveState.setNeedUpdate(true);
+        moveState.setJustReturnedFromDefeat(true);
         moveViewModel.firePropertyChange();
     }
 

@@ -16,6 +16,8 @@ public class MoveState {
     private Monster monster = null;
     private Item item = null;
     private boolean itemPickupable = false;
+    private boolean justReturnedFromDefeat = false;
+
 
     public MoveState(MoveState copy) {
         this.linearMap = copy.linearMap;
@@ -101,5 +103,13 @@ public class MoveState {
 
     public void setItemPickupable(boolean itemPickupable) {
         this.itemPickupable = itemPickupable;
+    }
+
+    public boolean isJustReturnedFromDefeat() {
+        return justReturnedFromDefeat;
+    }
+
+    public void setJustReturnedFromDefeat(boolean justReturnedFromDefeat) {
+        this.justReturnedFromDefeat = justReturnedFromDefeat;
     }
 }

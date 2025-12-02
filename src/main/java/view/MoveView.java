@@ -103,6 +103,7 @@ public class MoveView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("DEBUG: MoveView.propertyChange triggered, property = " + evt.getPropertyName());
         if ("state".equals(evt.getPropertyName())) {
             MoveState state = (MoveState) evt.getNewValue();
 
@@ -122,11 +123,12 @@ public class MoveView extends JPanel implements PropertyChangeListener {
             // Show End Game button only when at the last location
             endGameButton.setVisible(!state.isRightButtonEnabled());
 
-            // TODO
             if (state.getMonster() != null && state.getMonster().isAlive()) {
-                moveController.switchToBattleView(state.getMonster());
-
-//                state.setMonster(null);
+                if (state.isJustReturnedFromDefeat()) {
+                    state.setJustReturnedFromDefeat(false);
+                } else {
+                    moveController.switchToBattleView(state.getMonster());
+                }
             }
 
             pickUpButton.setVisible(state.isItemPickupable());
