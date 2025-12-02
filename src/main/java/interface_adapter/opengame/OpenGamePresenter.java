@@ -20,7 +20,6 @@ public class OpenGamePresenter implements OpenGameOutputBoundary {
 
     @Override
     public void prepareSuccessView(OpenGameOutputData outputData) {
-
         // Update ViewModel
         viewModel.setMessage(outputData.getMessage());
         // viewModel.setState(outputData.getGameState());
@@ -36,7 +35,6 @@ public class OpenGamePresenter implements OpenGameOutputBoundary {
         viewManagerModel.firePropertyChange();
     }
 
-
     @Override
     public void prepareFailView(String errorMessage) {
         viewModel.setMessage(errorMessage);
@@ -46,12 +44,14 @@ public class OpenGamePresenter implements OpenGameOutputBoundary {
 
     @Override
     public void switchToMoveScreen() {
-        viewManagerModel.setState("move");   // MoveView.getViewName()
+        viewManagerModel.setState("move");
+        // MoveView.getViewName()
         viewManagerModel.firePropertyChange();
-
         // Set up MoveView to update
         MoveState moveState = moveViewModel.getState();
         moveState.setNeedUpdate(true);
+        moveViewModel.firePropertyChange();
+
         moveViewModel.firePropertyChange();
     }
 

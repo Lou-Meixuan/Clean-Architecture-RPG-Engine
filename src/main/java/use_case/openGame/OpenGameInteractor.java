@@ -82,7 +82,7 @@ package use_case.openGame;
 public class OpenGameInteractor implements OpenGameInputBoundary {
 
     private final OpenGameOutputBoundary presenter;
-    private final OpenGameDataAccessInterface dataAccess;
+    private final OpenGameDataAccessInterface dataAccessObject;
     // private final ScreenSwitchBoundary screenSwitcher;
 
     //    public OpenGameInteractor(OpenGameOutputBoundary presenter,
@@ -95,32 +95,26 @@ public class OpenGameInteractor implements OpenGameInputBoundary {
     public OpenGameInteractor(OpenGameOutputBoundary presenter,
                               OpenGameDataAccessInterface dataAccess) {
         this.presenter = presenter;
-        this.dataAccess = dataAccess;
+        this.dataAccessObject = dataAccess;
     }
-
 
     @Override
     public void execute(OpenGameInputData inputData) {
-
         // CASE 1: START NEW GAME
-        if (inputData.isNewGame()) {
+        if (inputData.isNewGame()) { // true = new game, false = continue
 
-            if (dataAccess.saveFileExists()) {
+            if (dataAccessObject.saveFileExists()) {
                 presenter.prepareFailView("A saved game already exists. Please click 'Continue Game'.");
                 return;
             }
-
-            presenter.prepareSuccessView(
-                    new OpenGameOutputData("New game started!" )
-            );
-
+            presenter.prepareSuccessView( new OpenGameOutputData("New game started!" ));
 //            screenSwitcher.switchToMoveScreen();
             presenter.switchToMoveScreen();
             return;
         }
 
         // CASE 2: CONTINUE GAME
-        if (!dataAccess.saveFileExists()) {
+        if (!dataAccessObject.saveFileExists()) {
             presenter.prepareFailView("No saved game found. Please start a new game.");
             return;
         }
