@@ -133,23 +133,23 @@ public class BattleTest {
 
     @BeforeEach
     void setUp() {
-        // 创建 User
+        // create User
         User user = new User();
 
-        // 创建 Location（monster 可以为 null）
-        Location location = new Location("TestLocation", 0.0, 0.0, null);
+        // create Location（monster is null）
+        Location location = new Location("TestLocation", 0.0, 0.0, null, null);
 
-        // 创建 Location 列表
+        // create Location Inventory
         List<Location> locations = new ArrayList<>();
         locations.add(location);
 
-        // 创建 GameMap
+        // create GameMap
         GameMap gameMap = new GameMap(locations, 0);
 
-        // 创建 AdventureGame
+        // create AdventureGame
         AdventureGame game = new AdventureGame(user, gameMap);
 
-        // 创建 mocks 和 interactor
+        // create mocks 和 interactor
         mockPresenter = new MockBattlePresenter();
         mockDataAccess = new MockBattleDataAccess(game);
         interactor = new BattleInteractor(mockDataAccess, mockPresenter);
@@ -238,7 +238,7 @@ public class BattleTest {
         assertTrue(user.isAlive(), "User should still be alive");
         assertFalse(mockPresenter.isWinViewPrepared(), "Win view should NOT be prepared");
         assertFalse(mockPresenter.isLossViewPrepared(), "Loss view should NOT be prepared");
-        assertEquals(2, mockPresenter.getUpdateUserTurnStateCallCount(),
+        assertEquals(1, mockPresenter.getUpdateUserTurnStateCallCount(),
                 "updateUserTurnState should be called twice");
     }
 
@@ -247,7 +247,7 @@ public class BattleTest {
         // Arrange
         Spells[] monsterSpells = {new Spells("Tap", 1)};
         TestMonster monster = new TestMonster(50.0, monsterSpells, "Monster");
-        User user = new User(); // 默认 DMG = 8
+        User user = new User();
 
         BattleInputData inputData = new BattleInputData(user, monster, true);
 

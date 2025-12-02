@@ -24,6 +24,9 @@ public class Monster {
         setNAME(api);
     }
 
+    public Monster() {
+    }
+
     @Override
     public String toString() {
         return NAME;
