@@ -26,8 +26,6 @@ public class MovePresenter implements MoveOutputBoundary {
         this.battleViewModel = battleViewModel;
     }
 
-    @Override
-
     public void present(MoveOutputData moveOutputData) {
         MoveState moveState = moveViewModel.getState();
 
@@ -35,7 +33,8 @@ public class MovePresenter implements MoveOutputBoundary {
         moveState.setRightButtonEnabled(moveOutputData.isCanMoveRight());
         moveState.setCurrentLocationName(moveOutputData.getCurrentLocationName());
         moveState.setMonster(moveOutputData.getMonster());
-//        state.setItem(outputData.getItem());
+        moveState.setItem(moveOutputData.getItem());
+        moveState.setItemPickupable(moveOutputData.getItem() != null);
         String linearMap = formatLinearMap(
                 moveOutputData.getCurrentIndex(),
                 moveOutputData.getMapSize()

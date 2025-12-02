@@ -1,6 +1,6 @@
 package use_case.move;
 
-import entity.Monster;
+import entity.*;
 import entity.AdventureGame;
 import entity.Direction;
 import entity.Location;
@@ -43,7 +43,7 @@ public class MoveInteractor implements MoveInputBoundary {
         int mapSize = game.getGameMap().getMapSize();
 
         Monster monster = currentLocation.getMonster();
-        // Item item = currentLocation.getItem();
+        Item item = currentLocation.getItem();
         MoveOutputData outputData = new MoveOutputData(
                 locationName,
                 latitude,
@@ -52,8 +52,8 @@ public class MoveInteractor implements MoveInputBoundary {
                 mapSize,
                 canMoveLeft,
                 canMoveRight,
-                monster
-                // , ITEM
+                monster,
+                item
         );
 
         this.movePresenter.present(outputData);

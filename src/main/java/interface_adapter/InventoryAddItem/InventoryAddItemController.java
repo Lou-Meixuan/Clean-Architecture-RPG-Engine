@@ -1,6 +1,5 @@
 package interface_adapter.InventoryAddItem;
 
-import entity.User;
 import entity.Item;
 import use_case.InventoryAddItem.InventoryAddItemInputBoundary;
 import use_case.InventoryAddItem.InventoryAddItemInputData;
@@ -17,11 +16,9 @@ public class InventoryAddItemController {
     }
 
     /**
-     * @param user inventory of user to be updated
      * @param item item to be added
      */
-    public void addItem(User user, Item item) {
-        addItemBoundary.setUser(user);
+    public void addItem(Item item) {
         InventoryAddItemInputData inputData = new InventoryAddItemInputData(item);
         addItemBoundary.addItem(inputData);
 

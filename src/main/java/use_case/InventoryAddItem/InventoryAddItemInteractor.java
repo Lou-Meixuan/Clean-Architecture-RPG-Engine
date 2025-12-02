@@ -1,22 +1,19 @@
 package use_case.InventoryAddItem;
 
+import entity.AdventureGame;
 import entity.Item;
+import entity.Location;
 import entity.User;
 
+public class InventoryAddItemInteractor implements InventoryAddItemInputBoundary{
 
-public class InventoryAddItemInteractor implements InventoryAddItemInputBoundary {
 private final InventoryAddItemOutputBoundary outputBoundary;
-private  User user;
+private final InventoryAddItemUserDataAccessInterface addItemUserDataAccessInterface;
 
-public InventoryAddItemInteractor(InventoryAddItemOutputBoundary outputBoundary) {
-    this.outputBoundary = outputBoundary; }
 
-/**
- * set user
- */
-@Override
-public void setUser(User user){
-    this.user = user;
+public InventoryAddItemInteractor(InventoryAddItemOutputBoundary outputBoundary, InventoryAddItemUserDataAccessInterface addItemUserDataAccessInterface) {
+    this.outputBoundary = outputBoundary;
+    this.addItemUserDataAccessInterface = addItemUserDataAccessInterface;
 }
 /**
  * Adds item to user's inventory and updates output
@@ -25,10 +22,16 @@ public void setUser(User user){
 
 @Override
 public void addItem(InventoryAddItemInputData inputData){
-    if (user == null||inputData == null|| inputData.getItem() == null){return;}
+    if (inputData == null|| inputData.getItem() == null){return;}
 
+    User user = addItemUserDataAccessInterface.getUser();
     Item item = inputData.getItem();
     user.addItem(item);
+
+    AdventureGame game = addItemUserDataAccessInterface.getGame();
+    Location currentLocation = game.getGameMap().getCurrentLocation();
+    currentLocation.setItem(null);
+    addItemUserDataAccessInterface.saveGame(game);
 
     InventoryAddItemOutputData output = new InventoryAddItemOutputData(user.getInventory(), item);
     outputBoundary.present(output);}

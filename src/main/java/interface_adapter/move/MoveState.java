@@ -1,5 +1,6 @@
 package interface_adapter.move;
 
+import entity.Item;
 import entity.Monster;
 
 import javax.swing.*;
@@ -13,7 +14,8 @@ public class MoveState {
     private boolean needUpdate = false;
 
     private Monster monster = null;
-//    private Item item = null;
+    private Item item = null;
+    private boolean itemPickupable = false;
 
     public MoveState(MoveState copy) {
         this.linearMap = copy.linearMap;
@@ -23,7 +25,8 @@ public class MoveState {
         this.rightButtonEnabled = copy.rightButtonEnabled;
         this.needUpdate = copy.needUpdate;
         this.monster = copy.monster;
-//        this.item = copy.item;
+        this.item = copy.item;
+        this.itemPickupable = copy.itemPickupable;
     }
 
     public MoveState() {}
@@ -76,6 +79,14 @@ public class MoveState {
         this.monster = monster;
     }
 
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
     public boolean getNeedUpdate() {
         return needUpdate;
     }
@@ -84,11 +95,11 @@ public class MoveState {
         this.needUpdate = needUpdate;
     }
 
-//    public Item getItem() {
-//        return item;
-//    }
-//
-//    public void setItem(Item item) {
-//        this.item = item;
-//    }
+    public boolean isItemPickupable() {
+        return itemPickupable;
+    }
+
+    public void setItemPickupable(boolean itemPickupable) {
+        this.itemPickupable = itemPickupable;
+    }
 }

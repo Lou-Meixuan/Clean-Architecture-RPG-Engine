@@ -4,14 +4,12 @@ import API.GeoapifyStaticMap;
 import API.MoveStaticMapInterface;
 import data_access.FileGameDataAccessObject;
 import data_access.QuizzesReader;
-import entity.Inventory;
 import interface_adapter.Battle.BattleController;
 import interface_adapter.Battle.BattlePresenter;
 import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.InventoryAddItem.InventoryAddItemController;
 import interface_adapter.InventoryAddItem.InventoryAddItemPresenter;
 import interface_adapter.InventoryAddItem.InventoryAddItemViewModel;
-import interface_adapter.InventoryUseItem.InventoryUseItemController;
 import interface_adapter.InventoryUseItem.InventoryUseItemPresenter;
 import interface_adapter.InventoryUseItem.InventoryUseItemViewModel;
 import interface_adapter.ViewManagerModel;
@@ -160,7 +158,7 @@ public class AppBuilder {
 
     public AppBuilder addOpenGameUseCase() {
         final OpenGameOutputBoundary openGameOutputBoundary = new OpenGamePresenter(
-                openGameViewModel, viewManagerModel);
+                openGameViewModel, moveViewModel, viewManagerModel);
         final OpenGameInputBoundary openGameInteractor = new OpenGameInteractor(openGameOutputBoundary, gameDataAccess);
 
         OpenGameController controller = new OpenGameController(openGameInteractor);
@@ -198,13 +196,15 @@ public class AppBuilder {
 
     public AppBuilder addAddInventoryUseCase() {
         final InventoryAddItemOutputBoundary inventoryAddItemOutputBoundary = new InventoryAddItemPresenter(
-                inventoryAddItemViewModel);
-        final InventoryAddItemInputBoundary inventoryAddItemInteractor = new InventoryAddItemInteractor(inventoryAddItemOutputBoundary);
+                inventoryAddItemViewModel, moveViewModel);
+        final InventoryAddItemInputBoundary inventoryAddItemInteractor = new InventoryAddItemInteractor(inventoryAddItemOutputBoundary, gameDataAccess);
 
         InventoryAddItemController controller = new InventoryAddItemController(inventoryAddItemInteractor);
         itemView.setController(controller);
+        moveView.setInventoryAddItemController(controller);
         return this;
     }
+
     public AppBuilder addUseInventoryUseCase() {
         final InventoryUseItemOutputBoundary inventoryUseItemPresenter = new InventoryUseItemPresenter();
         final InventoryUseItemInputBoundary inventoryUseItemInteractor = new InventoryUseItemInteractor(

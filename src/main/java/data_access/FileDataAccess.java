@@ -83,7 +83,7 @@ public class FileDataAccess {
     private JSONObject serializeGameMap(GameMap map) {
         JSONObject json = new JSONObject();
         json.put("currentLocationIndex", map.getCurrentLocationIndex());
-        
+
         JSONArray locationsArray = new JSONArray();
         // We need to access locations. Since GameMap doesn't expose list directly, 
         // we might need to reconstruct or add a getter.
@@ -98,12 +98,12 @@ public class FileDataAccess {
         // OR better, add `getLocations()` to GameMap.
         // Since I cannot modify other files easily here without separate blocks, 
         // I will use reflection for the private field 'locations' to respect existing constraints.
-        
+
         try {
             Field locationsField = GameMap.class.getDeclaredField("locations");
             locationsField.setAccessible(true);
             List<Location> locations = (List<Location>) locationsField.get(map);
-            
+
             for (Location loc : locations) {
                 locationsArray.put(serializeLocation(loc));
             }
@@ -111,7 +111,7 @@ public class FileDataAccess {
             e.printStackTrace();
         }
         json.put("locations", locationsArray);
-        
+
         return json;
     }
 
@@ -130,6 +130,18 @@ public class FileDataAccess {
             json.put("monster", monsterJson);
         } else {
             json.put("monster", JSONObject.NULL);
+        }
+
+        // Save item data if an item exists at this location
+        if (location.getItem() != null) {
+            JSONObject itemJson = new JSONObject();
+            itemJson.put("name", location.getItem().getName());
+            itemJson.put("type", location.getItem().getType());
+            itemJson.put("description", location.getItem().getDescription());
+            itemJson.put("value", location.getItem().getValue());
+            json.put("item", itemJson);
+        } else {
+            json.put("item", JSONObject.NULL);
         }
 
         return json;
@@ -193,12 +205,12 @@ public class FileDataAccess {
     private GameMap deserializeGameMap(JSONObject json) {
         int currentIndex = json.getInt("currentLocationIndex");
         JSONArray locationsArray = json.getJSONArray("locations");
-        
+
         List<Location> loadedLocations = new ArrayList<>();
         for (int i = 0; i < locationsArray.length(); i++) {
             loadedLocations.add(deserializeLocation(locationsArray.getJSONObject(i)));
         }
-        
+
         return new GameMap(loadedLocations, currentIndex);
     }
 
@@ -230,8 +242,41 @@ public class FileDataAccess {
                 }
             }
         }
+        Item item = null;
+        if (json.has("item") && !json.isNull("item")) {
+            try {
+                JSONObject itemJson = json.getJSONObject("item");
 
-        return new Location(name, latitude, longitude, monster);
+                // 1. Instantiate with basic constructor
+                String iName = itemJson.getString("name");
+                String iType = itemJson.getString("type");
+                item = new Item(iName, iType);
+
+                // 2. Use reflection to restore specific saved state (value/description)
+                // This ensures if an item was modified or logic changed, the save is accurate
+
+                // Restore 'value'
+                if (itemJson.has("value")) {
+                    Field valueField = Item.class.getDeclaredField("value");
+                    valueField.setAccessible(true);
+                    valueField.setInt(item, itemJson.getInt("value"));
+                }
+
+                // Restore 'description'
+                if (itemJson.has("description")) {
+                    Field descField = Item.class.getDeclaredField("description");
+                    descField.setAccessible(true);
+                    descField.set(item, itemJson.getString("description"));
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                // In case of error, item will remain whatever the constructor set it to,
+                // or null if the instantiation failed.
+            }
+        }
+
+        return new Location(name, latitude, longitude, monster, item);
     }
 
     // Helper method to get locations list from GameMap using reflection

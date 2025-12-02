@@ -1,6 +1,8 @@
 package view;
 
 import entity.Direction;
+import entity.Item;
+import interface_adapter.InventoryAddItem.InventoryAddItemController;
 import interface_adapter.move.MoveController;
 import interface_adapter.move.MoveState;
 import interface_adapter.move.MoveViewModel;
@@ -18,18 +20,21 @@ public class MoveView extends JPanel implements PropertyChangeListener {
     private final MoveViewModel moveViewModel;
     private MoveController moveController;
     private ShowResultsController resultsController;
+    private InventoryAddItemController inventoryAddItemController;
 
     private final JLabel linearMapLabel;
     private final JLabel staticMapImageLabel;
     private final JLabel currentLocationLabel;
     private final JButton goLeftButton;
     private final JButton goRightButton;
+    private final JButton pickUpButton;
     private final JButton endGameButton;
 
     public MoveView(MoveViewModel moveViewModel) {
         this.moveViewModel = moveViewModel;
         this.moveController = null;
         this.resultsController = null;
+        this.inventoryAddItemController = null;
 
         this.moveViewModel.addPropertyChangeListener(this);
 
@@ -50,10 +55,12 @@ public class MoveView extends JPanel implements PropertyChangeListener {
 
         goLeftButton = new JButton(LEFT_BUTTON_LABEL);
         goRightButton = new JButton(RIGHT_BUTTON_LABEL);
+        pickUpButton = new JButton("Pick Item");
         endGameButton = new JButton("End Game");
         endGameButton.setVisible(false);
         buttonPanel.add(goLeftButton);
         buttonPanel.add(goRightButton);
+        buttonPanel.add(pickUpButton);
         buttonPanel.add(endGameButton);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -72,6 +79,20 @@ public class MoveView extends JPanel implements PropertyChangeListener {
 
         goRightButton.addActionListener(
                 e -> moveController.execute(Direction.RIGHT)
+        );
+
+        pickUpButton.addActionListener(
+                e -> {
+                    MoveState state = moveViewModel.getState();
+                    Item item = state.getItem();
+
+                    if (item != null && inventoryAddItemController != null) {
+                        // 1. Add item to inventory
+                        inventoryAddItemController.addItem(item);
+
+                        JOptionPane.showMessageDialog(this, "You picked up: " + item.getName());
+                    }
+                }
         );
 
         endGameButton.addActionListener(e -> {
@@ -107,9 +128,8 @@ public class MoveView extends JPanel implements PropertyChangeListener {
 
 //                state.setMonster(null);
             }
-//            else if (state.getItem() != null) {
-//
-//            }
+
+            pickUpButton.setVisible(state.isItemPickupable());
         }
     }
 
@@ -123,5 +143,9 @@ public class MoveView extends JPanel implements PropertyChangeListener {
 
     public void setResultController(ShowResultsController resultsController) {
         this.resultsController = resultsController;
+    }
+
+    public void setInventoryAddItemController(InventoryAddItemController inventoryAddItemController) {
+        this.inventoryAddItemController = inventoryAddItemController;
     }
 }

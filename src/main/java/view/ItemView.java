@@ -44,7 +44,7 @@ public class ItemView extends JPanel {
                 return; }
             Item item = viewModel.getState().getAddedItem();
             if (item != null) {
-                controller.addItem(viewModel.getState().getUser(), item);
+                controller.addItem(item);
                 JOptionPane.showMessageDialog(this, "Item added.");
             }
         });

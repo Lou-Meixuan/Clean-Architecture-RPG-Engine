@@ -7,15 +7,15 @@ public class Location {
     private final double longitude;
 
     private Monster monster;
-//    private Item item;
+    private Item item;
 
-    public Location(String name, double latitude, double longitude, Monster monster) {
+    public Location(String name, double latitude, double longitude, Monster monster, Item item) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
 //        assert (monster == null && item != null) || (monster != null && item == null);
         this.monster = monster;
-//        this.item = item;
+        this.item = item;
     }
 
     public Monster getMonster() {
@@ -26,13 +26,13 @@ public class Location {
         this.monster = monster;
     }
 
-//    public Item getItem() {
-//        return item;
-//    }
-//
-//    public void setItem(Item item) {
-//        this.item = item;
-//    }
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
 
     public String getName() {
         return name;

@@ -1,5 +1,6 @@
 package use_case.move;
 
+import entity.Item;
 import entity.Monster;
 
 public class MoveOutputData {
@@ -14,13 +15,13 @@ public class MoveOutputData {
     private final boolean canMoveRight;
 
     private final Monster monster;
-    // private final Item item;
+    private final Item item;
 
     public MoveOutputData(String currentLocationName, double latitude, double longitude, int currentIndex, int mapSize,
-                          boolean canMoveLeft, boolean canMoveRight, Monster monster) {
-//        if (monster != null && item != null) {
-//            throw new IllegalArgumentException("Location cannot contain both a Monster and an Item.");
-//        }
+                          boolean canMoveLeft, boolean canMoveRight, Monster monster, Item item) {
+        if (monster != null && item != null) {
+            throw new IllegalArgumentException("Location cannot contain both a Monster and an Item.");
+        }
         this.currentLocationName = currentLocationName;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -29,7 +30,7 @@ public class MoveOutputData {
         this.canMoveLeft = canMoveLeft;
         this.canMoveRight = canMoveRight;
         this.monster = monster;
-
+        this.item = item;
     }
 
     public String getCurrentLocationName() {
@@ -64,7 +65,7 @@ public class MoveOutputData {
         return mapSize;
     }
 
-//    public Item getItem() {
-//        return item;
-//    }
+    public Item getItem() {
+        return item;
+    }
 }
