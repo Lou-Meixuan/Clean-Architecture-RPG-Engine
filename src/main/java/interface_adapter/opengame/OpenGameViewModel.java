@@ -4,7 +4,7 @@ import entity.GameState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenGameViewModel {
+public class  OpenGameViewModel {
 
     private String message;
     private GameState state;
