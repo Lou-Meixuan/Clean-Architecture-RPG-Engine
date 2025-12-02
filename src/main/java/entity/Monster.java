@@ -1,7 +1,6 @@
 package entity;
 
 import API.MonsterDetail;
-import API.SrdMonsterDetail;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,16 +11,18 @@ public class Monster {
     public String NAME;
     private double HP;
     private Spells[] SPELL;
+    private MonsterDetail api;
 
     /**
      * The constructor of the Monster. It randomly set the value of the HP, select name and generate spells from
      * the api.
      */
     public Monster(MonsterDetail api) {
+        this.api = api;
         Random random = new Random();
         HP = random.nextInt(11) + 20;
-        setSpells(api);
-        setNAME(api);
+        setSpells();
+        setNAME();
     }
 
     public Monster() {
@@ -58,7 +59,7 @@ public class Monster {
     /**
      * Randomly select a name from the api.
      */
-    public void setNAME(MonsterDetail api) {
+    public void setNAME() {
         Random random = new Random();
         String[] nameList = api.generateRaces();
         int size = nameList.length;
@@ -69,7 +70,7 @@ public class Monster {
     /**
      * Randomly select size of the spell list for the monster and randomly select the type of spells.
      */
-    public void setSpells(MonsterDetail api) {
+    public void setSpells() {
         Random random = new Random();
         int size = random.nextInt(3) + 1;
         ArrayList<Spells> spell = api.generateSpells();
