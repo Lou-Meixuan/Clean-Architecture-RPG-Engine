@@ -62,7 +62,7 @@ public class BattleInteractor implements BattleInputBoundary {
         user.HPDecrease(DMG);
         // notify presenter to update the view (After the User attack)
         BattleOutputData turnOutput = new BattleOutputData(user, monster);
-        battlePresenter.updateUserTurnState(turnOutput);
+        battlePresenter.updateMonsterTurnState(turnOutput);
     }
 
     /**

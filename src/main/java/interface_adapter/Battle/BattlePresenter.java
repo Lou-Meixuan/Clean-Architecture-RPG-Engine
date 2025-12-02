@@ -37,6 +37,9 @@ public class BattlePresenter implements BattleOutputBoundary {
         String turnMessage = String.format("Monster Completed its turn. Your HP is %.1f, Monster HP is %.1f",
                 outputData.getUserHP(), outputData.getMonsterHP());
         state.setBattleMessage("\n" + turnMessage);
+
+        // Notify the view to update
+        battleViewModel.firePropertyChange();
     }
 
     /**
