@@ -8,8 +8,6 @@ import interface_adapter.ViewManagerModel;
 import use_case.move.MoveOutputBoundary;
 import use_case.move.MoveOutputData;
 
-import javax.swing.*;
-
 public class MovePresenter implements MoveOutputBoundary {
 
     private final MoveViewModel moveViewModel;
@@ -38,8 +36,7 @@ public class MovePresenter implements MoveOutputBoundary {
         );
         moveState.setLinearMap(linearMap);
 
-        ImageIcon mapImage = moveOutputData.getStaticMapImage();
-        moveState.setStaticMapImage(mapImage);
+        moveState.setStaticMapImageData(moveOutputData.getStaticMapImage());
 
         moveViewModel.firePropertyChange();
     }
@@ -78,3 +75,4 @@ public class MovePresenter implements MoveOutputBoundary {
         return sb.toString();
     }
 }
+

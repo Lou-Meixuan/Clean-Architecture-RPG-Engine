@@ -2,11 +2,6 @@ package use_case.move;
 
 import API.MoveStaticMapInterface;
 import entity.*;
-import entity.AdventureGame;
-import entity.Direction;
-import entity.Location;
-
-import javax.swing.*;
 
 public class MoveInteractor implements MoveInputBoundary {
 
@@ -42,7 +37,7 @@ public class MoveInteractor implements MoveInputBoundary {
         Location currentLocation = game.getGameMap().getCurrentLocation();
         String locationName = currentLocation.getName();
 
-        ImageIcon mapImage = mapService.getMapImage(
+        byte[] mapImage = mapService.getMapImage(
                 currentLocation.getLatitude(),
                 currentLocation.getLongitude()
         );

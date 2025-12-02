@@ -3,8 +3,6 @@ package use_case.move;
 import entity.Item;
 import entity.Monster;
 
-import javax.swing.*;
-
 public class MoveOutputData {
     private final String currentLocationName;
 
@@ -16,10 +14,10 @@ public class MoveOutputData {
 
     private final Monster monster;
     private final Item item;
-    private final ImageIcon staticMapImage;
+    private final byte[] staticMapImage;
 
     public MoveOutputData(String currentLocationName, int currentIndex, int mapSize,
-                          boolean canMoveLeft, boolean canMoveRight, Monster monster, Item item, ImageIcon staticMapImage) {
+                          boolean canMoveLeft, boolean canMoveRight, Monster monster, Item item, byte[] staticMapImage) {
         if (monster != null && item != null) {
             throw new IllegalArgumentException("Location cannot contain both a Monster and an Item.");
         }
@@ -61,7 +59,7 @@ public class MoveOutputData {
         return item;
     }
 
-    public ImageIcon getStaticMapImage() {
+    public byte[] getStaticMapImage() {
         return staticMapImage;
     }
 }

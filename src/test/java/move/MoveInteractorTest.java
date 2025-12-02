@@ -1,6 +1,5 @@
 package move;
 
-import API.MonsterDetail;
 import API.MoveStaticMapInterface;
 import entity.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -209,8 +208,8 @@ class FakeMovePresenter implements MoveOutputBoundary {
 
 class FakeStaticMapService implements MoveStaticMapInterface {
     @Override
-    public ImageIcon getMapImage(double latitude, double longitude) {
-        // Return a dummy ImageIcon for testing purposes.
-        return new ImageIcon();
+    public byte[] getMapImage(double latitude, double longitude) {
+        // Return a dummy byte array for testing purposes.
+        return new byte[0];
     }
 }

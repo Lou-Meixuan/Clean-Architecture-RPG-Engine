@@ -5,10 +5,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class GeoapifyStaticMap implements MoveStaticMapInterface {
@@ -24,7 +23,7 @@ public class GeoapifyStaticMap implements MoveStaticMapInterface {
     }
 
     @Override
-    public ImageIcon getMapImage(double latitude, double longitude) {
+    public byte[] getMapImage(double latitude, double longitude) {
         try {
             return fetchMapFromGeoapify(latitude, longitude);
         } catch (IOException e) {
@@ -33,7 +32,7 @@ public class GeoapifyStaticMap implements MoveStaticMapInterface {
         }
     }
 
-    private ImageIcon fetchMapFromGeoapify(double latitude, double longitude) throws IOException {
+    private byte[] fetchMapFromGeoapify(double latitude, double longitude) throws IOException {
         String url = buildGeoapifyUrl(latitude, longitude);
 
         Request request = new Request.Builder()
@@ -50,14 +49,7 @@ public class GeoapifyStaticMap implements MoveStaticMapInterface {
                 throw new IOException("Empty response body");
             }
 
-            byte[] imageBytes = response.body().bytes();
-            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
-
-            if (bufferedImage == null) {
-                throw new IOException("Failed to parse image from response");
-            }
-
-            return new ImageIcon(bufferedImage);
+            return response.body().bytes();
         }
     }
 
@@ -73,7 +65,7 @@ public class GeoapifyStaticMap implements MoveStaticMapInterface {
         );
     }
 
-    private ImageIcon createPlaceholderImage(double lat, double lon) {
+    private byte[] createPlaceholderImage(double lat, double lon) {
         BufferedImage image = new BufferedImage(
                 MAP_WIDTH, MAP_HEIGHT, BufferedImage.TYPE_INT_RGB
         );
@@ -90,6 +82,13 @@ public class GeoapifyStaticMap implements MoveStaticMapInterface {
 
         g.dispose();
 
-        return new ImageIcon(image);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            ImageIO.write(image, "png", baos);
+            return baos.toByteArray();
+        } catch (IOException e) {
+            // This should not happen with a ByteArrayOutputStream
+            System.err.println("Failed to create placeholder image: " + e.getMessage());
+            return new byte[0];
+        }
     }
 }
