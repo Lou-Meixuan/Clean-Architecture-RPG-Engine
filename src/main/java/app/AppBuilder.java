@@ -11,6 +11,7 @@ import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.InventoryAddItem.InventoryAddItemController;
 import interface_adapter.InventoryAddItem.InventoryAddItemPresenter;
 import interface_adapter.InventoryAddItem.InventoryAddItemViewModel;
+import interface_adapter.InventoryUseItem.InventoryUseItemController;
 import interface_adapter.InventoryUseItem.InventoryUseItemPresenter;
 import interface_adapter.InventoryUseItem.InventoryUseItemViewModel;
 import interface_adapter.ViewManagerModel;
@@ -67,6 +68,7 @@ public class AppBuilder {
     private BattleView battleView;
     private BattleViewModel battleViewModel;
     private MoveView moveView;
+    private InventoryView inventoryView;
     private MoveViewModel moveViewModel;
     private OpenGameView openGameView;
     private OpenGameViewModel openGameViewModel;
@@ -76,7 +78,6 @@ public class AppBuilder {
     private ResultsViewModel resultsViewModel;
     private ItemView itemView;
     private InventoryAddItemViewModel inventoryAddItemViewModel;
-    private InventoryView inventoryView;
     private InventoryUseItemViewModel inventoryUseItemViewModel;
 
     public AppBuilder(GameDataAccessFactory dataAccessFactory) {
@@ -87,7 +88,7 @@ public class AppBuilder {
 
     public AppBuilder addBattleView() {
         battleViewModel = new BattleViewModel();
-        battleView = new BattleView(battleViewModel, quizViewModel);
+        battleView = new BattleView(battleViewModel, quizViewModel, inventoryView);
         cardPanel.add(battleView, battleView.getViewName());
         return this;
     }
@@ -130,7 +131,7 @@ public class AppBuilder {
     public AppBuilder addUseInventoryView() {
         inventoryUseItemViewModel = new InventoryUseItemViewModel();
         inventoryView = new InventoryView(inventoryUseItemViewModel);
-        cardPanel.add(inventoryView, inventoryView.getViewName());
+       // cardPanel.add(inventoryView, inventoryView.getViewName());
         return this;
     }
 
@@ -196,7 +197,7 @@ public class AppBuilder {
 
     public AppBuilder addAddInventoryUseCase() {
         final InventoryAddItemOutputBoundary inventoryAddItemOutputBoundary = new InventoryAddItemPresenter(
-                inventoryAddItemViewModel, moveViewModel);
+                inventoryAddItemViewModel, moveViewModel, inventoryUseItemViewModel);  // ← ADD the third parameter
         final InventoryAddItemInputBoundary inventoryAddItemInteractor = new InventoryAddItemInteractor(inventoryAddItemOutputBoundary, gameDataAccess);
 
         InventoryAddItemController controller = new InventoryAddItemController(inventoryAddItemInteractor);
@@ -205,15 +206,18 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addUseInventoryUseCase() {
-        final InventoryUseItemOutputBoundary inventoryUseItemPresenter = new InventoryUseItemPresenter();
-        final InventoryUseItemInputBoundary inventoryUseItemInteractor = new InventoryUseItemInteractor(
-                inventoryUseItemPresenter);
 
-        // InventoryUseItemController controller = new InventoryUseItemController();
-        // inventoryView.setController(controller);
+    public AppBuilder addUseInventoryUseCase() {
+        final InventoryUseItemOutputBoundary inventoryUseItemPresenter = new InventoryUseItemPresenter(
+                inventoryUseItemViewModel);
+        final InventoryUseItemInputBoundary inventoryUseItemInteractor = new InventoryUseItemInteractor(
+                inventoryUseItemPresenter, gameDataAccess);
+
+        InventoryUseItemController controller = new InventoryUseItemController(inventoryUseItemInteractor);
+        inventoryView.setController(controller);
         return this;
     }
+
 
     public JFrame build() {
         final JFrame application = new JFrame("Adventure & Battle Integrated System");
