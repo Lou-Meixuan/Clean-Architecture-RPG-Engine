@@ -6,7 +6,6 @@ import interface_adapter.Battle.BattleController;
 import interface_adapter.Battle.BattleState;
 import interface_adapter.Battle.BattleViewModel;
 import interface_adapter.InventoryUseItem.InventoryUseItemController;
-import interface_adapter.InventoryUseItem.InventoryUseItemViewModel;
 import interface_adapter.quiz.QuizViewModel;
 
 import javax.swing.*;
@@ -35,9 +34,12 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
     private final JLabel monsterHpLabel;
     private final JTextArea battleMessageArea;
     private final JButton attackButton;
+    private final JComboBox<String> inventoryDropdown = new JComboBox<>();
+    private final JButton useItemButton = new JButton("Use Item");
+    private final JTextArea inventoryDetailsArea = new JTextArea(5,20);
 
 
-    public BattleView(BattleViewModel battleViewModel, QuizViewModel quizViewModel, InventoryView inventoryView) {
+    public BattleView(BattleViewModel battleViewModel, QuizViewModel quizViewModel) {
         this.viewModel = battleViewModel;
         this.quizViewModel = quizViewModel;
         this.viewModel.addPropertyChangeListener(this);
@@ -56,25 +58,35 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
         battleMessageArea.setWrapStyleWord(true);
         battleMessageArea.setText("Battle is ready to begin...");
 
+        inventoryDetailsArea.setLineWrap(true);
+        inventoryDetailsArea.setEditable(false);
+        inventoryDetailsArea.setWrapStyleWord(true);
+        JScrollPane inventoryDisplayScrollPane = new JScrollPane(inventoryDetailsArea);
+
+        useItemButton.setEnabled(false);
 
         attackButton = new JButton("Attack");
 
         // Add action listeners
         attackButton.addActionListener(this);
+        inventoryDropdown.addActionListener(e-> {
+            String selectedItemName = (String) inventoryDropdown.getSelectedItem();
+            if (selectedItemName != null) {  //display details of item
+                inventoryDetailsArea.setText(selectedItemName); } else {
+                inventoryDetailsArea.setText("");
+                useItemButton.setEnabled(false); } } );
+
+        useItemButton.addActionListener(e-> {
+            String selectedItemName = (String) inventoryDropdown.getSelectedItem();
+            if (selectedItemName != null && inventoryController != null) {
+                inventoryController.useItem(selectedItemName);
+                inventoryDropdown.removeItem(selectedItemName);
+                useItemButton.setEnabled(false);}
+        else {useItemButton.setEnabled(true);}} );
 
         // Layout setup
         setupLayout();
-        if (inventoryView != null) {
-            // Make it VERY visible for debugging
-            inventoryView.setPreferredSize(new Dimension(300, 0));  // ← Wider
-            add(inventoryView, BorderLayout.EAST);
-            // Force revalidation
-            revalidate();
-            repaint();
-        }
-
-
-}
+    }
 
     /**
      * Sets up the layout of the view.
@@ -96,7 +108,13 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
         userPanel.setBorder(BorderFactory.createTitledBorder("Player"));
         userPanel.add(userHpLabel);
 
-
+        //inventory subpanel
+        JPanel inventorySubPanel=  new JPanel(new BorderLayout());
+        JLabel inventoryLabel = new JLabel("Inventory");
+        inventorySubPanel.add(inventoryLabel, BorderLayout.NORTH);
+        inventorySubPanel.add(inventoryDropdown, BorderLayout.CENTER);
+        inventorySubPanel.add(useItemButton, BorderLayout.SOUTH);
+        userPanel.add(inventorySubPanel);
 
         // Monster info panel
         JPanel monsterPanel = new JPanel(new GridLayout(2, 1));
@@ -129,6 +147,12 @@ public class BattleView extends JPanel implements ActionListener, PropertyChange
         this.battleController = controller;
     }
 
+    /**
+     * Sets the controller for inventory
+     */
+    public void setInventoryController(InventoryUseItemController controller) {
+        this.inventoryController = controller;
+    }
     /**
      * Returns the view name.
      */

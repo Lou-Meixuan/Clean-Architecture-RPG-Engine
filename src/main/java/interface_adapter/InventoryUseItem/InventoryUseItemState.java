@@ -1,87 +1,25 @@
 package interface_adapter.InventoryUseItem;
 
-import java.util.ArrayList;
-import java.util.List;
+import entity.Item;
+import entity.User;
 
-/**
- * State object for Inventory Use Item View
- */
 public class InventoryUseItemState {
+    /**
+     * State object for Added Item View
+     */
+    private Item useItem;
+    private User user = null;
 
-    private List<String> itemNames;
-    private List<String> itemTypes;
-    private List<Integer> itemValues;
 
-    private int hpIncrease;
-    private int defIncrease;
-    private int dmgIncrease;
-
-    private String message;
-
-    public InventoryUseItemState() {
-        this.itemNames = new ArrayList<>();
-        this.itemTypes = new ArrayList<>();
-        this.itemValues = new ArrayList<>();
-        this.hpIncrease = 0;
-        this.defIncrease = 0;
-        this.dmgIncrease = 0;
-        this.message = "";
+    public User getUser() {
+        return user;
     }
 
-    // Getters and Setters
-    public List<String> getItemNames() {
-        return itemNames;
-    }
+    public void setUser(User user) {
+        this.user = user; }
 
-    public void setItemNames(List<String> itemNames) {
-        this.itemNames = itemNames;
-    }
-
-    public List<String> getItemTypes() {
-        return itemTypes;
-    }
-
-    public void setItemTypes(List<String> itemTypes) {
-        this.itemTypes = itemTypes;
-    }
-
-    public List<Integer> getItemValues() {
-        return itemValues;
-    }
-
-    public void setItemValues(List<Integer> itemValues) {
-        this.itemValues = itemValues;
-    }
-
-    public int getHpIncrease() {
-        return hpIncrease;
-    }
-
-    public void setHpIncrease(int hpIncrease) {
-        this.hpIncrease = hpIncrease;
-    }
-
-    public int getDefIncrease() {
-        return defIncrease;
-    }
-
-    public void setDefIncrease(int defIncrease) {
-        this.defIncrease = defIncrease;
-    }
-
-    public int getDmgIncrease() {
-        return dmgIncrease;
-    }
-
-    public void setDmgIncrease(int dmgIncrease) {
-        this.dmgIncrease = dmgIncrease;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    public Item getUseItem() {
+        return useItem; }
+    public void setUseItem(Item useItem) {
+        this.useItem = useItem; }
 }

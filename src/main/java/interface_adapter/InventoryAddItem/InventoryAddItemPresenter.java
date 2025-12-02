@@ -1,51 +1,33 @@
 package interface_adapter.InventoryAddItem;
 
 import entity.Item;
-import interface_adapter.InventoryUseItem.InventoryUseItemState;
-import interface_adapter.InventoryUseItem.InventoryUseItemViewModel;
 import interface_adapter.move.MoveState;
 import interface_adapter.move.MoveViewModel;
 import use_case.InventoryAddItem.InventoryAddItemOutputBoundary;
 import use_case.InventoryAddItem.InventoryAddItemOutputData;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * Presenter for AddItem Usecase
+ * updates viewModel state with added item.
+ */
 
 public class InventoryAddItemPresenter implements InventoryAddItemOutputBoundary {
     private final InventoryAddItemViewModel viewModel;
     private final MoveViewModel moveViewModel;
-    private final InventoryUseItemViewModel inventoryUseItemViewModel;  // ← ADD THIS
 
-    public InventoryAddItemPresenter(InventoryAddItemViewModel viewModel,
-                                     MoveViewModel moveViewModel,
-                                     InventoryUseItemViewModel inventoryUseItemViewModel) {  // ← ADD PARAMETER
+    public InventoryAddItemPresenter(InventoryAddItemViewModel viewModel, MoveViewModel moveViewModel) {
         this.viewModel = viewModel;
         this.moveViewModel = moveViewModel;
-        this.inventoryUseItemViewModel = inventoryUseItemViewModel;  // ← ADD THIS
     }
-
 
     @Override
     public void present(InventoryAddItemOutputData outputData) {
         Item item = outputData.getItem();
         viewModel.getState().setAddedItem(item);
 
-        // Update the move view model
+        // Also update the move view model to reflect the item has been removed from the map
         MoveState moveState = moveViewModel.getState();
         moveState.setNeedUpdate(true);
         moveViewModel.firePropertyChange();
-
-        // Update the inventory view model state with the new item
-        InventoryUseItemState inventoryState = inventoryUseItemViewModel.getState();
-        List<String> currentItems = inventoryState.getItemNames();
-        if (currentItems == null) {
-            currentItems = new ArrayList<>();
-        }
-        List<String> updatedItems = new ArrayList<>(currentItems);
-        updatedItems.add(item.getName());
-        inventoryState.setItemNames(updatedItems);
-
-        inventoryUseItemViewModel.firePropertyChange();
-
-
-    }}
+    }
+}

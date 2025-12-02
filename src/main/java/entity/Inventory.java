@@ -10,39 +10,40 @@ import java.util.List;
 
 
 public class Inventory {
-    private List<Item> items;
+    private List<Item> INVENTORY;
 
-    public Inventory(List<Item> items) {
-        this.items = items; }
+    public Inventory(List<Item> INVENTORY) {
+        this.INVENTORY = INVENTORY; }
 
     // Add or remove item from inventory
     public void addItem(Item item) {
-        items.add(item);
-    }
+        INVENTORY.add(item); }
     public void removeItem(Item item) {
-        items.remove(item); }
+        INVENTORY.remove(item); }
 
     public Item getItemByName (String name){
-        for(Item item : items){
+        for(Item item : INVENTORY){
             if (item.getName().equals(name)){
                 return item;
             }
-        }     return null; }
+        }
+    return null;
+    }
     public List<Item> getItems(){
-        return items;
+        return List.copyOf(INVENTORY);
     }
 
     public List<String> getItemsList() {
         List<String> list = new ArrayList<String>();
-        if(!items.isEmpty()){
-            for(Item item : items){
+        if(!INVENTORY.isEmpty()){
+            for(Item item : INVENTORY){
                 list.add(item.getName());
             } return list;
         } return list;
     }
 
     public boolean isEmpty() {
-        return items.isEmpty();
+        return INVENTORY.isEmpty();
     }
 }
 

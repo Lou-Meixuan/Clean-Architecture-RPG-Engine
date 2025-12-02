@@ -5,7 +5,6 @@ import API.SrdMonsterDetail;
 import entity.*;
 import use_case.Battle.BattleUserDataAccessInterface;
 import use_case.InventoryAddItem.InventoryAddItemUserDataAccessInterface;
-import use_case.InventoryUseItem.InventoryUseItemUserDataAccessInterface;
 import use_case.move.MoveGameDataAccessInterface;
 import use_case.openGame.OpenGameDataAccessInterface;
 import use_case.submitQuiz.QuizDataAccessInterface;
@@ -20,7 +19,7 @@ import java.util.Map;
 
 public class FileGameDataAccessObject implements MoveGameDataAccessInterface,
         ShowResultsGameDataAccessInterface, BattleUserDataAccessInterface,
-        QuizDataAccessInterface, OpenGameDataAccessInterface, InventoryAddItemUserDataAccessInterface, InventoryUseItemUserDataAccessInterface {
+        QuizDataAccessInterface, OpenGameDataAccessInterface, InventoryAddItemUserDataAccessInterface {
 
     private AdventureGame game;
     private final FileDataAccess fileDataAccess;
@@ -140,48 +139,4 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface,
     public void deleteSaveFile() {
         clearGameData();
     }
-    // ============== UseItemDataAccess Interface ===============
-    @Override
-    public Inventory getInventory() {
-        User user = game.getUser();
-        return user != null ? user.getInventory() : null;
-    }
-
-    @Override
-    public void removeItem(Item item) {
-        User user = game.getUser();
-        if (user != null && user.getInventory() != null) {
-            user.getInventory().removeItem(item);
-            saveGame(game);
-        }
-    }
-
-    @Override
-    public Item getItemByName(String itemName) {
-        User user = game.getUser();
-        if (user == null || user.getInventory() == null) {
-            return null;
-        }
-
-        List<Item> items = user.getInventory().getItems();
-        if (items == null) {
-            return null;
-        }
-
-        for (Item item : items) {
-            if (item.getName().equals(itemName)) {
-                return item; } }
-        return null; }
-
-    @Override
-    public void updateUserStats(int hpIncrease, int defIncrease, int dmgIncrease) {
-        User user = game.getUser();
-        if (user != null) {
-            user.addBonusHP(hpIncrease);
-            user.addDEF(defIncrease);
-            user.addDMG(dmgIncrease);
-            saveGame(game);
-        }
-    }
-
 }

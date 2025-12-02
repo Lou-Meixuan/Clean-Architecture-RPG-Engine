@@ -1,37 +1,26 @@
 package use_case.InventoryUseItem;
 
 import entity.Item;
+import entity.User;
 import entity.Inventory;
 
-/**
- * Data access interface for inventory use item use case
- * Simplified for single-user game - works with "the current user"
- */
 public interface InventoryUseItemUserDataAccessInterface {
     /**
-     * Returns inventory of the current user
-     * @return the current user's inventory
+     * returns inventory of user
      */
-    Inventory getInventory();
+    Inventory getInventory(User user);
 
     /**
-     * Remove an item from current user's inventory
+     * remove an item
      * @param item item to be removed from inventory
      */
-    void removeItem(Item item);
+    void removeItem(User user, Item item);
 
     /**
-     * Get an item by name from current user's inventory
-     * @param itemName name of item to be looked up
-     * @return item looked up, or null if not found
+     *
+     * @param user user of game
+     * @param name name of item to be looked up
+     * @return item looked up
      */
-    Item getItemByName(String itemName);
-
-    /**
-     * Update current user's stats
-     * @param hpIncrease HP to add
-     * @param defIncrease DEF to add
-     * @param dmgIncrease DMG to add
-     */
-    void updateUserStats(int hpIncrease, int defIncrease, int dmgIncrease);
+    Item getItemByName(User user, String name);
 }

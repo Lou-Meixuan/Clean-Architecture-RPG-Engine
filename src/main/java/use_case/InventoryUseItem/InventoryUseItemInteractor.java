@@ -1,25 +1,25 @@
 package use_case.InventoryUseItem;
 
 import entity.Item;
-import entity.Inventory;
-import use_case.InventoryUseItem.InventoryUseItemOutputData.ItemDTO;
-
-import java.util.ArrayList;
-import java.util.List;
+import entity.User;
 
 public class InventoryUseItemInteractor implements InventoryUseItemInputBoundary {
     private final InventoryUseItemOutputBoundary outputBoundary;
-    private final InventoryUseItemUserDataAccessInterface userDAO;
+    private User user;
 
-    public InventoryUseItemInteractor(InventoryUseItemOutputBoundary outputBoundary,
-                                      InventoryUseItemUserDataAccessInterface userDAO) {
+    public InventoryUseItemInteractor(InventoryUseItemOutputBoundary outputBoundary) {
         this.outputBoundary = outputBoundary;
-        this.userDAO = userDAO;
     }
-
     /**
-     * Helper method: map item type to category
+     * set user
+     * @param user user of the game
      */
+    @Override
+    public void setUser(User user) {
+        this.user = user; }
+
+
+    //Helper method map type to category like in the item interactor (again)
     private String mapTypeToCategory(String type) {
         if (type == null) return "heal";
         switch (type.toLowerCase()) {
@@ -33,88 +33,52 @@ public class InventoryUseItemInteractor implements InventoryUseItemInputBoundary
             case "ring":
                 return "armour";
             default:
-                return "heal";
-        }
-    }
+                return "heal"; } }
 
     /**
-     * Helper method: convert Inventory entity to list of ItemDTOs
+     * @param inputDataUseItem item from inventory to be used
      */
-    private List<ItemDTO> convertInventoryToDTO(Inventory inventory) {
-        List<ItemDTO> itemDTOs = new ArrayList<>();
-        if (inventory != null && inventory.getItems() != null) {
-            for (Item item : inventory.getItems()) {
-                itemDTOs.add(new ItemDTO(
-                        item.getName(),
-                        item.getType(),
-                        item.getValue()
-                ));
-            }
-        }
-        return itemDTOs;
-    }
-
     @Override
-    public void useItem(InventoryUseItemInputData inputData) {
-        if (inputData == null) {
-            outputBoundary.useItem(new InventoryUseItemOutputData("Invalid input data"));
-            return;
-        }
-
-        String itemName = inputData.getItemName();
-        if (itemName == null || itemName.trim().isEmpty()) {
-            outputBoundary.useItem(new InventoryUseItemOutputData("Item name is required"));
-            return;
-        }
-
-        Item item = userDAO.getItemByName(itemName);
-        if (item == null) {
-            outputBoundary.useItem(new InventoryUseItemOutputData("Item '" + itemName + "' not found in inventory"));
-            return;
-        }
-
+    public void useItem(InventoryUseItemInputData inputDataUseItem) {
+        if (user == null || inputDataUseItem == null) {return;}
+        // Item from data access
+        Item item = user.getItemByName(inputDataUseItem.getItemName());
+        if (item == null) {return;}
         int hp = 0, def = 0, dmg = 0;
 
+        // updates stats based on hp
         String category = mapTypeToCategory(item.getType());
         switch (category) {
             case "heal":
-                hp = Math.max(1, item.getValue());
+                hp = Math.max(1,item.getValue());
+                user.addBonusHP(hp);
                 break;
             case "armour":
-                def = Math.max(1, Math.min(4, Math.abs(item.getValue()) - 4));
+                def = Math.max(1, Math.min(4, Math.abs(item.getValue())-4));
+                user.addDEF(def);
                 break;
             case "weapon":
                 dmg = (item.getValue() % 2 == 0) ? 2 : 1;
+                user.addDMG(dmg);
                 break;
         }
 
-        // Update user stats through DAO
-        userDAO.updateUserStats(hp, def, dmg);
+        user.removeItem(item);
 
-        // Remove item from inventory
-        userDAO.removeItem(item);
-
-        // Get updated inventory and convert to DTOs
-        Inventory updatedInventory = userDAO.getInventory();
-        List<ItemDTO> itemDTOs = convertInventoryToDTO(updatedInventory);
-
-        InventoryUseItemOutputData output = new InventoryUseItemOutputData(
-                itemDTOs, hp, def, dmg);
+        // updated inventory
+        InventoryUseItemOutputData output = new InventoryUseItemOutputData(user.getInventory(), hp, def, dmg);
         outputBoundary.useItem(output);
     }
-
+    /**
+     * viewing inventory
+     */
     @Override
-    public void viewInventory(InventoryUseItemInputData inputData) {
-        if (inputData == null) {
-            outputBoundary.viewInventory(new InventoryUseItemOutputData("Invalid input data"));
-            return;
-        }
-
-        Inventory inventory = userDAO.getInventory();
-        List<ItemDTO> itemDTOs = convertInventoryToDTO(inventory);
-
-        InventoryUseItemOutputData output = new InventoryUseItemOutputData(
-                itemDTOs, 0, 0, 0);
-        outputBoundary.viewInventory(output);
+    public void viewInventory() {
+        InventoryUseItemOutputData output = new InventoryUseItemOutputData(user.getInventory(), 0, 0, 0);
+    outputBoundary.viewInventory(output);
     }
+
+
+
 }
+
