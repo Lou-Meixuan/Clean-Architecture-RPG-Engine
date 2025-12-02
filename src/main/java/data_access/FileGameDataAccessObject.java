@@ -49,9 +49,10 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface,
         Location loc0 = new Location("Bahen Centre for Information Technology", 43.6594, -79.3981, null, null);
         Location loc1 = new Location("Myhal Centre For Engineering Innovation & Entrepreneurship", 43.6606, -79.3966, new Monster(api), null);
         Location loc2 = new Location("Regis College", 43.6643, -79.3901, null, new Item("heal", "heal"));
-        Location loc3 = new Location("Gerstein Science Information Centre", 43.6624, -79.3940, null, null);
+        Location loc3 = new Location("Regis College", 43.6643, -79.3901, null, new Item("Amulet of Health", "heal"));
+        Location loc4 = new Location("Gerstein Science Information Centre", 43.6624, -79.3940, null, null);
 
-        List<Location> locations = Arrays.asList(loc0, loc2, loc1, loc3);
+        List<Location> locations = Arrays.asList(loc0, loc2, loc3, loc1, loc4);
 
         GameMap gameMap = new GameMap(locations, 0);
         this.game = new AdventureGame(user, gameMap);
@@ -152,7 +153,7 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface,
         User user = game.getUser();
         if (user != null && user.getInventory() != null) {
             user.getInventory().removeItem(item);
-            saveGame(game);
+//            saveGame(game);
         }
     }
 
@@ -180,7 +181,7 @@ public class FileGameDataAccessObject implements MoveGameDataAccessInterface,
             user.addBonusHP(hpIncrease);
             user.addDEF(defIncrease);
             user.addDMG(dmgIncrease);
-            saveGame(game);
+//            saveGame(game);
         }
     }
 

@@ -136,7 +136,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addBattleUseCase() {
-        final BattleOutputBoundary battleOutputBoundary = new BattlePresenter(battleViewModel, moveViewModel, viewManagerModel);
+        final BattleOutputBoundary battleOutputBoundary = new BattlePresenter(battleViewModel, moveViewModel, viewManagerModel, inventoryUseItemViewModel);
         final BattleInputBoundary battleInteractor = new BattleInteractor(
                 gameDataAccess, battleOutputBoundary);
 
@@ -148,9 +148,9 @@ public class AppBuilder {
     public AppBuilder addMoveUseCase() {
         MoveStaticMapInterface mapService = new GeoapifyStaticMap();
         final MoveOutputBoundary moveOutputBoundary = new MovePresenter(viewManagerModel, moveViewModel,
-                mapService, battleViewModel);
+                battleViewModel);
         final MoveInputBoundary moveInteractor = new MoveInteractor(
-                gameDataAccess, moveOutputBoundary);
+                gameDataAccess, moveOutputBoundary, mapService);
 
         MoveController controller = new MoveController(moveInteractor);
         moveView.setMoveController(controller);

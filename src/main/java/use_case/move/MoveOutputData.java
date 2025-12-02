@@ -3,10 +3,10 @@ package use_case.move;
 import entity.Item;
 import entity.Monster;
 
+import javax.swing.*;
+
 public class MoveOutputData {
     private final String currentLocationName;
-    private final double latitude;
-    private final double longitude;
 
     private final int currentIndex;
     private final int mapSize;
@@ -16,33 +16,25 @@ public class MoveOutputData {
 
     private final Monster monster;
     private final Item item;
+    private final ImageIcon staticMapImage;
 
-    public MoveOutputData(String currentLocationName, double latitude, double longitude, int currentIndex, int mapSize,
-                          boolean canMoveLeft, boolean canMoveRight, Monster monster, Item item) {
+    public MoveOutputData(String currentLocationName, int currentIndex, int mapSize,
+                          boolean canMoveLeft, boolean canMoveRight, Monster monster, Item item, ImageIcon staticMapImage) {
         if (monster != null && item != null) {
             throw new IllegalArgumentException("Location cannot contain both a Monster and an Item.");
         }
         this.currentLocationName = currentLocationName;
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.currentIndex = currentIndex;
         this.mapSize = mapSize;
         this.canMoveLeft = canMoveLeft;
         this.canMoveRight = canMoveRight;
         this.monster = monster;
         this.item = item;
+        this.staticMapImage = staticMapImage;
     }
 
     public String getCurrentLocationName() {
         return currentLocationName;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
     }
 
     public boolean isCanMoveLeft() {
@@ -67,5 +59,9 @@ public class MoveOutputData {
 
     public Item getItem() {
         return item;
+    }
+
+    public ImageIcon getStaticMapImage() {
+        return staticMapImage;
     }
 }
