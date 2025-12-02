@@ -3,6 +3,7 @@ package app;
 import API.GeoapifyStaticMap;
 import API.MoveStaticMapInterface;
 import data_access.FileGameDataAccessObject;
+import data_access.GameDataAccessFactory;
 import data_access.QuizzesReader;
 import interface_adapter.Battle.BattleController;
 import interface_adapter.Battle.BattlePresenter;
@@ -57,14 +58,11 @@ public class AppBuilder {
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    // set which data access implementation to use, can be any
-    // of the classes from the data_access package
+    // Factory for creating data access objects - supports dependency injection
+    private final GameDataAccessFactory dataAccessFactory;
 
-    // DAO version using local file storage
-    private final FileGameDataAccessObject gameDataAccess = new FileGameDataAccessObject();
-
-    // DAO version using a shared external database
-    // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    // DAO created by factory
+    private final FileGameDataAccessObject gameDataAccess;
 
     private BattleView battleView;
     private BattleViewModel battleViewModel;
@@ -81,7 +79,9 @@ public class AppBuilder {
     private InventoryView inventoryView;
     private InventoryUseItemViewModel inventoryUseItemViewModel;
 
-    public AppBuilder() {
+    public AppBuilder(GameDataAccessFactory dataAccessFactory) {
+        this.dataAccessFactory = dataAccessFactory;
+        this.gameDataAccess = (FileGameDataAccessObject) dataAccessFactory.createGameDataAccess();
         cardPanel.setLayout(cardLayout);
     }
 
