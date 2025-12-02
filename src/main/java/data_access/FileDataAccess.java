@@ -88,18 +88,18 @@ public class FileDataAccess {
         json.put("currentLocationIndex", map.getCurrentLocationIndex());
 
         JSONArray locationsArray = new JSONArray();
-        // We need to access locations. Since GameMap doesn't expose list directly, 
+        // We need to access locations. Since GameMap doesn't expose list directly,
         // we might need to reconstruct or add a getter.
         // Assuming we can iterate via map size or access internal list if we add a getter.
         // For now, let's assume we added getLocations() or similar, OR use reflection if needed.
-        // BUT cleaner is to rely on public API. 
-        // Let's check if GameMap allows access. 
-        // Actually, GameMap usually holds the list. 
+        // BUT cleaner is to rely on public API.
+        // Let's check if GameMap allows access.
+        // Actually, GameMap usually holds the list.
         // If no getter, we might need to add one to GameMap or use reflection.
-        // However, standard GameMap usually doesn't expose the list. 
-        // Let's use reflection here to avoid modifying entity just for DAO if strict, 
+        // However, standard GameMap usually doesn't expose the list.
+        // Let's use reflection here to avoid modifying entity just for DAO if strict,
         // OR better, add `getLocations()` to GameMap.
-        // Since I cannot modify other files easily here without separate blocks, 
+        // Since I cannot modify other files easily here without separate blocks,
         // I will use reflection for the private field 'locations' to respect existing constraints.
 
         try {
@@ -160,6 +160,21 @@ public class FileDataAccess {
 
         for (String key : userJson.keySet()) {
             try {
+                if (key.equals("inventory")) {
+                    JSONObject invJson = userJson.getJSONObject("inventory");
+                    if (invJson.has("items")) {
+                        JSONArray itemsArray = invJson.getJSONArray("items");
+                        for (int i = 0; i < itemsArray.length(); i++) {
+                            JSONObject itemJson = itemsArray.getJSONObject(i);
+                            Item item = deserializeItem(itemJson);
+                            if (item != null) {
+                                user.addItem(item);
+                            }
+                        }
+                    }
+                    continue;
+                }
+
                 Field field = User.class.getDeclaredField(key);
                 field.setAccessible(true);
                 Object value = userJson.get(key);
@@ -205,6 +220,31 @@ public class FileDataAccess {
         return new AdventureGame(user, map, path);
     }
 
+    private Item deserializeItem(JSONObject itemJson) {
+        try {
+            String iName = itemJson.getString("name");
+            String iType = itemJson.getString("type");
+
+            Item item = new Item(iName, iType);
+
+            if (itemJson.has("value")) {
+                Field valueField = Item.class.getDeclaredField("value");
+                valueField.setAccessible(true);
+                valueField.setInt(item, itemJson.getInt("value"));
+            }
+
+            if (itemJson.has("description")) {
+                Field descField = Item.class.getDeclaredField("description");
+                descField.setAccessible(true);
+                descField.set(item, itemJson.getString("description"));
+            }
+            return item;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private GameMap deserializeGameMap(JSONObject json) {
         int currentIndex = json.getInt("currentLocationIndex");
         JSONArray locationsArray = json.getJSONArray("locations");
@@ -247,36 +287,7 @@ public class FileDataAccess {
         }
         Item item = null;
         if (json.has("item") && !json.isNull("item")) {
-            try {
-                JSONObject itemJson = json.getJSONObject("item");
-
-                // 1. Instantiate with basic constructor
-                String iName = itemJson.getString("name");
-                String iType = itemJson.getString("type");
-                item = new Item(iName, iType);
-
-                // 2. Use reflection to restore specific saved state (value/description)
-                // This ensures if an item was modified or logic changed, the save is accurate
-
-                // Restore 'value'
-                if (itemJson.has("value")) {
-                    Field valueField = Item.class.getDeclaredField("value");
-                    valueField.setAccessible(true);
-                    valueField.setInt(item, itemJson.getInt("value"));
-                }
-
-                // Restore 'description'
-                if (itemJson.has("description")) {
-                    Field descField = Item.class.getDeclaredField("description");
-                    descField.setAccessible(true);
-                    descField.set(item, itemJson.getString("description"));
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                // In case of error, item will remain whatever the constructor set it to,
-                // or null if the instantiation failed.
-            }
+            item = deserializeItem(json.getJSONObject("item"));
         }
 
         return new Location(name, latitude, longitude, monster, item);

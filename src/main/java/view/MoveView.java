@@ -117,7 +117,12 @@ public class MoveView extends JPanel implements PropertyChangeListener {
             }
 
             linearMapLabel.setText(state.getLinearMap());
-            staticMapImageLabel.setIcon(state.getStaticMapImage());
+
+            byte[] imageData = state.getStaticMapImageData();
+            if (imageData != null) {
+                staticMapImageLabel.setIcon(new ImageIcon(imageData));
+            }
+
             currentLocationLabel.setText("Current Location: " + state.getCurrentLocationName());
 
             goLeftButton.setEnabled(state.isLeftButtonEnabled());

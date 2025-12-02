@@ -1,6 +1,5 @@
 package interface_adapter.move;
 
-import API.MoveStaticMapInterface;
 import entity.Monster;
 import entity.User;
 import interface_adapter.Battle.BattleState;
@@ -9,20 +8,16 @@ import interface_adapter.ViewManagerModel;
 import use_case.move.MoveOutputBoundary;
 import use_case.move.MoveOutputData;
 
-import javax.swing.*;
-
 public class MovePresenter implements MoveOutputBoundary {
 
     private final MoveViewModel moveViewModel;
-    private final MoveStaticMapInterface staticMapService;
     private final BattleViewModel battleViewModel;
     private final ViewManagerModel viewManagerModel;
 
 
-    public MovePresenter(ViewManagerModel viewManagerModel, MoveViewModel moveViewModel, MoveStaticMapInterface staticMapService, BattleViewModel battleViewModel) {
+    public MovePresenter(ViewManagerModel viewManagerModel, MoveViewModel moveViewModel, BattleViewModel battleViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.moveViewModel = moveViewModel;
-        this.staticMapService = staticMapService;
         this.battleViewModel = battleViewModel;
     }
 
@@ -41,11 +36,7 @@ public class MovePresenter implements MoveOutputBoundary {
         );
         moveState.setLinearMap(linearMap);
 
-        ImageIcon mapImage = staticMapService.getMapImage(
-                moveOutputData.getLatitude(),
-                moveOutputData.getLongitude()
-        );
-        moveState.setStaticMapImage(mapImage);
+        moveState.setStaticMapImageData(moveOutputData.getStaticMapImage());
 
         moveViewModel.firePropertyChange();
     }
@@ -84,3 +75,4 @@ public class MovePresenter implements MoveOutputBoundary {
         return sb.toString();
     }
 }
+

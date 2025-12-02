@@ -3,12 +3,10 @@ package interface_adapter.move;
 import entity.Item;
 import entity.Monster;
 
-import javax.swing.*;
-
 public class MoveState {
     private String linearMap = "";
     private String currentLocationName = "";
-    private ImageIcon staticMapImage = null;
+    private byte[] staticMapImageData = null;
     private boolean leftButtonEnabled = true;
     private boolean rightButtonEnabled = true;
     private boolean needUpdate = false;
@@ -21,7 +19,7 @@ public class MoveState {
 
     public MoveState(MoveState copy) {
         this.linearMap = copy.linearMap;
-        this.staticMapImage = copy.staticMapImage;
+        this.staticMapImageData = copy.staticMapImageData;
         this.currentLocationName = copy.currentLocationName;
         this.leftButtonEnabled = copy.leftButtonEnabled;
         this.rightButtonEnabled = copy.rightButtonEnabled;
@@ -41,12 +39,12 @@ public class MoveState {
         this.linearMap = linearMap;
     }
 
-    public ImageIcon getStaticMapImage() {
-        return staticMapImage;
+    public byte[] getStaticMapImageData() {
+        return staticMapImageData;
     }
 
-    public void setStaticMapImage(ImageIcon staticMapImage) {
-        this.staticMapImage = staticMapImage;
+    public void setStaticMapImageData(byte[] staticMapImageData) {
+        this.staticMapImageData = staticMapImageData;
     }
 
     public String getCurrentLocationName() {

@@ -1,5 +1,7 @@
 package interface_adapter.Battle;
 
+import interface_adapter.InventoryUseItem.InventoryUseItemState;
+import interface_adapter.InventoryUseItem.InventoryUseItemViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.move.MoveState;
 import interface_adapter.move.MoveViewModel;
@@ -14,11 +16,13 @@ public class BattlePresenter implements BattleOutputBoundary {
     private final BattleViewModel battleViewModel;
     private final ViewManagerModel viewManagerModel;
     private final MoveViewModel moveViewModel;
+    private final InventoryUseItemViewModel inventoryUseItemViewModel;
 
-    public BattlePresenter(BattleViewModel battleViewModel, MoveViewModel moveViewModel, ViewManagerModel viewManagerModel) {
+    public BattlePresenter(BattleViewModel battleViewModel, MoveViewModel moveViewModel, ViewManagerModel viewManagerModel, InventoryUseItemViewModel inventoryUseItemViewModel) {
         this.battleViewModel = battleViewModel;
         this.viewManagerModel = viewManagerModel;
         this.moveViewModel = moveViewModel;
+        this.inventoryUseItemViewModel = inventoryUseItemViewModel;
     }
 
     /**
@@ -126,6 +130,10 @@ public class BattlePresenter implements BattleOutputBoundary {
         moveState.setNeedUpdate(true);
         moveState.setJustReturnedFromDefeat(true);
         moveViewModel.firePropertyChange();
+
+        InventoryUseItemState inventoryState = inventoryUseItemViewModel.getState();
+        inventoryState.setNeedsRefresh(true);
+        inventoryUseItemViewModel.firePropertyChange();
     }
 
     /**

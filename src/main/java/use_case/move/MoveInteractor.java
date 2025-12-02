@@ -1,19 +1,19 @@
 package use_case.move;
 
+import API.MoveStaticMapInterface;
 import entity.*;
-import entity.AdventureGame;
-import entity.Direction;
-import entity.Location;
 
 public class MoveInteractor implements MoveInputBoundary {
 
     private final MoveGameDataAccessInterface moveGameDataAccess;
 
     private final MoveOutputBoundary movePresenter;
+    private final MoveStaticMapInterface mapService;
 
-    public MoveInteractor(MoveGameDataAccessInterface moveGameDataAccess, MoveOutputBoundary movePresenter) {
+    public MoveInteractor(MoveGameDataAccessInterface moveGameDataAccess, MoveOutputBoundary movePresenter, MoveStaticMapInterface mapService) {
         this.moveGameDataAccess = moveGameDataAccess;
         this.movePresenter = movePresenter;
+        this.mapService = mapService;
     }
 
     @Override
@@ -36,8 +36,11 @@ public class MoveInteractor implements MoveInputBoundary {
 
         Location currentLocation = game.getGameMap().getCurrentLocation();
         String locationName = currentLocation.getName();
-        double latitude = currentLocation.getLatitude();
-        double longitude = currentLocation.getLongitude();
+
+        byte[] mapImage = mapService.getMapImage(
+                currentLocation.getLatitude(),
+                currentLocation.getLongitude()
+        );
 
         int currentIndex = game.getGameMap().getCurrentLocationIndex();
         int mapSize = game.getGameMap().getMapSize();
@@ -46,14 +49,13 @@ public class MoveInteractor implements MoveInputBoundary {
         Item item = currentLocation.getItem();
         MoveOutputData outputData = new MoveOutputData(
                 locationName,
-                latitude,
-                longitude,
                 currentIndex,
                 mapSize,
                 canMoveLeft,
                 canMoveRight,
                 monster,
-                item
+                item,
+                mapImage
         );
 
         this.movePresenter.present(outputData);

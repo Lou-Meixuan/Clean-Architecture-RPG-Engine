@@ -3,14 +3,13 @@ package interface_adapter.InventoryUseItem;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * State object for Inventory Use Item View
- */
 public class InventoryUseItemState {
 
     private List<String> itemNames;
     private List<String> itemTypes;
     private List<Integer> itemValues;
+
+    private boolean needsRefresh;
 
     private int hpIncrease;
     private int defIncrease;
@@ -26,6 +25,7 @@ public class InventoryUseItemState {
         this.defIncrease = 0;
         this.dmgIncrease = 0;
         this.message = "";
+        this.needsRefresh = false;
     }
 
     // Getters and Setters
@@ -83,5 +83,13 @@ public class InventoryUseItemState {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean getNeedsRefresh() {
+        return needsRefresh;
+    }
+
+    public void setNeedsRefresh(boolean needsRefresh) {
+        this.needsRefresh = needsRefresh;
     }
 }

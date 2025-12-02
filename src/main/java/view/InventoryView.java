@@ -30,9 +30,12 @@ public class InventoryView extends JPanel implements PropertyChangeListener {
         setPreferredSize(new Dimension(250, 0));
 
         // Top panel: dropdown + button
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        topPanel.add(new JLabel("Items:"));
-        topPanel.add(inventoryDropdown);
+        JPanel topPanel = new JPanel(new GridLayout(0, 1));
+        JPanel selectionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        selectionPanel.add(new JLabel("Items:"));
+        selectionPanel.add(inventoryDropdown);
+        topPanel.add(selectionPanel);
+
         topPanel.add(useItemButton);
 
         // Use item button initially disabled
@@ -130,7 +133,17 @@ public class InventoryView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // Just update the UI from state - NO controller calls!
+        InventoryUseItemState state = viewModel.getState();
+
+        if (state.getNeedsRefresh()) {
+            state.setNeedsRefresh(false);
+            if (controller != null) {
+                controller.viewInventory();
+            }
+            return;
+        }
+
+        // Just update the UI from state
         updateDropdown();
         updateMessage();
     }
