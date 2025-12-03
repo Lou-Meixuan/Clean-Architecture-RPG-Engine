@@ -1,7 +1,7 @@
 package interface_adapter.results;
 
-import use_case.showResults.ShowResultsInputBoundary;
-import use_case.showResults.ShowResultsInputData;
+import use_case.show_results.ShowResultsInputBoundary;
+import use_case.show_results.ShowResultsInputData;
 
 /**
  * Controller for showing results screen.

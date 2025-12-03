@@ -4,12 +4,12 @@ import api.MonsterDetail;
 import api.SrdMonsterDetail;
 import entity.*;
 import use_case.battle.BattleUserDataAccessInterface;
-import use_case.inventoryAddItem.InventoryAddItemUserDataAccessInterface;
-import use_case.inventoryUseItem.InventoryUseItemUserDataAccessInterface;
+import use_case.inventory_addItem.InventoryAddItemUserDataAccessInterface;
+import use_case.inventory_useItem.InventoryUseItemUserDataAccessInterface;
 import use_case.move.MoveGameDataAccessInterface;
-import use_case.openGame.OpenGameDataAccessInterface;
-import use_case.submitQuiz.QuizDataAccessInterface;
-import use_case.showResults.ShowResultsGameDataAccessInterface;
+import use_case.open_game.OpenGameDataAccessInterface;
+import use_case.submit_quiz.QuizDataAccessInterface;
+import use_case.show_results.ShowResultsGameDataAccessInterface;
 
 import java.io.File;
 import java.lang.reflect.Field;

@@ -1,6 +1,6 @@
 package inventory;
 
-import use_case.inventoryUseItem.*;
+import use_case.inventory_useItem.*;
 
 import entity.*;
 import org.junit.jupiter.api.BeforeEach;

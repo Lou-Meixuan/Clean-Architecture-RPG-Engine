@@ -1,8 +1,8 @@
 package view;
 
-import interface_adapter.inventoryUseItem.InventoryUseItemController;
-import interface_adapter.inventoryUseItem.InventoryUseItemState;
-import interface_adapter.inventoryUseItem.InventoryUseItemViewModel;
+import interface_adapter.inventory_useItem.InventoryUseItemController;
+import interface_adapter.inventory_useItem.InventoryUseItemState;
+import interface_adapter.inventory_useItem.InventoryUseItemViewModel;
 
 import javax.swing.*;
 import java.awt.*;

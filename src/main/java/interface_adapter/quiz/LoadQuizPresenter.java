@@ -1,7 +1,7 @@
 package interface_adapter.quiz;
 
-import use_case.loadQuiz.LoadQuizOutputBoundary;
-import use_case.loadQuiz.LoadQuizOutputData;
+import use_case.load_quiz.LoadQuizOutputBoundary;
+import use_case.load_quiz.LoadQuizOutputData;
 
 public class LoadQuizPresenter implements LoadQuizOutputBoundary {
 

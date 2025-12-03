@@ -2,8 +2,8 @@ package interface_adapter.results;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.move.MoveViewModel;
-import use_case.showResults.ShowResultsOutputBoundary;
-import use_case.showResults.ShowResultsOutputData;
+import use_case.show_results.ShowResultsOutputBoundary;
+import use_case.show_results.ShowResultsOutputData;
 
 /**
  * Presenter for showing results screen.
@@ -37,7 +37,7 @@ public class ShowResultsPresenter implements ShowResultsOutputBoundary {
     public void switchToOpenGameView() {
         moveViewModel.firePropertyChange();
 
-        viewManagerModel.setState("openGame");
+        viewManagerModel.setState("open_game");
         viewManagerModel.firePropertyChange();
     }
 }

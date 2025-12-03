@@ -1,7 +1,7 @@
 package interface_adapter.battle;
 
-import interface_adapter.inventoryUseItem.InventoryUseItemState;
-import interface_adapter.inventoryUseItem.InventoryUseItemViewModel;
+import interface_adapter.inventory_useItem.InventoryUseItemState;
+import interface_adapter.inventory_useItem.InventoryUseItemViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.move.MoveState;
 import interface_adapter.move.MoveViewModel;

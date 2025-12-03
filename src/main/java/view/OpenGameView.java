@@ -1,14 +1,14 @@
 package view;
 
-import interface_adapter.opengame.OpenGameController;
-import interface_adapter.opengame.OpenGameViewModel;
+import interface_adapter.open_game.OpenGameController;
+import interface_adapter.open_game.OpenGameViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class OpenGameView extends JPanel {
 
-    private final String viewName = "openGame";
+    private final String viewName = "open_game";
 
     private OpenGameController controller;
     private final OpenGameViewModel viewModel;

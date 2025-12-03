@@ -1,9 +1,9 @@
 package interface_adapter.quiz;
 
-import use_case.loadQuiz.LoadQuizInputBoundary;
-import use_case.loadQuiz.LoadQuizInputData;
-import use_case.submitQuiz.SubmitQuizInputBoundary;
-import use_case.submitQuiz.SubmitQuizInputData;
+import use_case.load_quiz.LoadQuizInputBoundary;
+import use_case.load_quiz.LoadQuizInputData;
+import use_case.submit_quiz.SubmitQuizInputBoundary;
+import use_case.submit_quiz.SubmitQuizInputData;
 
 public class QuizController {
     private final SubmitQuizInputBoundary submitInteractor;

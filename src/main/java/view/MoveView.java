@@ -2,7 +2,7 @@ package view;
 
 import entity.Direction;
 import entity.Item;
-import interface_adapter.inventoryAddItem.InventoryAddItemController;
+import interface_adapter.inventory_addItem.InventoryAddItemController;
 import interface_adapter.move.MoveController;
 import interface_adapter.move.MoveState;
 import interface_adapter.move.MoveViewModel;

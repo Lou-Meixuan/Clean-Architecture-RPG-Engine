@@ -3,8 +3,8 @@ package view;
 // imports
 import entity.Item;
 
-import interface_adapter.inventoryAddItem.InventoryAddItemViewModel;
-import interface_adapter.inventoryAddItem.InventoryAddItemController;
+import interface_adapter.inventory_addItem.InventoryAddItemViewModel;
+import interface_adapter.inventory_addItem.InventoryAddItemController;
 
 import javax.swing.*;
 import java.awt.*;
