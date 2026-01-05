@@ -1,4 +1,4 @@
-Team Project NAME
+Clean-Architecture-RPG-Engine
 ---
 # Introduction and some informations
 We will keep this up-to-date with information about our project throughout the term.
